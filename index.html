@@ -1,10 +1,189 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>My Engineering Portfolio</title>
-  </head>
-  <body>
-    <h1>Welcome to my Portfolio!</h1>
-    <p>Site under construction.</p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Name | Engineering Portfolio</title>
+  <meta name="description" content="Portfolio of Your Name, mechanical engineer: robotics, CAD, and product design.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f2f5f8;
+      --ink: #172338;
+      --line: #b9c6d6;
+      --blue: #1c5cc4;
+      --muted: #55647a;
+      --head: "Archivo", "Helvetica Neue", Arial, sans-serif;
+      --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #0f1826;
+        --ink: #e6ecf5;
+        --line: #33445c;
+        --blue: #7fb0ff;
+        --muted: #9aabc2;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 1.125rem/1.65 var(--body);
+      /* faint drafting grid */
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 48px 48px;
+      background-position: -1px -1px;
+      background-blend-mode: soft-light;
+    }
+    main { max-width: 860px; margin: 0 auto; padding: 56px 20px 80px; }
+    a { color: var(--blue); text-underline-offset: 3px; }
+    a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+    h1, h2, h3 { font-family: var(--head); line-height: 1.1; margin: 0; }
+    h1 { font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 800; letter-spacing: -0.02em; }
+    h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; }
+    h3 { font-size: 1.3rem; font-weight: 700; }
+    section { margin-top: 72px; }
+
+    /* Title block: the one memorable element */
+    .titleblock {
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+    }
+    .titleblock > div { padding: 18px 22px; border-bottom: 1px solid var(--ink); }
+    .titleblock > div:nth-last-child(-n+2) { border-bottom: 0; }
+    .titleblock .name { grid-row: span 2; border-right: 1px solid var(--ink); border-bottom: 0; padding: 28px 22px; }
+    .titleblock .name p { margin: 14px 0 0; color: var(--muted); max-width: 34ch; }
+    .titleblock small { display: block; font: 500 0.8rem var(--head); color: var(--muted); margin-bottom: 2px; }
+    .titleblock b { font: 700 1.05rem var(--head); }
+
+    .intro { max-width: 62ch; margin-top: 40px; }
+
+    /* Projects as drawing sheets */
+    .project { background: var(--paper); border: 1px solid var(--ink); margin-bottom: 28px; }
+    .project header { display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
+      padding: 16px 22px; border-bottom: 1px solid var(--ink); flex-wrap: wrap; }
+    .project header span { font: 500 0.9rem var(--head); color: var(--muted); }
+    .project .img { aspect-ratio: 16 / 9; background: repeating-linear-gradient(45deg, transparent 0 14px, var(--line) 14px 15px);
+      border-bottom: 1px solid var(--ink); display: grid; place-items: center; color: var(--muted); font: 500 0.95rem var(--head); }
+    .project img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--ink); }
+    .project .body { padding: 20px 22px 6px; }
+    .project .body p { margin: 0 0 14px; max-width: 64ch; }
+    dl.specs { display: grid; grid-template-columns: auto 1fr; margin: 0; border-top: 1px solid var(--line); }
+    dl.specs dt, dl.specs dd { margin: 0; padding: 10px 22px; border-bottom: 1px solid var(--line); }
+    dl.specs dt { font: 700 0.95rem var(--head); color: var(--muted); padding-right: 24px; }
+    dl.specs dd:last-of-type, dl.specs dt:nth-last-of-type(1) { border-bottom: 0; }
+
+    .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; border: 1px solid var(--ink); background: var(--paper); }
+    .skills div { padding: 18px 22px; border-right: 1px solid var(--line); }
+    .skills div:last-child { border-right: 0; }
+    .skills h3 { font-size: 1.05rem; margin-bottom: 6px; }
+    .skills p { margin: 0; color: var(--muted); font-size: 1rem; }
+
+    .contact a { font: 700 1.1rem var(--head); margin-right: 24px; }
+    footer { margin-top: 72px; color: var(--muted); font-size: 0.95rem; }
+
+    @media (max-width: 640px) {
+      .titleblock { grid-template-columns: 1fr; }
+      .titleblock .name { grid-row: auto; border-right: 0; border-bottom: 1px solid var(--ink); }
+      .titleblock > div:nth-last-child(-n+2) { border-bottom: 1px solid var(--ink); }
+      .titleblock > div:last-child { border-bottom: 0; }
+      .skills div { border-right: 0; border-bottom: 1px solid var(--line); }
+      .skills div:last-child { border-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+<main>
+
+  <!-- 1. HERO: edit the text in this block -->
+  <div class="titleblock">
+    <div class="name">
+      <h1>Your Name</h1>
+      <p>Mechanical engineer who designs, builds, and tests robotics and consumer hardware.</p>
+    </div>
+    <div><small>Discipline</small><b>Mechanical Engineering</b></div>
+    <div><small>Status</small><b>B.S. 2027, seeking internships</b></div>
+  </div>
+
+  <p class="intro">
+    I'm a mechanical engineering student at [University]. I like projects where a design has to survive
+    real testing: a gearbox that has to hold torque, a bracket that has to weigh less. Below are the
+    projects I'm proudest of, with the problem, my role, and what happened.
+  </p>
+
+  <!-- 2. PROJECTS: copy one <article> block per project -->
+  <section id="projects">
+    <h2>Projects</h2>
+
+    <article class="project">
+      <header>
+        <h3>Project One: Autonomous Rover Chassis</h3>
+        <span>Fall 2025</span>
+      </header>
+      <!-- Replace this div with: <img src="images/rover.jpg" alt="Rover chassis rendering"> -->
+      <div class="img">Add an image or CAD render</div>
+      <div class="body">
+        <p>
+          Redesigned the drive chassis for a competition rover to cut weight while keeping stiffness.
+          I ran FEA on three bracket geometries and machined the final version.
+        </p>
+      </div>
+      <dl class="specs">
+        <dt>Role</dt><dd>Lead mechanical designer on a team of 5</dd>
+        <dt>Tools</dt><dd>SolidWorks, ANSYS, manual mill</dd>
+        <dt>Result</dt><dd>Chassis weight down 22%, no failures across 40 test runs</dd>
+        <dt>Links</dt><dd><a href="https://github.com/your-username/project-one">Code</a>, <a href="#">Report (PDF)</a></dd>
+      </dl>
+    </article>
+
+    <article class="project">
+      <header>
+        <h3>Project Two: Desktop Sorting Machine</h3>
+        <span>Spring 2025</span>
+      </header>
+      <div class="img">Add an image or CAD render</div>
+      <div class="body">
+        <p>Describe the problem, what you built, and what you learned in two or three sentences.</p>
+      </div>
+      <dl class="specs">
+        <dt>Role</dt><dd>Solo project</dd>
+        <dt>Tools</dt><dd>Fusion 360, Arduino, 3D printing</dd>
+        <dt>Result</dt><dd>Sorts 30 parts per minute at 96% accuracy</dd>
+      </dl>
+    </article>
+  </section>
+
+  <!-- 3. SKILLS -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills">
+      <div><h3>Design and analysis</h3><p>SolidWorks, Fusion 360, ANSYS, GD&amp;T</p></div>
+      <div><h3>Programming</h3><p>Python, MATLAB, C++</p></div>
+      <div><h3>Fabrication</h3><p>3D printing, laser cutting, mill and lathe</p></div>
+    </div>
+  </section>
+
+  <!-- 4. CONTACT -->
+  <section id="contact" class="contact">
+    <h2>Contact</h2>
+    <p>
+      <a href="mailto:you@email.com">you@email.com</a>
+      <a href="https://linkedin.com/in/your-profile">LinkedIn</a>
+      <a href="https://github.com/your-username">GitHub</a>
+      <a href="resume.pdf">Resume (PDF)</a>
+    </p>
+  </section>
+
+  <footer>&copy; 2026 Your Name. Built with HTML and CSS, hosted on GitHub Pages.</footer>
+</main>
+</body>
 </html>
