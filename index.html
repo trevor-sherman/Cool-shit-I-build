@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Name | Engineering Portfolio</title>
-  <meta name="description" content="Portfolio of Your Name, mechanical engineer: robotics, CAD, and product design.">
+  <meta name="description" content="Portfolio of Your Name, mechanical engineer.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
@@ -14,176 +14,181 @@
       --ink: #172338;
       --line: #b9c6d6;
       --blue: #1c5cc4;
+      --on-blue: #ffffff;
       --muted: #55647a;
       --head: "Archivo", "Helvetica Neue", Arial, sans-serif;
       --body: "Source Serif 4", Georgia, "Times New Roman", serif;
     }
     @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #0f1826;
-        --ink: #e6ecf5;
-        --line: #33445c;
-        --blue: #7fb0ff;
-        --muted: #9aabc2;
-      }
+      :root { --paper: #0f1826; --ink: #e6ecf5; --line: #33445c; --blue: #7fb0ff; --on-blue: #0f1826; --muted: #9aabc2; }
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font: 1.125rem/1.65 var(--body);
-      /* faint drafting grid */
-      background-image:
-        linear-gradient(var(--line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--line) 1px, transparent 1px);
-      background-size: 48px 48px;
-      background-position: -1px -1px;
-      background-blend-mode: soft-light;
-    }
-    main { max-width: 860px; margin: 0 auto; padding: 56px 20px 80px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 1.125rem/1.65 var(--body); }
     a { color: var(--blue); text-underline-offset: 3px; }
-    a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
     h1, h2, h3 { font-family: var(--head); line-height: 1.1; margin: 0; }
-    h1 { font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 800; letter-spacing: -0.02em; }
-    h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; }
-    h3 { font-size: 1.3rem; font-weight: 700; }
-    section { margin-top: 72px; }
+    h2 { font-size: 1.7rem; font-weight: 800; margin-bottom: 22px; }
+    h3 { font-size: 1.15rem; font-weight: 700; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
 
-    /* Title block: the one memorable element */
-    .titleblock {
-      background: var(--paper);
-      border: 2px solid var(--ink);
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-    }
-    .titleblock > div { padding: 18px 22px; border-bottom: 1px solid var(--ink); }
-    .titleblock > div:nth-last-child(-n+2) { border-bottom: 0; }
-    .titleblock .name { grid-row: span 2; border-right: 1px solid var(--ink); border-bottom: 0; padding: 28px 22px; }
-    .titleblock .name p { margin: 14px 0 0; color: var(--muted); max-width: 34ch; }
-    .titleblock small { display: block; font: 500 0.8rem var(--head); color: var(--muted); margin-bottom: 2px; }
-    .titleblock b { font: 700 1.05rem var(--head); }
+    /* Top navigation */
+    .nav { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 2px solid var(--ink); }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
+    .brand { font: 800 1.2rem var(--head); color: var(--ink); text-decoration: none; }
+    .nav ul { list-style: none; display: flex; gap: 8px; margin: 0; padding: 0; flex-wrap: wrap; }
+    .nav ul a { display: block; padding: 8px 16px; border: 1.5px solid var(--ink); color: var(--ink);
+      font: 700 0.95rem var(--head); text-decoration: none; }
+    .nav ul a:hover { background: var(--ink); color: var(--paper); }
+    .nav ul a.primary { background: var(--blue); border-color: var(--blue); color: var(--on-blue); }
+    .nav ul a.primary:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 
-    .intro { max-width: 62ch; margin-top: 40px; }
+    /* Intro */
+    .intro { display: grid; grid-template-columns: 340px 1fr; gap: 56px; align-items: center; padding: 72px 0 40px; }
+    .photo { position: relative; padding: 14px; border: 1.5px solid var(--ink);
+      background: repeating-linear-gradient(45deg, transparent 0 12px, var(--line) 12px 13px); }
+    .photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--paper); color: var(--muted); font: 500 0.95rem var(--head); }
+    .photo figcaption { position: absolute; left: -1.5px; bottom: -34px; font: 500 0.85rem var(--head); color: var(--muted); }
+    .intro h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); font-weight: 800; letter-spacing: -0.02em; }
+    .tagline { font: 700 1.2rem var(--head); color: var(--blue); margin: 14px 0 22px; }
+    .intro p { max-width: 56ch; margin: 0 0 16px; }
+    .facts { display: flex; flex-wrap: wrap; gap: 0; margin: 26px 0 0; border: 1px solid var(--ink); width: fit-content; max-width: 100%; }
+    .facts div { padding: 10px 18px; border-right: 1px solid var(--ink); }
+    .facts div:last-child { border-right: 0; }
+    .facts dt { font: 500 0.8rem var(--head); color: var(--muted); }
+    .facts dd { margin: 0; font: 700 1rem var(--head); }
 
-    /* Projects as drawing sheets */
-    .project { background: var(--paper); border: 1px solid var(--ink); margin-bottom: 28px; }
-    .project header { display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
-      padding: 16px 22px; border-bottom: 1px solid var(--ink); flex-wrap: wrap; }
-    .project header span { font: 500 0.9rem var(--head); color: var(--muted); }
-    .project .img { aspect-ratio: 16 / 9; background: repeating-linear-gradient(45deg, transparent 0 14px, var(--line) 14px 15px);
-      border-bottom: 1px solid var(--ink); display: grid; place-items: center; color: var(--muted); font: 500 0.95rem var(--head); }
-    .project img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--ink); }
-    .project .body { padding: 20px 22px 6px; }
-    .project .body p { margin: 0 0 14px; max-width: 64ch; }
-    dl.specs { display: grid; grid-template-columns: auto 1fr; margin: 0; border-top: 1px solid var(--line); }
-    dl.specs dt, dl.specs dd { margin: 0; padding: 10px 22px; border-bottom: 1px solid var(--line); }
-    dl.specs dt { font: 700 0.95rem var(--head); color: var(--muted); padding-right: 24px; }
-    dl.specs dd:last-of-type, dl.specs dt:nth-last-of-type(1) { border-bottom: 0; }
+    /* Sections */
+    section { padding: 64px 0 8px; }
+    .list { border-top: 2px solid var(--ink); }
+    .row { display: grid; grid-template-columns: 1fr 140px; gap: 8px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+    .row p { margin: 4px 0 0; color: var(--muted); max-width: 62ch; }
+    .row .meta { font: 500 0.95rem var(--head); color: var(--muted); text-align: right; }
+    .row h3 a { color: var(--ink); text-decoration-color: var(--blue); }
+    .row h3 a:hover { color: var(--blue); }
+    .contact p { margin: 0 0 20px; }
+    .contact .links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .contact .links a { padding: 10px 18px; border: 1.5px solid var(--ink); color: var(--ink); font: 700 1rem var(--head); text-decoration: none; }
+    .contact .links a:hover { background: var(--ink); color: var(--paper); }
+    footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.95rem; }
 
-    .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; border: 1px solid var(--ink); background: var(--paper); }
-    .skills div { padding: 18px 22px; border-right: 1px solid var(--line); }
-    .skills div:last-child { border-right: 0; }
-    .skills h3 { font-size: 1.05rem; margin-bottom: 6px; }
-    .skills p { margin: 0; color: var(--muted); font-size: 1rem; }
-
-    .contact a { font: 700 1.1rem var(--head); margin-right: 24px; }
-    footer { margin-top: 72px; color: var(--muted); font-size: 0.95rem; }
-
-    @media (max-width: 640px) {
-      .titleblock { grid-template-columns: 1fr; }
-      .titleblock .name { grid-row: auto; border-right: 0; border-bottom: 1px solid var(--ink); }
-      .titleblock > div:nth-last-child(-n+2) { border-bottom: 1px solid var(--ink); }
-      .titleblock > div:last-child { border-bottom: 0; }
-      .skills div { border-right: 0; border-bottom: 1px solid var(--line); }
-      .skills div:last-child { border-bottom: 0; }
+    @media (max-width: 760px) {
+      .intro { grid-template-columns: 1fr; gap: 48px; padding-top: 40px; }
+      .photo { max-width: 320px; }
+      .row { grid-template-columns: 1fr; }
+      .row .meta { text-align: left; }
     }
   </style>
 </head>
 <body>
-<main>
 
-  <!-- 1. HERO: edit the text in this block -->
-  <div class="titleblock">
-    <div class="name">
-      <h1>Your Name</h1>
-      <p>Mechanical engineer who designs, builds, and tests robotics and consumer hardware.</p>
+  <!-- NAVIGATION: top buttons -->
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="#top">Your Name</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a class="primary" href="resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
     </div>
-    <div><small>Discipline</small><b>Mechanical Engineering</b></div>
-    <div><small>Status</small><b>B.S. 2027, seeking internships</b></div>
-  </div>
+  </header>
 
-  <p class="intro">
-    I'm a mechanical engineering student at [University]. I like projects where a design has to survive
-    real testing: a gearbox that has to hold torque, a bracket that has to weigh less. Below are the
-    projects I'm proudest of, with the problem, my role, and what happened.
-  </p>
+  <main id="top" class="wrap">
 
-  <!-- 2. PROJECTS: copy one <article> block per project -->
-  <section id="projects">
-    <h2>Projects</h2>
+    <!-- INTRO: photo and bio -->
+    <div class="intro">
+      <figure class="photo" style="margin:0">
+        <!-- Put your photo at images/photo.jpg (4:5 portrait works best) -->
+        <img src="images/photo.jpg" alt="Portrait of Your Name">
+        <figcaption>Your Name, at the [lab / workshop / competition]</figcaption>
+      </figure>
 
-    <article class="project">
-      <header>
-        <h3>Project One: Autonomous Rover Chassis</h3>
-        <span>Fall 2025</span>
-      </header>
-      <!-- Replace this div with: <img src="images/rover.jpg" alt="Rover chassis rendering"> -->
-      <div class="img">Add an image or CAD render</div>
-      <div class="body">
+      <div>
+        <h1>Your Name</h1>
+        <div class="tagline">Mechanical engineer building robotics and consumer hardware</div>
         <p>
-          Redesigned the drive chassis for a competition rover to cut weight while keeping stiffness.
-          I ran FEA on three bracket geometries and machined the final version.
+          I'm a mechanical engineering student at [University]. I like projects where a design has to
+          survive real testing: a gearbox that holds torque, a bracket that sheds weight without
+          flexing.
         </p>
+        <p>
+          Outside of class I [compete on the robotics team / run a 3D printing side business / tinker
+          with bikes]. I'm looking for internships in [field] starting [Summer 2027].
+        </p>
+        <dl class="facts">
+          <div><dt>Studying</dt><dd>B.S. Mechanical Eng.</dd></div>
+          <div><dt>Graduating</dt><dd>May 2027</dd></div>
+          <div><dt>Based in</dt><dd>City, State</dd></div>
+        </dl>
       </div>
-      <dl class="specs">
-        <dt>Role</dt><dd>Lead mechanical designer on a team of 5</dd>
-        <dt>Tools</dt><dd>SolidWorks, ANSYS, manual mill</dd>
-        <dt>Result</dt><dd>Chassis weight down 22%, no failures across 40 test runs</dd>
-        <dt>Links</dt><dd><a href="https://github.com/your-username/project-one">Code</a>, <a href="#">Report (PDF)</a></dd>
-      </dl>
-    </article>
-
-    <article class="project">
-      <header>
-        <h3>Project Two: Desktop Sorting Machine</h3>
-        <span>Spring 2025</span>
-      </header>
-      <div class="img">Add an image or CAD render</div>
-      <div class="body">
-        <p>Describe the problem, what you built, and what you learned in two or three sentences.</p>
-      </div>
-      <dl class="specs">
-        <dt>Role</dt><dd>Solo project</dd>
-        <dt>Tools</dt><dd>Fusion 360, Arduino, 3D printing</dd>
-        <dt>Result</dt><dd>Sorts 30 parts per minute at 96% accuracy</dd>
-      </dl>
-    </article>
-  </section>
-
-  <!-- 3. SKILLS -->
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="skills">
-      <div><h3>Design and analysis</h3><p>SolidWorks, Fusion 360, ANSYS, GD&amp;T</p></div>
-      <div><h3>Programming</h3><p>Python, MATLAB, C++</p></div>
-      <div><h3>Fabrication</h3><p>3D printing, laser cutting, mill and lathe</p></div>
     </div>
-  </section>
 
-  <!-- 4. CONTACT -->
-  <section id="contact" class="contact">
-    <h2>Contact</h2>
-    <p>
-      <a href="mailto:you@email.com">you@email.com</a>
-      <a href="https://linkedin.com/in/your-profile">LinkedIn</a>
-      <a href="https://github.com/your-username">GitHub</a>
-      <a href="resume.pdf">Resume (PDF)</a>
-    </p>
-  </section>
+    <!-- PROJECTS: copy a .row for each project -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="list">
+        <div class="row">
+          <div>
+            <h3><a href="https://github.com/your-username/project-one">Autonomous Rover Chassis</a></h3>
+            <p>Redesigned a competition rover's drive chassis, cutting weight 22% while keeping stiffness. SolidWorks, ANSYS, machining.</p>
+          </div>
+          <div class="meta">Fall 2025</div>
+        </div>
+        <div class="row">
+          <div>
+            <h3><a href="#">Desktop Sorting Machine</a></h3>
+            <p>Built an Arduino-controlled machine that sorts 30 parts per minute at 96% accuracy. Fusion 360, 3D printing.</p>
+          </div>
+          <div class="meta">Spring 2025</div>
+        </div>
+        <div class="row">
+          <div>
+            <h3><a href="#">Project Three</a></h3>
+            <p>One or two sentences: the problem, your role, and the result.</p>
+          </div>
+          <div class="meta">Year</div>
+        </div>
+      </div>
+    </section>
 
-  <footer>&copy; 2026 Your Name. Built with HTML and CSS, hosted on GitHub Pages.</footer>
-</main>
+    <!-- RESEARCH: copy a .row for each paper, poster, or lab -->
+    <section id="research">
+      <h2>Research</h2>
+      <div class="list">
+        <div class="row">
+          <div>
+            <h3><a href="#">Thermal Management of Battery Packs</a></h3>
+            <p>Undergraduate researcher in Prof. [Name]'s lab. Modeled heat dispersal in cylindrical cells and tested three cooling layouts.</p>
+          </div>
+          <div class="meta">2025 to present</div>
+        </div>
+        <div class="row">
+          <div>
+            <h3><a href="#">Poster: Lightweight Lattice Brackets</a></h3>
+            <p>Presented at [Conference or Symposium name]. Compares printed lattice brackets with machined aluminum.</p>
+          </div>
+          <div class="meta">Spring 2026</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+      <h2>Contact</h2>
+      <p>The best way to reach me is email. I reply within a couple of days.</p>
+      <div class="links">
+        <a href="mailto:you@email.com">you@email.com</a>
+        <a href="https://linkedin.com/in/your-profile">LinkedIn</a>
+        <a href="https://github.com/your-username">GitHub</a>
+        <a href="resume.pdf">Resume (PDF)</a>
+      </div>
+    </section>
+
+    <footer>&copy; 2026 Your Name. Built with HTML and CSS, hosted on GitHub Pages.</footer>
+  </main>
 </body>
 </html>
