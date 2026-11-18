@@ -2,8 +2,7 @@
 
 🔗 **Live site:** https://trevor-sherman.github.io
 
-Mechanical engineering student at [University], focused on robotics and
-product design. Looking for internships in [field] starting [season/year].
+Fourth-year Mechanical Engineering student at the University of Virginia, focused on UAVs and robotics. Looking for jobs in defense/aerospace, specifically in UAVs/C-UAS and robotics.
 
 ## Featured Projects
 - **[Project One](link)**: Designed and built a [thing] that [result, with numbers].
