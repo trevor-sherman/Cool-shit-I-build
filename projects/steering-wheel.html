@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formula 1-Style Steering Wheel | Trevor Sherman</title>
+  <meta name="description" content="Developed a yoke-style steering wheel, cutting weight by 21%, adding 4 more buttons, and implementing a screen for live race data display.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="../index.html">Trevor Sherman's Engineering Portfolio</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#research">Research</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+          <li><a class="primary" href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">&larr; All projects</a>
+
+    <div class="proj-head">
+      <div class="kicker">Solar Car Team &middot; Spring 2024</div>
+      <h1>Formula 1-Style Steering Wheel</h1>
+      <p class="summary">A yoke-style steering wheel with a built-in touchscreen and every driver control the car needs. It's 21% lighter than the previous wheel, adds 4 buttons, and is built from three waterjet-cut aluminum plates.</p>
+      <dl class="facts">
+        <div><dt>My role</dt><dd>Sole designer &amp; builder</dd></div>
+        <div><dt>Weight</dt><dd>&minus;21% vs. previous wheel</dd></div>
+        <div><dt>Controls</dt><dd>+4 buttons, touchscreen</dd></div>
+        <div><dt>Safety factor</dt><dd>2.4 minimum</dd></div>
+      </dl>
+    </div>
+
+    <div class="photos hero-photos">
+        <figure style="flex:0.750"><a href="../images/steering-wheel/finished.jpg"><img src="../images/steering-wheel/finished.jpg" width="1350" height="1800" alt="Finished yoke-style steering wheel with embedded touchscreen, red push buttons, rocker switch, and leather-wrapped orange grips"></a><figcaption>The finished wheel</figcaption></figure>
+        <figure style="flex:1.333"><a href="../images/steering-wheel/mounted.jpg"><img src="../images/steering-wheel/mounted.jpg" width="1800" height="1350" alt="Steering wheel mounted on the steering column inside the solar car chassis"></a><figcaption>Mounted on the steering column in the car</figcaption></figure>
+    </div>
+
+    <section class="prose">
+      <h2>The problem</h2>
+      <p>The car's data screen was on the dashboard, below a windshield that let in a lot of sunlight. In the sun, glare often made the screen unreadable, so the driver lost access to the performance data and alerts they needed during a race. The car's controls were also spread around the cabin, so the driver had to take a hand off the wheel to use them.</p>
+      <p>The old full-circle wheel also added weight and was awkward to use in the tight cabin. The new wheel had to work within these constraints:</p>
+      <ul>
+        <li><strong>Regulations:</strong> American Solar Challenge (ASC) rules limit how much of a round wheel can be cut away at the top and bottom to make a yoke. They also require the driver to be able to get out of the car quickly.</li>
+        <li><strong>Loads:</strong> The wheel had to handle the driver's steering torque and accidental axial loads, such as the driver bracing against it.</li>
+        <li><strong>Environment:</strong> Constant vibration and humid race conditions meant fasteners couldn't loosen and parts couldn't corrode.</li>
+      </ul>
+    </section>
+
+    <section class="prose">
+      <h2>What I did</h2>
+      <p>I designed the whole wheel myself in SolidWorks, then built and assembled it.</p>
+
+      <h3>Screen and controls</h3>
+      <p>The centerpiece is an STM32 touchscreen display built into the wheel. It shows car performance data and alerts, and the driver can swipe between pages. It sits 1&nbsp;mm below the face of the wheel, which protects it from scratches.</p>
+      <p>All the controls are on the wheel, so the driver never has to let go of it:</p>
+      <ul>
+        <li>A turn signal button</li>
+        <li>A 3-position momentary switch to raise and lower cruise control speed</li>
+        <li>Latching and momentary push buttons for communications, horn, hazards, regenerative braking, cruise control on/off, and low-power mode</li>
+      </ul>
+      <div class="photos">
+        <figure style="flex:1.333"><a href="../images/steering-wheel/control-layout.jpg"><img src="../images/steering-wheel/control-layout.jpg" width="1800" height="1350" alt="Wheel plate layout labeling each switch and button" loading="lazy"></a><figcaption>Control layout on the wheel plate</figcaption></figure>
+      </div>
+      <p>The yoke takes the full amount of cutaway the rules allow. That saves weight and makes the wheel easier to turn in the cramped cabin and easier to get past when climbing out.</p>
+
+      <h3>Sandwich-plate design</h3>
+      <p>The wheel is a stack of three waterjet-cut aluminum plates: 1/4&Prime; front and back plates with a 1/8&Prime; middle plate. Four M6 socket head bolts run through the whole stack. From front to back:</p>
+      <ol>
+        <li><strong>Wheel plate (1/4&Prime;):</strong> the outer yoke shape, with the button holes and the opening for the screen.</li>
+        <li><strong>Short aluminum spacers</strong> on each M6 bolt.</li>
+        <li><strong>Middle plate (1/8&Prime;):</strong> holds the screen and the circuit board. The screen mounts to the front with three M3 bolts and small spacers. On the back, four M3 standoffs (screwed into threads I tapped by hand) hold the distribution board that all the buttons and the screen wire into.</li>
+        <li><strong>Longer aluminum spacers</strong> to make room for the wiring and the board.</li>
+        <li><strong>Back plate (1/4&Prime;):</strong> carries the two output connectors (CAN bus and horn) and the hex quick-release hub that attaches the wheel to the steering column.</li>
+        <li><strong>Lock nuts:</strong> four anti-vibration lock nuts clamp the whole stack together.</li>
+      </ol>
+      <p>Every fastener is a socket head bolt, so the wheel comes apart with a single hex key. The two connectors are two-piece bulkhead types that screw together through the back plate. The quick-release hub is held on by three hex bolts. I drilled through their heads and safety-wired them so they can't back out.</p>
+      <div class="photos">
+        <figure style="flex:0.776"><a href="../images/steering-wheel/cad-front.png"><img src="../images/steering-wheel/cad-front.png" width="1046" height="1348" alt="SolidWorks render of the wheel front with recessed screen and controls" loading="lazy"></a><figcaption>Front: screen recessed 1&nbsp;mm into the wheel plate</figcaption></figure>
+        <figure style="flex:0.762"><a href="../images/steering-wheel/cad-full-rear.png"><img src="../images/steering-wheel/cad-full-rear.png" width="861" height="1130" alt="SolidWorks render of the full plate stack from behind, with the distribution board and quick-release hub" loading="lazy"></a><figcaption>Full assembly from behind: three plates, spacers, and hub</figcaption></figure>
+        <figure style="flex:0.826"><a href="../images/steering-wheel/cad-full-hub.png"><img src="../images/steering-wheel/cad-full-hub.png" width="990" height="1199" alt="SolidWorks close-up of the plate stack, lock nuts, and quick-release hub on the steering shaft" loading="lazy"></a><figcaption>Plate stack and quick-release hub on the steering shaft</figcaption></figure>
+      </div>
+
+      <h3>Design for manufacturing (DFM)</h3>
+      <p>I put proper tolerances (GD&amp;T) on every hole, cutout, and clearance hole, and designed each plate around the waterjet. Waterjet cutting did almost all of the work. The only other steps were hand-tapping the standoff holes and drilling the safety-wire holes.</p>
+      <p>I chose the bolts, standoffs, and spacers to meet ASC rules for resisting vibration, and picked corrosion-resistant coatings so they wouldn't rust in humid conditions.</p>
+      <div class="photos">
+        <figure style="flex:1.317"><a href="../images/steering-wheel/drawing.png"><img src="../images/steering-wheel/drawing.png" width="1280" height="972" alt="Engineering drawing of the steering wheel plate" loading="lazy"></a><figcaption>Engineering drawing of the wheel plate</figcaption></figure>
+      </div>
+
+      <h3>Stress analysis</h3>
+      <p>I ran stress analysis for the driver's steering torque and for accidental axial loads. The design has a minimum safety factor of 2.4.</p>
+
+      <h3>Finishing</h3>
+      <p>After a test fit, I took the wheel apart, scuffed the aluminum plates, and gave them several coats of black protective paint. Once it was back together, I added 3D-printed grips that I designed and hand-stitched leather over them for a solid, comfortable grip.</p>
+      <div class="photos">
+        <figure style="flex:1.333"><a href="../images/steering-wheel/waterjet-plate.jpg"><img src="../images/steering-wheel/waterjet-plate.jpg" width="1800" height="1350" alt="Raw aluminum wheel plate after waterjet cutting" loading="lazy"></a><figcaption>Wheel plate straight off the waterjet</figcaption></figure>
+        <figure style="flex:0.750"><a href="../images/steering-wheel/test-fit.jpg"><img src="../images/steering-wheel/test-fit.jpg" width="1350" height="1800" alt="Unpainted plate stack assembled for a test fit" loading="lazy"></a><figcaption>Test fit before painting</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:0.750"><a href="../images/steering-wheel/printed-grips.jpg"><img src="../images/steering-wheel/printed-grips.jpg" width="1350" height="1800" alt="Orange 3D-printed grip pieces" loading="lazy"></a><figcaption>3D-printed grips before the leather</figcaption></figure>
+        <figure style="flex:1.333"><a href="../images/steering-wheel/finished-side.jpg"><img src="../images/steering-wheel/finished-side.jpg" width="1800" height="1350" alt="Side view of the finished wheel showing the plate stack, distribution board, and quick-release hub" loading="lazy"></a><figcaption>Finished: stitched leather grips and plate stack</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>Results</h2>
+      <ul>
+        <li>The screen moved off the dashboard and into the driver's line of sight, so glare no longer makes it unreadable.</li>
+        <li>The wheel is 21% lighter than the old full-circle wheel and has 4 more buttons, and every control is reachable without letting go.</li>
+        <li>The stress analysis showed a minimum safety factor of 2.4 under steering torque and accidental axial loads.</li>
+        <li>It meets ASC rules on wheel shape, getting out of the car, and fastener security.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Tools &amp; skills</h2>
+      <ul class="tags">
+        <li>SolidWorks</li>
+        <li>GD&amp;T</li>
+        <li>Design for manufacturing (DFM)</li>
+        <li>Stress analysis</li>
+        <li>Waterjet cutting</li>
+        <li>Hand tapping</li>
+        <li>Safety wiring</li>
+        <li>3D printing</li>
+        <li>Leatherwork</li>
+      </ul>
+    </section>
+
+    <footer>&copy; 2026 Trevor Sherman. Built with HTML and CSS, hosted on GitHub Pages.</footer>
+  </main>
+</body>
+</html>
