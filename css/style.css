@@ -93,7 +93,7 @@ footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--lin
 .prose ol li { margin-bottom: 8px; }
 
 /* Photo rows: images keep their own shape and share one height */
-.photos { display: flex; gap: 16px; margin: 24px 0 8px; align-items: flex-start; }
+.photos { display: flex; gap: 16px; margin: 24px 0 28px; align-items: flex-start; }
 .photos figure { margin: 0; min-width: 0; }
 .photos img { display: block; width: 100%; height: auto; border: 1.5px solid var(--ink); background: #fff; }
 .photos figcaption { font: 500 0.85rem var(--head); color: var(--muted); margin-top: 8px; }
@@ -102,3 +102,9 @@ footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--lin
 .photos figure:only-child { max-width: 760px; }
 .photos:not(.hero-photos) { max-width: 780px; }
 .photos:not(.hero-photos) figure:only-child { max-width: 620px; }
+
+/* Project page headings: stronger hierarchy */
+.project-page section { padding-top: 72px; }
+.project-page section h2 { font-size: 2.1rem; letter-spacing: -0.01em; margin-bottom: 24px; }
+.project-page section h2::before { content: ""; display: block; width: 48px; height: 5px; background: var(--blue); margin-bottom: 14px; }
+.project-page .prose h3 { font-size: 1.35rem; color: var(--blue); margin: 44px 0 12px; }
