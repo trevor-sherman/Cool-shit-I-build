@@ -217,3 +217,13 @@ footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--lin
 @media (max-width: 760px) { .card-wide.card-flip { grid-template-columns: 1fr; } .card-wide.card-flip .card-media { order: 0; border-left: 0; border-bottom: 1.5px solid var(--ink); } }
 .card-wide .card-media.media-render { padding: 0; background: #b2b2b2; }
 .card-wide .card-media.media-render img { object-fit: cover; height: 100%; }
+
+/* Writing */
+.writing { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 2px solid var(--ink); padding-top: 24px; }
+.write-item { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
+.write-item:hover { transform: translateY(-4px); box-shadow: 8px 8px 0 var(--ink); }
+.write-type { font: 700 0.82rem var(--head); color: var(--blue); }
+.write-item h3 { font-size: 1.25rem; font-weight: 800; line-height: 1.2; }
+.write-item p { margin: 0; color: var(--muted); font-size: 1rem; }
+.write-item .card-go { margin-top: auto; }
+@media (max-width: 760px) { .writing { grid-template-columns: 1fr; } }
