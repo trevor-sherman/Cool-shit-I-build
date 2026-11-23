@@ -237,3 +237,4 @@ a.more-link:hover h4 { color: var(--blue); }
 .more-link .card-go { display: inline-block; margin-top: 8px; font-size: 0.9rem; }
 .card-kicker .status { font-size: 0.65rem; padding: 1px 8px; margin-left: 6px; }
 .card-wide:not(.card-flip) .card-media.media-render { border-left: 0; border-right: 1.5px solid var(--ink); }
+.card-wide .card-media.media-cad, .card-wide.card-flip .card-media.media-cad { background: #fff; }
