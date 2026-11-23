@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>U.S. Army SRR UAV | Trevor Sherman</title>
+  <meta name="description" content="Capstone project: a short-range reconnaissance drone for a U.S. Army customer, built from NDAA and Blue UAS compliant parts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="project-page">
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="../index.html">Trevor Sherman's Engineering Portfolio</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#research">Research</a></li>
+          <li><a href="../index.html#writing">Writing</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+          <li><a class="primary" href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">&larr; All projects</a>
+
+    <div class="proj-head">
+      <div class="kicker">Mechanical Engineering Capstone &middot; Fall 2026 &ndash; present</div>
+      <h1>U.S. Army SRR UAV <span class="status">In progress</span></h1>
+      <p class="summary">As project manager of my capstone team, I'm leading the development of a short-range reconnaissance (SRR) drone for a U.S. Army end customer. It has to be small, light, and built entirely from NDAA- and Blue UAS-compliant parts, while still delivering low-light video, onboard AI detection, and accurate position data to a soldier on the ground. So far the work has been defining requirements with the customer, researching compliance, and choosing components that balance capability against a tight budget.</p>
+      <dl class="facts">
+        <div><dt>My role</dt><dd>Project manager</dd></div>
+        <div><dt>Weight target</dt><dd>Under 5&nbsp;lb</dd></div>
+        <div><dt>Endurance</dt><dd>25&ndash;30 min</dd></div>
+        <div><dt>Range</dt><dd>5&nbsp;km</dd></div>
+      </dl>
+    </div>
+
+    <section class="prose">
+      <h2>The mission</h2>
+      <p>Small units need a drone they can carry in a pack, launch in minutes, and use to see what's over the next hill or around the next building. Working directly with our Army point of contact, we turned that need into concrete requirements:</p>
+      <div class="spec-grid">
+        <div><span>Weight</span><strong>Under 5&nbsp;lb, ready to fly</strong></div>
+        <div><span>Endurance</span><strong>25&ndash;30 minutes of flight</strong></div>
+        <div><span>Range</span><strong>5&nbsp;km</strong></div>
+        <div><span>Compliance</span><strong>Every part NDAA / Blue UAS compliant</strong></div>
+        <div><span>Sensors</span><strong>Low-light EO camera, thermal as an option</strong></div>
+        <div><span>Autonomy</span><strong>Waypoints, position hold, return-to-home</strong></div>
+        <div><span>Onboard AI</span><strong>Person and vehicle detection</strong></div>
+        <div><span>Operator display</span><strong>Live video, position in MGRS and lat/long, heading in degrees and mils</strong></div>
+        <div><span>Budget</span><strong>$1,700 for the aircraft, $800 for controller and display</strong></div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>What I'm doing</h2>
+      <p>As project manager, I'm the team's link to the customer: I clarify requirements with our Army point of contact, turn their feedback into design decisions, and set the team's schedule. I'm also leading the system architecture and component selection.</p>
+
+      <h3>Working within NDAA and Blue UAS rules</h3>
+      <p>The hardest constraint isn't weight or range; it's sourcing. Because the drone is for the Army, every component has to comply with the NDAA's restrictions on parts from certain foreign manufacturers, and key components like the flight controller and companion computer have to come from the Defense Contract Management Agency's Blue UAS lists. That rules out most of the hobby and commercial drone market, where the cheapest and best-documented parts are made.</p>
+      <p>Early on, we thought structural parts like the motors and frame might be exempt. After digging into the requirements, it became clear that motors and propellers have to be compliant too. Compliant parts typically cost several times more than their commercial equivalents and have fewer options, so every subsystem became a trade-off between capability, cost, and availability.</p>
+
+      <h3>Flight system</h3>
+      <ul>
+        <li><strong>Flight controller and ESC:</strong> we started with one compliant flight stack and switched to the NDAA-compliant Aslan Pro stack, with an H7 flight controller and an 80&nbsp;A ESC, plus Aslan's M10 GPS. It met our needs for less money, freeing budget for sensors.</li>
+        <li><strong>Propulsion:</strong> NDAA-compliant 3115-size motors on a collapsible carbon fiber frame, with propellers kept under 10&Prime; so the drone folds small enough to carry.</li>
+        <li><strong>Control link:</strong> a 915&nbsp;MHz receiver, chosen for range and reliability over the 5&nbsp;km requirement.</li>
+      </ul>
+
+      <h3>Seeing at night: EO, thermal, and AI</h3>
+      <p>The customer wants to find people and vehicles in poor light. The sensor plan reflects what each technology is actually good at:</p>
+      <ul>
+        <li><strong>Low-light EO camera</strong> as the primary sensor, giving the operator a detailed image even at dusk and dawn. It sits on a micro brushless servo for tilt, on a vibration-damped mount, which saves weight and cost over a full two-axis gimbal.</li>
+        <li><strong>Thermal</strong> for cueing: even a low-resolution thermal image shows hot spots and tells the operator where to look, before switching to the EO camera for detail. A thermal camera worth buying takes a large share of the budget, so we're proposing it to the customer as a separate, higher-cost add-on instead of shrinking it to fit the base build.</li>
+        <li><strong>Onboard AI detection</strong> on a companion computer, running a lightweight model to draw boxes around people and vehicles. The operator sees full-frame-rate video with boxes overlaid at whatever rate detection runs, and can switch between camera feeds and turn detection on or off.</li>
+      </ul>
+
+      <h3>Getting video to the operator</h3>
+      <p>Digital video links give the best picture, but compliant digital systems are expensive and tie the operator to one brand of receiver and goggles. Since encrypting the video isn't a requirement, we're leaning toward a compliant analog system: a low-light analog camera, analog transmitter, and receiver. That cuts cost substantially and frees money from the accessories budget for the aircraft itself.</p>
+
+      <h3>Balancing the budget</h3>
+      <p>With about $1,700 for the aircraft, we're targeting a parts total under $1,600 to leave room for wiring and hardware. Nearly every decision traded one capability against another: a cheaper flight stack to afford a better camera, thermal as an option instead of a compromise, analog video instead of digital. Keeping all of it within the weight and endurance targets is an ongoing balancing act.</p>
+    </section>
+
+    <section class="prose">
+      <h2>Next steps</h2>
+      <ul>
+        <li>Finalize the remaining components and confirm compliance for each one</li>
+        <li>Build and integrate the airframe, flight system, cameras, and companion computer</li>
+        <li>Develop the operator display with MGRS position and heading</li>
+        <li>Flight-test against the weight, endurance, and range requirements</li>
+        <li>Deliver to the Army customer for evaluation</li>
+      </ul>
+      <p class="viewer-hint">Photos, CAD, and test results will be added as the build progresses.</p>
+    </section>
+
+    <section>
+      <h2>Tools &amp; skills</h2>
+      <ul class="tags">
+        <li>Project management</li>
+        <li>Customer requirements</li>
+        <li>NDAA / Blue UAS compliance</li>
+        <li>System architecture</li>
+        <li>Component selection</li>
+        <li>UAV design</li>
+        <li>Computer vision</li>
+        <li>Budgeting</li>
+      </ul>
+    </section>
+
+    <footer>&copy; 2026 Trevor Sherman. Built with HTML and CSS, hosted on GitHub Pages.</footer>
+  </main>
+</body>
+</html>

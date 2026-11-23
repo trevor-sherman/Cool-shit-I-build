@@ -227,3 +227,13 @@ footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--lin
 .write-item p { margin: 0; color: var(--muted); font-size: 1rem; }
 .write-item .card-go { margin-top: auto; }
 @media (max-width: 760px) { .writing { grid-template-columns: 1fr; } }
+.proj-head h1 .status { font-size: 0.8rem; vertical-align: middle; }
+.spec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); border-top: 1.5px solid var(--ink); border-left: 1.5px solid var(--ink); margin: 8px 0 16px; }
+.spec-grid div { padding: 12px 16px; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); }
+.spec-grid span { display: block; font: 500 0.8rem var(--head); color: var(--muted); }
+.spec-grid strong { font: 700 1rem/1.35 var(--head); }
+a.more-link { color: var(--ink); text-decoration: none; display: block; }
+a.more-link:hover h4 { color: var(--blue); }
+.more-link .card-go { display: inline-block; margin-top: 8px; font-size: 0.9rem; }
+.card-kicker .status { font-size: 0.65rem; padding: 1px 8px; margin-left: 6px; }
+.card-wide:not(.card-flip) .card-media.media-render { border-left: 0; border-right: 1.5px solid var(--ink); }
