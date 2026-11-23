@@ -208,3 +208,12 @@ footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--lin
 @media (max-width: 900px) { .home .hero-grid { grid-template-columns: 1fr 340px; } }
 @media (max-width: 760px) { .home .hero-grid { grid-template-columns: 1fr; } .home .hero-photo { max-width: 360px; } }
 .home .hero-photo img { aspect-ratio: 3 / 4; }
+.pdf-embed { display: block; width: 100%; height: min(85vh, 900px); border: 1.5px solid var(--ink); background: #fff; }
+@media (max-width: 760px) { .pdf-embed { height: 70vh; } }
+.card-wide.card-flip { grid-template-columns: 1fr 1.45fr; }
+.card-wide.card-flip .card-media { order: 2; border-right: 0; border-left: 1.5px solid var(--ink); }
+.card-wide .card-media.media-cad { background: #e9eaec; }
+.card-wide:not(.card-flip) .card-media.media-cad { background: #fff; }
+@media (max-width: 760px) { .card-wide.card-flip { grid-template-columns: 1fr; } .card-wide.card-flip .card-media { order: 0; border-left: 0; border-bottom: 1.5px solid var(--ink); } }
+.card-wide .card-media.media-render { padding: 0; background: #b2b2b2; }
+.card-wide .card-media.media-render img { object-fit: cover; height: 100%; }

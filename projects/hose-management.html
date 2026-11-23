@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orthodontic Hose Management System | Trevor Sherman</title>
+  <meta name="description" content="A bar organizer that keeps orthodontic tool hoses from tangling, designed for Charlottesville Orthodontics in UVA Engineering Foundations 2.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="project-page">
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="../index.html">Trevor Sherman's Engineering Portfolio</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#research">Research</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+          <li><a class="primary" href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">&larr; All projects</a>
+
+    <div class="proj-head">
+      <div class="kicker">UVA Engineering Foundations 2 &middot; Spring 2024</div>
+      <h1>Orthodontic Hose Management System</h1>
+      <p class="summary">A bar organizer that keeps the five tool hoses on an orthodontic cabinet from tangling, built for a real client: Dr. Neepa Patel of Charlottesville Orthodontics. On a five-person team, I did all of the CAD, mechanical design, part selection, and 3D printing, and led the design through its iterations.</p>
+      <dl class="facts">
+        <div><dt>My role</dt><dd>Lead mechanical designer</dd></div>
+        <div><dt>Team</dt><dd>5 students</dd></div>
+        <div><dt>FEA safety factor</dt><dd>15 minimum</dd></div>
+        <div><dt>Cost</dt><dd>$351 (budget $500)</dd></div>
+      </dl>
+    </div>
+
+    <div class="photos hero-photos wide">
+        <figure style="flex:1.590"><a href="../images/hose-management/render-hero.jpg"><img src="../images/hose-management/render-hero.jpg" width="1240" height="780" alt="Rendered CAD of the bar organizer: a light blue bar with five hose inserts on swivel mounts, carried by black T-slot aluminum framing"></a><figcaption>Final design rendered in CAD</figcaption></figure>
+    </div>
+
+    <section class="prose">
+      <h2>The problem</h2>
+      <p>On an orthodontic cabinet, five hoses for air, water, and suction run from the cabinet to the tools. During fast-paced procedures the tools get picked up and set back down in different orders, and the hoses' slack wraps around each other. Picking up one tool can then pull another off the cabinet and onto the floor.</p>
+      <p>Every dropped tool stops the procedure: the orthodontist has to change gloves, disinfect the hose with CaviCide, wait over a minute for it to work, and change gloves again. Our client asked for a way to keep the hoses organized and off the floor.</p>
+      <div class="photos narrow">
+        <figure style="flex:1.334"><a href="../images/hose-management/office-hoses.jpg"><img src="../images/hose-management/office-hoses.jpg" width="823" height="617" alt="Hoses hanging from an orthodontic cabinet at Charlottesville Orthodontics" loading="lazy"></a><figcaption>The current hose layout at Charlottesville Orthodontics</figcaption></figure>
+      </div>
+      <p>Any solution had to:</p>
+      <ul>
+        <li>Stay out of the orthodontist's way and add no resistance at the tool</li>
+        <li>Need only minor modifications to the existing cabinet</li>
+        <li>Withstand repeated CaviCide disinfection</li>
+        <li>Cost under $500</li>
+      </ul>
+    </section>
+
+    <section class="prose">
+      <h2>What I did</h2>
+      <p>I did all of the CAD, mechanical design, part selection, 3D printing for testing, and design iteration, and ran the finite element analysis. The team shared the research, client meetings, fabrication, physical testing, and report.</p>
+
+      <h3>Concept selection</h3>
+      <p>We developed three concepts: a climbing-belay-style guide with a retracting weight, a bar organizer, and a weighted pulley system. Feedback from peers and teaching assistants flagged the weighted designs, since a weight strong enough to retract a hose also adds tension the orthodontist has to pull against. The bar organizer scored highest in a weighted decision matrix, 92.5 out of 100, and we moved forward with it.</p>
+      <div class="photos narrow">
+        <figure style="flex:1.978"><a href="../images/hose-management/sketch-bar-organizer.jpg"><img src="../images/hose-management/sketch-bar-organizer.jpg" width="1600" height="809" alt="Hand sketch of the bar organizer concept with hoses running through a bar of inserts" loading="lazy"></a><figcaption>Early sketch of the bar organizer concept</figcaption></figure>
+      </div>
+
+      <h3>How it works</h3>
+      <ul>
+        <li><strong>The bar:</strong> a 3D-printed bar with five holes gives each hose its own track, so the hoses can't wrap around each other. If a tool slips while being put back, its hose drapes over the bar instead of falling to the floor.</li>
+        <li><strong>Universal inserts:</strong> each hole takes a two-piece insert that clamps around a hose, so the bar can be fitted to hoses of different sizes, shapes, and materials. Stainless steel balls in a groove inside the insert let the hose slide through with little friction. The insert twists 45&deg; into the bar to lock in place, and splits apart so the hose can be removed for cleaning.</li>
+        <li><strong>Swivel mounts:</strong> the bar rides on bearings in a pair of 3D-printed swivel mounts, so it rotates to follow the hose being pulled instead of fighting it.</li>
+        <li><strong>Adjustable frame:</strong> black anodized T-slot aluminum framing with linear sleeve bearings lets the bar slide up and down and lock at any height with hand brakes. The frame mounts under the cabinet through a few clearance holes and comes off easily.</li>
+      </ul>
+      <div class="photos">
+        <figure style="flex:2.935"><a href="../images/hose-management/cad-insert-iterations.jpg"><img src="../images/hose-management/cad-insert-iterations.jpg" width="1359" height="463" alt="CAD renders of several universal insert designs" loading="lazy"></a><figcaption>Universal insert design iterations</figcaption></figure>
+      </div>
+      <div class="photos wide">
+        <figure style="flex:2.689"><a href="../images/hose-management/cad-swivel-assembly.jpg"><img src="../images/hose-management/cad-swivel-assembly.jpg" width="1245" height="463" alt="CAD of the bar seated in its swivel mount and bearing" loading="lazy"></a><figcaption>The bar in its swivel mount</figcaption></figure>
+      </div>
+
+      <h3>Material and part selection</h3>
+      <p>The frame and hardware are metal, with corrosion-resistant fasteners, for rigidity and resistance to disinfectants. The bar, inserts, and swivel mounts are 3D-printed PLA, chosen after reviewing how common plastics hold up to isopropyl alcohol, CaviCide's active ingredient. I selected the framing, sleeve bearings, brakes, and bearings from McMaster-Carr and other suppliers, for a total of $351.49 against a $500 budget.</p>
+
+      <h3>Prototyping and iteration</h3>
+      <p>I 3D-printed each part to test fit and function, and revised the design based on what we found:</p>
+      <ul>
+        <li><strong>Inserts:</strong> the first two-piece inserts held together with pegs that came apart easily, and the bearing grooves were too wide to keep the balls in. I redesigned them with a tongue-and-groove joint and tighter grooves.</li>
+        <li><strong>Bar:</strong> a first test section was bulky and caught the hoses on its edges, so I made the bar thinner. That saved material and weight and reduced contact with the hoses.</li>
+        <li><strong>Pivots:</strong> the printed pegs the bar pivoted on snapped when the bar was slid along the rails. I replaced them with steel rods and redesigned the swivel mounts so the rods pass through for easy disassembly.</li>
+        <li><strong>Simplification:</strong> the springs meant to center the bar turned out to be unnecessary, since the hoses naturally limit its rotation, so I removed them.</li>
+        <li><strong>Fit to the cabinet:</strong> the first full assembly was 3&Prime; wider than planned. We reworked how the framing attached so it fits under the cabinet without sticking out, then lengthened the top rails once we measured the space under the real cabinet.</li>
+      </ul>
+      <div class="photos">
+        <figure style="flex:0.959"><a href="../images/hose-management/photo-test-print.jpg"><img src="../images/hose-management/photo-test-print.jpg" width="350" height="365" alt="First 3D-printed test section of the bar with an insert" loading="lazy"></a><figcaption>First test print of the bar and an insert</figcaption></figure>
+        <figure style="flex:1.434"><a href="../images/hose-management/photo-ttrack.jpg"><img src="../images/hose-management/photo-ttrack.jpg" width="1024" height="714" alt="T-slot framing with sleeve bearing carriages during assembly" loading="lazy"></a><figcaption>T-slot framing and sleeve bearings</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:1.428"><a href="../images/hose-management/photo-swivel-mounts.jpg"><img src="../images/hose-management/photo-swivel-mounts.jpg" width="887" height="621" alt="Blue 3D-printed bar mounted in swivel mounts on the T-slot frame" loading="lazy"></a><figcaption>Bar and swivel mounts on the frame</figcaption></figure>
+        <figure style="flex:1.347"><a href="../images/hose-management/photo-complete.jpg"><img src="../images/hose-management/photo-complete.jpg" width="404" height="300" alt="Completed bar organizer assembly with a hose insert fitted" loading="lazy"></a><figcaption>The completed assembly</figcaption></figure>
+      </div>
+
+      <h3>Technical drawings</h3>
+      <p>I produced the final technical drawings for each custom part.</p>
+      <div class="photos">
+        <figure style="flex:1.356"><a href="../images/hose-management/drawing-bar-final.png"><img src="../images/hose-management/drawing-bar-final.png" width="1393" height="1027" alt="Technical drawing of the bar" loading="lazy"></a><figcaption>Bar</figcaption></figure>
+        <figure style="flex:1.629"><a href="../images/hose-management/drawing-swivel-final.png"><img src="../images/hose-management/drawing-swivel-final.png" width="1254" height="770" alt="Technical drawing of the swivel mount" loading="lazy"></a><figcaption>Swivel mount</figcaption></figure>
+      </div>
+      <div class="photos wide">
+        <figure style="flex:2.578"><a href="../images/hose-management/drawing-inserts-final.png"><img src="../images/hose-management/drawing-inserts-final.png" width="1485" height="576" alt="Technical drawings of the two universal insert halves" loading="lazy"></a><figcaption>Universal insert halves</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>Testing and results</h2>
+      <ul>
+        <li><strong>Structural analysis:</strong> I ran FEA in Fusion 360 on the full assembly with a 10&nbsp;N load on the bar, slightly more than the highest hose-pulling force we measured. It showed essentially no deformation and a minimum safety factor of 15, the highest value the simulation reports, against a target of 8.</li>
+        <li><strong>Pulling force:</strong> we measured the force to pull each hose to the patient chair with a spring scale, without the bar and with the bar at two heights. At the higher setting it took slightly less force than with no bar at all, and at the lower setting only slightly more.</li>
+        <li><strong>Disinfectant resistance:</strong> a printed insert soaked in isopropyl alcohol for 96 hours lost no mass.</li>
+        <li><strong>In the office:</strong> at Charlottesville Orthodontics, the inserts held the hoses in place and the frame lined up with the existing cabinet.</li>
+      </ul>
+      <div class="photos">
+        <figure style="flex:1.300"><a href="../images/hose-management/fea.jpg"><img src="../images/hose-management/fea.jpg" width="1318" height="1014" alt="Fusion 360 FEA results on the bar organizer assembly showing a safety factor of 15" loading="lazy"></a><figcaption>FEA: minimum safety factor of 15</figcaption></figure>
+        <figure style="flex:1.646"><a href="../images/hose-management/force-test.png"><img src="../images/hose-management/force-test.png" width="739" height="449" alt="Bar chart of force needed to pull a hose to full extension with no bar and with the bar at two heights" loading="lazy"></a><figcaption>Force needed to pull a hose to full extension</figcaption></figure>
+      </div>
+      <p>Testing also showed what to improve next. Hoses occasionally caught on the lips of the inserts, so the next version would flare the insert ends or add bearings at the rims. Riding on two separate tracks also made the bar hard for one person to raise evenly, so I would move it to a single central track. The bar was validated as a working prototype; the next step is testing it with orthodontists during real procedures.</p>
+    </section>
+
+    <section>
+      <h2>Final report</h2>
+      <p class="viewer-hint" style="margin:0 0 12px">The team's full 54-page report, including the background research, decision matrices, test procedures, and bill of materials.</p>
+      <object class="pdf-embed" data="../images/hose-management/final-report.pdf#view=FitH" type="application/pdf" aria-label="Final report PDF">
+        <p>Your browser can't display the report here. <a href="../images/hose-management/final-report.pdf">Open the PDF</a>.</p>
+      </object>
+      <p style="margin-top:12px"><a class="btn" href="../images/hose-management/final-report.pdf" target="_blank" rel="noopener">Open the report (PDF) &nearr;</a></p>
+    </section>
+
+    <section>
+      <h2>Tools &amp; skills</h2>
+      <ul class="tags">
+        <li>Fusion 360</li>
+        <li>CAD &amp; technical drawings</li>
+        <li>FEA</li>
+        <li>3D printing &amp; rapid prototyping</li>
+        <li>Part selection</li>
+        <li>Design for manufacturing (DFM)</li>
+        <li>Client-driven design</li>
+        <li>Testing &amp; validation</li>
+      </ul>
+    </section>
+
+    <footer>&copy; 2026 Trevor Sherman. Built with HTML and CSS, hosted on GitHub Pages.</footer>
+  </main>
+</body>
+</html>
