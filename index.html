@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="home">
 
   <!-- NAVIGATION: top buttons -->
   <header class="nav">
@@ -27,98 +27,109 @@
     </div>
   </header>
 
-  <main id="top" class="wrap">
-
-    <!-- INTRO: photo and bio -->
-    <div class="intro">
-      <figure class="photo" style="margin:0">
-        <!-- Put your photo at images/photo.jpg (4:5 portrait works best) -->
-        <img src="images/photowithdroneswebsitepfp.jpeg"" alt="Portrait of Your Name">
-      </figure>
-
-      <div>
+  <!-- HERO -->
+  <div class="hero-band" id="top">
+    <div class="wrap hero-grid">
+      <div class="hero-text">
         <h1>Trevor Sherman</h1>
         <div class="tagline">Mechanical engineer building robots, UAVs, and everything in between.</div>
-        <p>
-          I'm a fourth-year mechanical engineering student at The University of Virginia. I love working on challenging, hands-on projects in the areas of UAVs, robotics, and autonomous systems.
-        </p>
-        <p>
-          Exec @ UVA Solar Car Team | Founder @ Tiercel | Capstone Project Manager
-        </p>
+        <p class="hero-bio">I'm a fourth-year mechanical engineering student at The University of Virginia. I love working on challenging, hands-on projects in the areas of UAVs, robotics, and autonomous systems.</p>
+        <ul class="roles">
+          <li>U.S. Army SRR UAV Development</li>
+          <li>Exec @ UVA Solar Car Team</li>
+          <li>Founder @ Tiercel</li>
+        </ul>
         <dl class="facts">
           <div><dt>Studying</dt><dd>B.S. Mechanical Eng.</dd></div>
           <div><dt>Graduating</dt><dd>May 2027</dd></div>
           <div><dt>Based in</dt><dd>Chatham, NJ</dd></div>
         </dl>
+        <div class="cta">
+          <a class="btn btn-primary" href="#projects">See my work &darr;</a>
+          <a class="btn" href="resume.pdf">Resume</a>
+        </div>
       </div>
+      <figure class="photo hero-photo">
+        <img src="images/profile-drones.jpg" alt="Trevor Sherman standing beside a row of multirotor drones in a flight cage">
+      </figure>
     </div>
+  </div>
 
-    <!-- PROJECTS: copy a .row for each project -->
+  <main class="wrap">
+
+    <!-- PROJECTS -->
     <section id="projects">
-      <h2>Projects</h2>
-      <div class="list">
-        <div class="row">
-          <div>
-            <h3><a href="projects/auv.html">Autonomous Underwater Vehicle | Personal Project</a></h3>
-            <p>Designed and built a low-cost, high efficiency, versatile AUV platform for environmental and defense missions.</p>
+      <div class="section-head">
+        <h2>Selected work</h2>
+        <p>Click a project for the full write-up, photos, and CAD.</p>
+      </div>
+
+      <div class="cards">
+        <a class="card card-wide" href="projects/auv.html">
+          <div class="card-media media-cad"><img src="images/covers/auv.jpg" alt="CAD render of the autonomous underwater vehicle with its orange outer shell"></div>
+          <div class="card-body">
+            <div class="card-kicker">Personal Project &middot; Spring 2026</div>
+            <h3>Autonomous Underwater Vehicle</h3>
+            <p>A low-cost autonomous submarine with stepper-driven ballast tanks, waterproofed servo fins, and a custom 24&nbsp;V battery pack in a sealed clear hull.</p>
+            <ul class="chips"><li>Founder &amp; lead engineer</li><li>Interactive 3D model</li><li>Onshape</li></ul>
+            <span class="card-go">View project &rarr;</span>
           </div>
-          <div class="meta">Spring 2026</div>
+        </a>
+
+        <a class="card" href="projects/steering-wheel.html">
+          <div class="card-media"><img src="images/covers/steering-wheel.jpg" alt="Yoke steering wheel with touchscreen mounted in the solar car chassis" loading="lazy"></div>
+          <div class="card-body">
+            <div class="card-kicker">Solar Car Team &middot; 2024&ndash;2025</div>
+            <h3>Formula 1-Style Steering Wheel</h3>
+            <p>A yoke wheel with a built-in touchscreen for live race data and every driver control on the wheel.</p>
+            <ul class="chips"><li>&minus;21% weight</li><li>+4 buttons</li><li>Safety factor 2.4</li></ul>
+            <span class="card-go">View project &rarr;</span>
+          </div>
+        </a>
+
+        <a class="card" href="projects/brakes-steering.html">
+          <div class="card-media"><img src="images/covers/brakes-steering.jpg" alt="Drilled steel brake rotor and caliper mounted on the solar car's front corner" loading="lazy"></div>
+          <div class="card-body">
+            <div class="card-kicker">Solar Car Team &middot; Fall 2026</div>
+            <h3>Rivanna 3 Brakes &amp; Steering</h3>
+            <p>Led an 11-person team through a full redesign: drag-free calipers, custom drilled rotors, and true Ackermann steering.</p>
+            <ul class="chips"><li>36% shorter stops</li><li>&minus;40% rotor weight</li><li>11-person team</li></ul>
+            <span class="card-go">View project &rarr;</span>
+          </div>
+        </a>
+      </div>
+
+      <h3 class="more-head">More projects <span>Write-ups coming soon</span></h3>
+      <div class="more">
+        <div class="more-item">
+          <div class="more-top"><h4>Tiercel</h4><span>Fall 2026</span></div>
+          <div class="more-org">C-UAS Startup</div>
+          <p>Building a man-portable, low-cost, reusable UAV interceptor platform for both patrol and rapid response, designed for rapid manufacturing and versatility.</p>
         </div>
-        <div class="row">
-          <div>
-            <h3><a href="projects/steering-wheel.html">Formula 1-Style Steering Wheel | Solar Car Team</a></h3>
-            <p>Developed a yoke-style steering wheel, cutting weight by 21%, adding 4 more buttons, and implementing a screen for live race data display.</p>
-          </div>
-          <div class="meta">2024&ndash;2025</div>
+        <div class="more-item">
+          <div class="more-top"><h4>U.S. Army SRR UAV</h4><span>Fall 2026</span></div>
+          <div class="more-org">MechE Capstone</div>
+          <p>Building a short-range reconnaissance (SRR) drone for the U.S. Army from NDAA/Blue UAS-compliant parts, integrating thermal imaging and AI vision processing. It's designed to weigh under 5&nbsp;lb, fly for 25&ndash;30 minutes with 5&nbsp;km of range, and stream live video to the operator along with MGRS position and heading.</p>
         </div>
-        <div class="row">
-          <div>
-            <h3><a href="projects/brakes-steering.html">Rivanna 3 Brakes &amp; Steering | Solar Car Team</a></h3>
-            <p>Led an 11-person team through a full redesign of the car's brakes and steering: spring-retracted calipers, custom rotors 40% lighter, and true Ackermann geometry, eliminating brake drag and cutting stopping distance 36%.</p>
-          </div>
-          <div class="meta">Fall 2026</div>
+        <div class="more-item">
+          <div class="more-top"><h4>Computer Vision Tracking System</h4><span>Summer 2026</span></div>
+          <div class="more-org">Personal Project</div>
+          <p>Built and programmed a compact turret that uses CV and AI models to detect and track objects.</p>
         </div>
-        <div class="row">
-          <div>
-            <h3><a href="https://github.com/your-username/project-one">Tiercel | C-UAS Startup</a></h3>
-            <p>Building a man-portable, low-cost, reusable UAV interceptor platform. Made to serve both patrol and rapid response roles. Designed for rapid manufacturing and versatility.</p>
-          </div>
-          <div class="meta">Fall 2026</div>
+        <div class="more-item">
+          <div class="more-top"><h4>Telescopic Steering Column</h4><span>Spring 2026</span></div>
+          <div class="more-org">Solar Car Team</div>
+          <p>Designed and manufactured an adjustable-length steering column: 40% lighter, with 10 inches of travel.</p>
         </div>
-        <div class="row">
-          <div>
-            <h3><a href="#">CINDER | MechE Capstone</a></h3>
-            <p>CINDER (Compact Intelligence and Navigation Drone for Emergency Response)</p>
-          </div>
-          <div class="meta">Fall 2026</div>
+        <div class="more-item">
+          <div class="more-top"><h4>Orthodontic Hose Management System</h4><span>Spring 2024</span></div>
+          <div class="more-org">UVA Engineering</div>
+          <p>A hose management system for an orthodontics practice, for cleaner equipment and 15% faster procedures.</p>
         </div>
-        <div class="row">
-          <div>
-            <h3><a href="#">Computer Vision Tracking System | Personal Project</a></h3>
-            <p>Built and programmed a compact turret that utilizes CV and AI models to detect and track various objects</p>
-          </div>
-          <div class="meta">Summer 2026</div>
-        </div>
-        <div class="row">
-          <div>
-            <h3><a href="#">Telescopic Steering Column | Solar Car Team</a></h3>
-            <p>Designed and manufactured an adjustable-length steering column, 40% weight reduction, 10 inches of linear travel</p>
-          </div>
-          <div class="meta">Spring 2026</div>
-        </div>
-        <div class="row">
-          <div>
-            <h3><a href="#">Orthodontic Hose Management System | UVA Engineering</a></h3>
-            <p>Developed a hose management system for an orthodontics practice, resulting in cleaner equipment and 15% faster dental operations</p>
-          </div>
-          <div class="meta">Spring 2024</div>
-        </div>
-        <div class="row">
-          <div>
-            <h3><a href="#">Portable Desk | UVA Engineering</a></h3>
-            <p>Created a portable, lightweight wooden desk compatible for attachment onto any lecture hall chair around UVA.</p>
-          </div>
-          <div class="meta">Fall 2023</div>
+        <div class="more-item">
+          <div class="more-top"><h4>Portable Desk</h4><span>Fall 2023</span></div>
+          <div class="more-org">UVA Engineering</div>
+          <p>A portable, lightweight wooden desk that attaches to any lecture hall chair at UVA.</p>
         </div>
       </div>
     </section>
@@ -129,17 +140,11 @@
       <div class="list">
         <div class="row">
           <div>
-            <h3><a href="#">Thermal Management of Battery Packs</a></h3>
-            <p>Undergraduate researcher in Prof. [Name]'s lab. Modeled heat dispersal in cylindrical cells and tested three cooling layouts.</p>
+            <h3>UAV-UGV Cooperative Perception &amp; Control</h3>
+            <div class="research-org">VICTOR Lab, Prof. Tomonari Furukawa &middot; University of Virginia</div>
+            <p>Working alongside a PhD student on cooperative perception and control for aerial and ground robots (UAVs and UGVs) in low-observability environments. I focus on UAV development and integration with ROS&nbsp;2, and on drone-to-drone localization methods used to characterize how the drones behave in storm conditions.</p>
           </div>
-          <div class="meta">2025 to present</div>
-        </div>
-        <div class="row">
-          <div>
-            <h3><a href="#">Poster: Lightweight Lattice Brackets</a></h3>
-            <p>Presented at [Conference or Symposium name]. Compares printed lattice brackets with machined aluminum.</p>
-          </div>
-          <div class="meta">Spring 2026</div>
+          <div class="meta">Fall 2026 &ndash; present</div>
         </div>
       </div>
     </section>
