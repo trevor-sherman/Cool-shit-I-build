@@ -118,3 +118,8 @@ footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--lin
 .viewer-toggle button { font: 700 0.9rem var(--head); padding: 8px 14px; border: 1.5px solid var(--ink); background: #fff; color: var(--ink); cursor: pointer; }
 .viewer-toggle button + button { border-left: 0; }
 .viewer-toggle button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+/* Looping CAD animation */
+.anim { display: block; width: 100%; height: auto; border: 1.5px solid var(--ink); background: #fff; }
+.status { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 2px 8px; font: 700 0.75rem var(--head); color: var(--ink); background: #fff3b0; border: 1.5px solid var(--ink); letter-spacing: 0.02em; text-transform: uppercase; }
+.photos.narrow figure:only-child { max-width: 520px; }

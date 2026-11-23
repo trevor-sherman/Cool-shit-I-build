@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rivanna 3 Brakes &amp; Steering | Trevor Sherman</title>
+  <meta name="description" content="Redesigned braking and steering for UVA Solar Car Team's Rivanna 3: spring-retracted calipers, custom drilled 4130 steel rotors, and true Ackermann steering arms.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="project-page">
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="../index.html">Trevor Sherman's Engineering Portfolio</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#research">Research</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+          <li><a class="primary" href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">&larr; All projects</a>
+
+    <div class="proj-head">
+      <div class="kicker">Solar Car Team &middot; Fall 2026</div>
+      <h1>Rivanna 3 Brakes &amp; Steering</h1>
+      <p class="summary">I led an 11-person team through a complete redesign of the braking and steering systems on Rivanna 3, the UVA Solar Car Team's car. Spring-retracted floating calipers and custom drilled 4130 steel rotors eliminated brake drag, and new steering arms corrected the car's steering geometry to true Ackermann. A new steering column with a quick-release hub is being integrated now.</p>
+      <dl class="facts">
+        <div><dt>My role</dt><dd>Brakes &amp; Steering Lead</dd></div>
+        <div><dt>Rotor weight</dt><dd>&minus;40%</dd></div>
+        <div><dt>Stopping distance</dt><dd>36% shorter</dd></div>
+        <div><dt>Front wheel efficiency</dt><dd>+82% (est.)</dd></div>
+      </dl>
+    </div>
+
+    <div class="photos hero-photos">
+        <figure style="flex:1.333"><a href="../images/brakes-steering/photo-finished-corner.jpg"><img src="../images/brakes-steering/photo-finished-corner.jpg" width="1800" height="1350" alt="Finished front corner on the car: drilled steel rotor, spring-retracted caliper on its mounting plate, and hub"></a><figcaption>Finished front corner on the car</figcaption></figure>
+        <figure style="flex:1.445"><a href="../images/brakes-steering/cad-corner.png"><img src="../images/brakes-steering/cad-corner.png" width="909" height="629" alt="CAD close-up of the front corner: caliper, mounting plate, upright, steering arm, tie rod, and drilled rotor"></a><figcaption>CAD: caliper, mounting plate, upright, and steering arm</figcaption></figure>
+      </div>
+
+    <section>
+      <h2>The full system</h2>
+      <video class="anim" src="../images/brakes-steering/system-animation.mp4" poster="../images/brakes-steering/system-animation-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Onshape animation of the front brakes and steering system, from the steering wheel through the rack and pinion to the front wheels"></video>
+      <p class="viewer-hint">Onshape animation of the front brakes and steering, from the steering wheel to the wheels.</p>
+    </section>
+
+    <section class="prose">
+      <h2>The problem</h2>
+      <p>In solar car racing at the Formula Sun Grand Prix and the American Solar Challenge (ASC), every watt matters. Energy lost to friction is energy the car can't use to drive. Rivanna 3's front brakes and steering were costing a lot of it.</p>
+      <ul>
+        <li><strong>Brake drag:</strong> Each front wheel had a Wilwood PS-1 caliper for the main brakes and a second one for the hydraulic handbrake. The only thing pulling their pistons back was the square-cut piston seals, which isn't enough. Over time the pads stayed clamped against the rotors even with the brake pedal released, creating large parasitic losses.</li>
+        <li><strong>Oversized rotors:</strong> The rotors were 12&Prime; in diameter and 3/16&Prime; thick, more than the car needed even with most of the braking done at the front. Front-rear balance is set with a bias bar between the two master cylinders.</li>
+        <li><strong>Steering geometry:</strong> The steering was over-Ackermanned: the inside wheel turned too far relative to the outside wheel, scrubbing the front tires through turns.</li>
+      </ul>
+      <p>The new system had to meet ASC rules for braking performance and turning radius, and be quick to work on at the track.</p>
+    </section>
+
+    <section class="prose">
+      <h2>What I did</h2>
+      <p>As Brakes &amp; Steering Lead and a member of the team's executive committee, I run an 11-person subteam and manage its design projects. For this redesign, I oversaw all of the work. I researched and selected the calipers, did the braking calculations, and ran the structural analysis myself, and I led the development of every new part, revising the designs for manufacturability along the way.</p>
+
+      <h3>Calipers</h3>
+      <p>I researched a wide range of calipers and how they retract their pads, and chose MCP650EP floating calipers with active spring retraction. Stiff springs pull the pads off the rotor the moment the brake pedal is released, so the wheels spin with no brake drag.</p>
+
+      <h3>Rotors</h3>
+      <p>Instead of buying off-the-shelf rotors, we designed custom ones. I sized them with braking calculations to make sure the car would easily meet ASC braking performance requirements. They're cut from 4130 steel, 11&Prime; in diameter and 1/8&Prime; thick, and drilled with a pattern of holes that saves weight, improves cooling, and helps them resist warping from heat. We waterjet-cut them in-house.</p>
+      <p>The new rotors are 40% lighter than the old ones. Because they spin and sit outside the suspension, that saving also cuts the car's rotational inertia and unsprung mass.</p>
+      <div class="photos">
+        <figure style="flex:0.750"><a href="../images/brakes-steering/photo-rotor-waterjet.jpg"><img src="../images/brakes-steering/photo-rotor-waterjet.jpg" width="1350" height="1800" alt="A drilled 4130 steel rotor fresh off the waterjet, held in hand" loading="lazy"></a><figcaption>A rotor fresh off the waterjet</figcaption></figure>
+        <figure style="flex:1.166"><a href="../images/brakes-steering/cad-wheel-outside.png"><img src="../images/brakes-steering/cad-wheel-outside.png" width="666" height="571" alt="CAD render of the front wheel with the drilled rotor and caliper behind the spokes" loading="lazy"></a><figcaption>CAD: rotor inside the wheel</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:0.750"><a href="../images/brakes-steering/photo-rotor-hub.jpg"><img src="../images/brakes-steering/photo-rotor-hub.jpg" width="1350" height="1800" alt="Steel rotor bolted to the hub" loading="lazy"></a><figcaption>Rotor bolted to the hub</figcaption></figure>
+        <figure style="flex:0.750"><a href="../images/brakes-steering/photo-rotor-hub-assembled.jpg"><img src="../images/brakes-steering/photo-rotor-hub-assembled.jpg" width="1350" height="1800" alt="Steel rotor mounted on the purple wheel hub" loading="lazy"></a><figcaption>Rotor and hub assembly</figcaption></figure>
+      </div>
+
+      <h3>Caliper mounting</h3>
+      <p>New mounting plates attach the calipers to the uprights, designed to be waterjet-cut from the remaining 4130 steel. Custom 1/16&Prime; aluminum spacers, also waterjet-cut, support the entire caliper body so the pads can't tilt against the rotor. OEM shims on the pads set the pad clearance.</p>
+      <div class="photos narrow">
+        <figure style="flex:1.333"><a href="../images/brakes-steering/photo-waterjet-spacers.jpg"><img src="../images/brakes-steering/photo-waterjet-spacers.jpg" width="1800" height="1350" alt="Waterjet cutter cutting aluminum caliper spacers" loading="lazy"></a><figcaption>Waterjet-cutting the aluminum caliper spacers</figcaption></figure>
+      </div>
+
+      <h3>Steering geometry</h3>
+      <p>My team worked out the steering geometry and designed new steering arms that give true Ackermann steering, where both front wheels turn around the same center point, while meeting the ASC turning radius requirement. The tie rods are adjustable in length for fine alignment. They attach to the steering arms with 1/4&Prime;-20 bolts, and four more 1/4&Prime;-20 bolts mount all of the plates to each upright, all with flex-top, corrosion-resistant lock nuts.</p>
+      <div class="photos narrow">
+        <figure style="flex:1.102"><a href="../images/brakes-steering/cad-upright-closeup.png"><img src="../images/brakes-steering/cad-upright-closeup.png" width="711" height="645" alt="CAD close-up of the upright, steering arm, and tie rod end" loading="lazy"></a><figcaption>Upright, steering arm, and adjustable tie rod</figcaption></figure>
+      </div>
+
+      <h3>Steering column and quick release <span class="status">In progress</span></h3>
+      <p>The steering column is being rebuilt around a Zestek SCX quick release, which I selected. It connects and disconnects the steering wheel mechanically and electrically in one motion, making it much faster for the driver to get out of the car. It's also highly wear-resistant and has no rotational or axial play, which makes the steering more precise. Its pogo-pin electrical contacts support CAN bus, so every electrical connection to the wheel runs through the hub, which simplifies the wiring.</p>
+      <p>The car keeps the <a href="steering-wheel.html">steering wheel I designed and built earlier</a>, with one change: a new 1/8&Prime; aluminum back plate with waterjet-cut holes to mount the quick release.</p>
+      <ul>
+        <li><strong>Shaft:</strong> a lightweight 1&Prime; steel tube with a 1/16&Prime; wall. The wheel's cable runs down the middle of the tube so it can't get tangled.</li>
+        <li><strong>Quick release mounting:</strong> a 1/8&Prime; steel disc is face-welded square to the end of the shaft to mount one half of the quick release. Both halves attach with M5&times;0.8, 20&nbsp;mm socket head bolts and flex-top, corrosion-resistant lock nuts.</li>
+        <li><strong>Support bearing:</strong> the shaft runs through a 1&Prime; self-aligning swivel bearing, clamped between the plates of a support welded to the chassis crossbar with two steel tubes in a V. The bearing mainly absorbs small angular misalignment between the support and the U-joint and rack. It also keeps some of the driver's loads on the shaft from reaching the U-joint.</li>
+        <li><strong>Drive to the rack:</strong> a welded steel reducing collar at the end of the tube steps down to a welded 3/4&Prime;-20 splined adapter. That connects to a U-joint, which drives a Sweet Mfg. Micro Sprint rack and pinion (5.25&Prime; of rack travel per turn) through its 5/8&Prime;-36 spline.</li>
+      </ul>
+      <div class="photos">
+        <figure style="flex:1.173"><a href="../images/brakes-steering/cad-quick-release.png"><img src="../images/brakes-steering/cad-quick-release.png" width="888" height="757" alt="CAD of the quick release mounted between the steering wheel back plate and the steering shaft" loading="lazy"></a><figcaption>Quick release between the wheel and the shaft</figcaption></figure>
+        <figure style="flex:1.529"><a href="../images/brakes-steering/cad-steering-column.png"><img src="../images/brakes-steering/cad-steering-column.png" width="688" height="450" alt="CAD of the steering wheel and shaft running through the swivel bearing in its clamped support" loading="lazy"></a><figcaption>Steering wheel and shaft through the swivel bearing support</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:0.750"><a href="../images/brakes-steering/photo-qr-pogo.jpg"><img src="../images/brakes-steering/photo-qr-pogo.jpg" width="1350" height="1800" alt="Shaft-side quick release half with gold pogo-pin electrical contacts" loading="lazy"></a><figcaption>Shaft-side half, with its pogo-pin contacts</figcaption></figure>
+        <figure style="flex:0.750"><a href="../images/brakes-steering/photo-qr-gold.jpg"><img src="../images/brakes-steering/photo-qr-gold.jpg" width="1350" height="1800" alt="Wheel-side quick release half in black and gold, with its locking pins" loading="lazy"></a><figcaption>Wheel-side half</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:0.750"><a href="../images/brakes-steering/photo-qr-back.jpg"><img src="../images/brakes-steering/photo-qr-back.jpg" width="1350" height="1800" alt="Back of the wheel-side quick release half showing its wiring" loading="lazy"></a><figcaption>Wiring on the back of the wheel-side half</figcaption></figure>
+        <figure style="flex:0.750"><a href="../images/brakes-steering/photo-swivel-bearing.jpg"><img src="../images/brakes-steering/photo-swivel-bearing.jpg" width="1350" height="1800" alt="The 1-inch swivel bearing held in hand" loading="lazy"></a><figcaption>The 1&Prime; swivel bearing for the shaft support</figcaption></figure>
+      </div>
+
+      <h3>Prototyping and iteration</h3>
+      <p>Before committing to metal, I 3D-printed every new part to test-fit it on the car and iterate on the design. The caliper mounting plates alone went through 71 logged versions in Onshape before the final design was waterjet-cut from steel.</p>
+      <div class="photos">
+        <figure style="flex:1.333"><a href="../images/brakes-steering/photo-prototype-v1.jpg"><img src="../images/brakes-steering/photo-prototype-v1.jpg" width="1800" height="1350" alt="Early 3D-printed rotor in bright blue with printed mounting plates, test-fit on the car" loading="lazy"></a><figcaption>Early prototype: printed rotor and plates test-fit on the car</figcaption></figure>
+        <figure style="flex:1.333"><a href="../images/brakes-steering/photo-prototype-v2.jpg"><img src="../images/brakes-steering/photo-prototype-v2.jpg" width="1800" height="1350" alt="Later 3D-printed rotor, steering arm, and caliper plates in gray-blue, test-fit on the car with the caliper" loading="lazy"></a><figcaption>Next iteration: printed rotor, steering arm, and caliper plates</figcaption></figure>
+      </div>
+
+      <h3>Structural analysis</h3>
+      <p>I ran finite element analysis (FEA) on the steering arms and caliper mounting plates, first in Onshape and then in more detail in Ansys Mechanical, to confirm they would carry their loads without bending.</p>
+
+      <h3>Designed for service</h3>
+      <p>Every part was designed so it can come off without removing other parts first:</p>
+      <ul>
+        <li>Pad clearance is adjusted with shims without taking anything off the car.</li>
+        <li>Pads can be swapped without removing anything from the car, by loosening two bolts with a single hex key.</li>
+        <li>The steering arms come off without touching any of the brake components.</li>
+      </ul>
+    </section>
+
+    <section class="prose">
+      <h2>Results</h2>
+      <p>After bleeding both the main brakes and the handbrake, we tested the system with hard downhill driving. It performed better than expected:</p>
+      <ul>
+        <li><strong>36% shorter stopping distance.</strong></li>
+        <li><strong>Exceeds ASC braking performance requirements.</strong> Official scrutineering happens at the race next summer.</li>
+        <li><strong>No brake drag:</strong> the wheels spin freely whenever the brake pedal is released.</li>
+        <li><strong>Rotors 40% lighter,</strong> reducing weight, unsprung mass, and rotational inertia.</li>
+        <li><strong>Front wheel assemblies an estimated 82% more mechanically efficient,</strong> mostly from eliminating brake drag, with the rest from lower weight and rotational inertia.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Tools &amp; skills</h2>
+      <ul class="tags">
+        <li>Onshape</li>
+        <li>Ansys Mechanical</li>
+        <li>FEA</li>
+        <li>Brake system design</li>
+        <li>Steering geometry</li>
+        <li>Design for manufacturing (DFM)</li>
+        <li>Waterjet cutting</li>
+        <li>3D printing &amp; rapid prototyping</li>
+        <li>Hydraulic brake bleeding</li>
+        <li>Team leadership</li>
+      </ul>
+    </section>
+
+    <footer>&copy; 2026 Trevor Sherman. Built with HTML and CSS, hosted on GitHub Pages.</footer>
+  </main>
+</body>
+</html>
