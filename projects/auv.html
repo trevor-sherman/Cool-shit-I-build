@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Autonomous Underwater Vehicle | Trevor Sherman</title>
+  <meta name="description" content="A low-cost autonomous submarine with stepper-driven ballast tanks, servo-actuated fins, and a custom 24 V battery pack in a sealed clear PVC hull.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="module">
+    import '../js/model-viewer.min.js';
+    customElements.get('model-viewer').meshoptDecoderLocation = '../js/meshopt_decoder.js';
+  </script>
+</head>
+<body class="project-page">
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="../index.html">Trevor Sherman's Engineering Portfolio</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#research">Research</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+          <li><a class="primary" href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">&larr; All projects</a>
+
+    <div class="proj-head">
+      <div class="kicker">Personal Project &middot; Spring 2026</div>
+      <h1>Autonomous Underwater Vehicle</h1>
+      <p class="summary">A low-cost autonomous submarine built to follow a preset path and collect data about the water around it. It dives with stepper-driven ballast tanks, steers with four servo-actuated fins, and runs on a custom 24&nbsp;V battery pack inside a sealed clear PVC hull.</p>
+      <dl class="facts">
+        <div><dt>My role</dt><dd>Founder &amp; lead engineer</dd></div>
+        <div><dt>Hull</dt><dd>4&Prime; ID clear PVC, 3&nbsp;ft</dd></div>
+        <div><dt>Power</dt><dd>24&nbsp;V, 24-cell Li-ion pack</dd></div>
+        <div><dt>Thrust</dt><dd>23.6&nbsp;lb at 24&nbsp;V</dd></div>
+      </dl>
+    </div>
+
+    <div class="photos hero-photos">
+        <figure style="flex:1.333"><a href="../images/auv/photo-assembled.jpg"><img src="../images/auv/photo-assembled.jpg" width="1800" height="1350" alt="The assembled AUV on a workbench: orange nose, clear PVC hull with internals, and the thruster"></a><figcaption>The assembled sub, outer shell off</figcaption></figure>
+        <figure style="flex:2.856"><a href="../images/auv/cad-shell.png"><img src="../images/auv/cad-shell.png" width="1148" height="402" alt="Onshape render of the complete AUV with its orange outer shell, blue fins, and ducted thruster"></a><figcaption>CAD: the complete vehicle with its outer shell</figcaption></figure>
+    </div>
+
+    <section>
+      <h2>Explore the model</h2>
+      <div class="viewer-wrap">
+        <model-viewer id="auv-model" class="cad-viewer" src="../images/auv/assembly.glb" alt="Interactive 3D model of the autonomous underwater vehicle assembly"
+          camera-controls touch-action="pan-y" camera-orbit="70deg 75deg 65%" min-camera-orbit="auto auto 5%"
+          auto-rotate auto-rotate-delay="3000" rotation-per-second="10deg" shadow-intensity="0.4" exposure="1.05" interaction-prompt="auto">
+        </model-viewer>
+        <div class="viewer-toggle" role="group" aria-label="Model view">
+          <button type="button" data-src="../images/auv/assembly.glb" aria-pressed="true">Outer shell</button>
+          <button type="button" data-src="../images/auv/assembly-internals.glb" aria-pressed="false">Internals</button>
+        </div>
+      </div>
+      <p class="viewer-hint">Drag to rotate, scroll or pinch to zoom, right-click and drag to pan. Switch to Internals to see inside the hull.</p>
+      <script>
+        (function () {
+          var mv = document.getElementById('auv-model');
+          var buttons = document.querySelectorAll('.viewer-toggle button');
+          buttons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              if (btn.getAttribute('aria-pressed') === 'true') return;
+              buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+              var o = mv.getCameraOrbit ? mv.getCameraOrbit() : null;
+              mv.addEventListener('load', function () {
+                if (o) { mv.cameraOrbit = o.theta + 'rad ' + o.phi + 'rad 65%'; mv.jumpCameraToGoal(); }
+              }, { once: true });
+              mv.src = btn.dataset.src;
+            });
+          });
+        })();
+      </script>
+    </section>
+
+    <section class="prose">
+      <h2>The goal</h2>
+      <p>Build a fully autonomous submarine that can travel along a preset path and gather information about its environment. The platform is meant to carry different payloads for jobs like:</p>
+      <ul>
+        <li>Sonar imaging and seabed mapping</li>
+        <li>Water quality and pollutant testing</li>
+        <li>Ecosystem and species monitoring</li>
+      </ul>
+      <p>The project runs in three phases: first the vehicle itself, then autonomy, then sensing, data logging, and transmission. Phase 1, the submarine, is the focus of this page.</p>
+    </section>
+
+    <section class="prose">
+      <h2>Key design decisions</h2>
+
+      <h3>Communication</h3>
+      <p>Water absorbs radio energy, and the higher the frequency, the faster the signal dies. A signal's skin depth, <em>&delta;</em> = &radic;(2&rho; / &omega;&mu;), is the distance at which it falls to 37% of its strength. WiFi and Bluetooth at 2.4&nbsp;GHz barely make it a few centimeters through water. Military submarines get around this with very low and extremely low frequency radio, but at very slow data rates.</p>
+      <p>I compared three approaches: a tether to a floating radio buoy, low-frequency radio (27, 40, or 75&nbsp;MHz, traditionally used by RC submarines), and the 900&nbsp;MHz and 2.4&nbsp;GHz bands. The low bands penetrate water best, but hardware for them is no longer being made, and they can't carry enough data for telemetry. I went with a tethered buoy. A long cable runs from the sub to a small float on the surface, which carries an NRF24L01 2.4&nbsp;GHz radio and a NEO-6M GPS module. The radio stays above the water, so the link is reliable and can use cheap, widely supported 2.4&nbsp;GHz hardware with plenty of bandwidth for telemetry. Because the buoy follows the sub, its GPS also gives the sub's position for navigation. The tradeoffs are that depth is limited by the tether length, and the cable could snag on debris or tangle in the propeller.</p>
+
+      <h3>Diving</h3>
+      <p>Dynamic diving uses fins and forward speed to push the vehicle down. It's simple and fails safe, but the sub can only stay under while it's moving. Static diving uses ballast tanks to change buoyancy, so the sub can sink, rise, and hold a depth without moving. I chose static diving with ballast tanks for depth control, plus fins for steering underway.</p>
+    </section>
+
+    <section class="prose">
+      <h2>What I did</h2>
+      <p>I started the project and designed the vehicle in Onshape, then built and tested it.</p>
+
+      <h3>Layout</h3>
+      <p>The sub has three main sections. The <strong>nose</strong> is a hollow, 3D-printed, streamlined shell with a large bay for future sensors. The <strong>watertight cylinder</strong> in the middle holds the batteries, ballast tanks, and electronics, and is the only dry part of the vehicle. The <strong>tail</strong> holds the four fin servos and the main thruster. Everything outside the cylinder is designed to flood.</p>
+      <p>A 3D-printed outer shell slides over the cylinder. It protects the clear tube from rocks and debris, keeps sunlight out so the electronics stay cooler, and is the structure that holds the whole vehicle together.</p>
+      <div class="photos wide">
+        <figure style="flex:2.284"><a href="../images/auv/cad-internals.png"><img src="../images/auv/cad-internals.png" width="1311" height="574" alt="Onshape render of the AUV with the outer shell hidden, showing the battery, ballast tanks, and rails inside the clear hull" loading="lazy"></a><figcaption>Outer shell hidden: nose, watertight cylinder with internals on the rails, and tail</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:1.065"><a href="../images/auv/cad-front-view.png"><img src="../images/auv/cad-front-view.png" width="853" height="801" alt="Front view of the AUV nose with four fins" loading="lazy"></a><figcaption>Front view</figcaption></figure>
+        <figure style="flex:1.072"><a href="../images/auv/cad-rear-view.png"><img src="../images/auv/cad-rear-view.png" width="854" height="797" alt="Rear view of the AUV showing the ducted thruster and X-pattern fins" loading="lazy"></a><figcaption>Rear view</figcaption></figure>
+      </div>
+
+      <h3>Watertight cylinder</h3>
+      <p>The hull is a 3&nbsp;ft length of 4&Prime; inside-diameter clear schedule 40 PVC pipe. All of the internals mount on two 3&nbsp;ft, 6&nbsp;mm aluminum rods, the same approach used for avionics bays in rocketry and common in RC submarines. The batteries, ballast tanks, and electronics slide onto the rails and lock in place with shaft collars, and the whole bay then slides into the tube as one unit.</p>
+      <div class="photos">
+        <figure style="flex:1.333"><a href="../images/auv/photo-wiring-bay.jpg"><img src="../images/auv/photo-wiring-bay.jpg" width="1800" height="1350" alt="Internal electronics bay on the aluminum rails with wiring, ballast assembly, and end cap" loading="lazy"></a><figcaption>The internal bay on its rails during wiring</figcaption></figure>
+      </div>
+      <p>Each end is sealed with a 3D-printed end cap carrying two O-rings in grooves. The O-rings press against the inside wall of the tube to form a radial seal. Getting that seal right took about 15 iterations of the end cap design, tested in water until the hull stayed completely dry. Each end cap also has three pass-throughs:</p>
+      <ul>
+        <li><strong>Front:</strong> the tether cable to the surface buoy, the front ballast tank's water line, and the depth sensor.</li>
+        <li><strong>Back:</strong> the servo cable, the rear ballast tank's water line, and the thruster power cable.</li>
+      </ul>
+      <p>Cables and ballast tubes pass through watertight bulkhead connectors. Each one seals against the end cap with a nut and rubber washer, and a compression nut on the other side grips the cable or tube. The depth sensor threads into a brass bulkhead fitting, sealed with O-rings and PTFE thread tape, so only its sensing face touches the water. Multi-conductor cables are potted with epoxy where they're cut, so water can't wick down the inside of the cable into the hull.</p>
+      <div class="photos">
+        <figure style="flex:1.218"><a href="../images/auv/cad-endcap-outside.png"><img src="../images/auv/cad-endcap-outside.png" width="530" height="435" alt="Front end cap from outside with two cable bulkheads, the brass depth-sensor bulkhead, and M4 bolts" loading="lazy"></a><figcaption>Front end cap from outside: two bulkhead connectors and the brass depth-sensor fitting</figcaption></figure>
+        <figure style="flex:1.005"><a href="../images/auv/cad-endcap-inside.png"><img src="../images/auv/cad-endcap-inside.png" width="437" height="435" alt="Front end cap seated in the hull, showing O-rings, bulkheads, and the depth sensor" loading="lazy"></a><figcaption>Inside the hull: O-ring grooves and the depth sensor in its bulkhead</figcaption></figure>
+      </div>
+
+      <h3>Structure and assembly</h3>
+      <p>The outer shell is printed in segments that join with press-fit metal pins. The end segments have eight M4 heat-set threaded inserts each. On the front, M4 bolts pass through the nose and the front end cap and thread into the first shell segment. On the back, they pass through the thruster tail, the servo bay, and the back end cap and thread into the last segment. This clamps everything together and gives the end caps a second, mechanical way to stay in, even though water pressure and O-ring friction already hold them in place.</p>
+      <div class="photos">
+        <figure style="flex:1.333"><a href="../images/auv/photo-internals-out.jpg"><img src="../images/auv/photo-internals-out.jpg" width="1800" height="1350" alt="AUV internals out of the hull: battery pack, ballast assembly, end cap, and thruster" loading="lazy"></a><figcaption>Internals out of the hull during assembly</figcaption></figure>
+        <figure style="flex:0.750"><a href="../images/auv/photo-shell-assembly.jpg"><img src="../images/auv/photo-shell-assembly.jpg" width="1350" height="1800" alt="The AUV partially assembled with its orange outer shell and thruster" loading="lazy"></a><figcaption>Outer shell going on, servo section not yet installed</figcaption></figure>
+      </div>
+
+      <h3>Ballast and trim</h3>
+      <p>Each of the two ballast tanks is a 200&nbsp;mL syringe. A NEMA&nbsp;17 stepper motor drives a T8 lead screw with an anti-backlash nut, moving a custom 3D-printed plunger to draw water in (dive) or push it out (surface). The steppers' precision lets the sub be tuned very close to neutral buoyancy.</p>
+      <p>To keep the plunger from running past its travel, each one carries a small neodymium magnet, and A3144 Hall-effect sensors on the outside of the syringe act as end stops. The TMC2209 stepper drivers' StallGuard stall detection is a backup, not the primary limit: electrical noise from the thruster controller and falling battery voltage could make it unreliable.</p>
+      <p>To stay level, the center of mass has to sit directly below the center of buoyancy. With one tank in the front and one in the back, the sub can shift water between them to correct pitch. For example, if neutral buoyancy takes 100&nbsp;mL total and the nose points up, it might carry 75&nbsp;mL in front and 25&nbsp;mL in back. A self-leveling routine reads the IMU and adjusts the tanks automatically.</p>
+      <div class="photos wide">
+        <figure style="flex:1.795"><a href="../images/auv/cad-ballast.png"><img src="../images/auv/cad-ballast.png" width="1199" height="668" alt="Ballast assembly: stepper motor, lead screw, printed mounts, and syringe tank with Hall-effect sensors on the rails" loading="lazy"></a><figcaption>Ballast tank: stepper motor and lead screw driving the printed plunger, with Hall-effect end stops on the syringe</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:0.750"><a href="../images/auv/photo-ballast-test.jpg"><img src="../images/auv/photo-ballast-test.jpg" width="1350" height="1800" alt="Ballast syringe filled with water on its 3D-printed mount during bench testing" loading="lazy"></a><figcaption>Bench test: the ballast tank drawing in water</figcaption></figure>
+        <figure style="flex:1.333"><a href="../images/auv/photo-ballast-bench.jpg"><img src="../images/auv/photo-ballast-bench.jpg" width="1800" height="1350" alt="Bench setup with power supply, breadboard, Arduino, and ballast tank" loading="lazy"></a><figcaption>Test bench: power supply, Arduino, stepper driver, and ballast</figcaption></figure>
+        <figure style="flex:0.750"><a href="../images/auv/photo-ballast-code.jpg"><img src="../images/auv/photo-ballast-code.jpg" width="1350" height="1800" alt="Arduino IDE showing dive and surface functions with the serial monitor printing Diving" loading="lazy"></a><figcaption>Arduino test code for the dive and surface routines</figcaption></figure>
+      </div>
+
+      <h3>Steering</h3>
+      <p>Four 3D-printed fins at the tail steer the vehicle, each driven by its own metal-gear servo. The servos sit in the flooded tail, so I opened each one and waterproofed it with marine grease, marine epoxy, and an O-ring to keep water out. They sit just ahead of the ducted thruster so the water it draws in flows over them, which keeps them effective even at low speed. The fins use a profile I designed based on a slightly modified NACA 0012 foil. A symmetric foil works equally well pushing the nose up or down, and it stalls less and runs smoother than a flat plate.</p>
+      <div class="photos">
+        <figure style="flex:1.685"><a href="../images/auv/cad-tail-exploded.png"><img src="../images/auv/cad-tail-exploded.png" width="1252" height="743" alt="Exploded view of the tail: back end cap with four servos, fins, bulkheads, and the thruster" loading="lazy"></a><figcaption>Back end cap with the four servos and fins, thruster pulled away</figcaption></figure>
+        <figure style="flex:1.146"><a href="../images/auv/cad-tail.png"><img src="../images/auv/cad-tail.png" width="815" height="711" alt="Assembled tail with servo bay, fins, and ducted thruster" loading="lazy"></a><figcaption>Assembled tail section</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:1.333"><a href="../images/auv/photo-servo-open.jpg"><img src="../images/auv/photo-servo-open.jpg" width="1800" height="1350" alt="A metal-gear servo opened up with its gear train exposed" loading="lazy"></a><figcaption>Opening a servo for waterproofing</figcaption></figure>
+      </div>
+
+      <h3>Power and electronics</h3>
+      <p>I built the battery pack from 24 Molicel P42A 21700 cells (4200&nbsp;mAh, 45&nbsp;A each) in a 6S4P layout, spot-welded with nickel strip. I did all of the spot welding and soldered the battery management system's connections to the pack myself. It supplies about 22&ndash;24&nbsp;V and up to 180&nbsp;A, far more current than the sub needs, chosen for runtime. A 6S battery management system balances the six cell groups and protects against over-charge and over-discharge.</p>
+      <div class="photos">
+        <figure style="flex:1.272"><a href="../images/auv/cad-battery.png"><img src="../images/auv/cad-battery.png" width="894" height="703" alt="Battery pack: two sub-packs of 21700 cells in printed holders on the aluminum rails" loading="lazy"></a><figcaption>The 6S4P pack, split into two sub-packs in printed holders that slide onto the rails</figcaption></figure>
+      </div>
+      <div class="photos">
+        <figure style="flex:1.333"><a href="../images/auv/photo-spot-welding.jpg"><img src="../images/auv/photo-spot-welding.jpg" width="1800" height="1350" alt="Two battery sub-packs with spot-welded nickel strips and balance leads" loading="lazy"></a><figcaption>Spot-welded sub-packs with balance leads attached</figcaption></figure>
+        <figure style="flex:0.750"><a href="../images/auv/photo-battery-bms.jpg"><img src="../images/auv/photo-battery-bms.jpg" width="1350" height="1800" alt="Finished battery pack with the BMS mounted on top and an XT60 output lead" loading="lazy"></a><figcaption>Finished pack with the BMS soldered on</figcaption></figure>
+      </div>
+      <p>Power is split into three levels:</p>
+      <ul>
+        <li><strong>24&nbsp;V</strong> straight from the pack, for the main thruster.</li>
+        <li><strong>12&nbsp;V</strong> through a buck converter, for the ballast stepper motors.</li>
+        <li><strong>5&nbsp;V</strong> through a second buck converter, for the microcontrollers and sensors.</li>
+      </ul>
+      <p>The main thruster is a 500&nbsp;W brushless underwater thruster with a ducted propeller. It runs on 12&ndash;24&nbsp;V and produces 23.6&nbsp;lb of thrust at 24&nbsp;V. It's driven by a 60&nbsp;A waterproof, water-cooled electronic speed controller rated for 2&ndash;6S packs, whose built-in 8&nbsp;A regulator can also supply 5&ndash;6&nbsp;V to other electronics.</p>
+      <p>Arduino microcontrollers handle about 25 inputs and outputs, with room for more as sensors are added. The sensors include:</p>
+      <ul>
+        <li>An external pressure sensor to measure depth.</li>
+        <li>An MPU-6050 IMU to measure pitch and roll for self-leveling and to tune fin control. It can also tell whether the sub is sinking or rising.</li>
+        <li>A BME280 sensor inside the hull that watches the air pressure. A sudden change means a leak.</li>
+        <li>Four Hall-effect sensors as the ballast end stops.</li>
+        <li>A NEO-6M GPS module on the surface buoy for position.</li>
+      </ul>
+      <div class="photos">
+        <figure style="flex:1.333"><a href="../images/auv/photo-imu-test.jpg"><img src="../images/auv/photo-imu-test.jpg" width="1800" height="1350" alt="Laptop running Arduino code next to an Arduino and IMU mounted on a blue 3D-printed plate" loading="lazy"></a><figcaption>Testing the Arduino and IMU</figcaption></figure>
+        <figure style="flex:0.750"><a href="../images/auv/photo-electronics-test.jpg"><img src="../images/auv/photo-electronics-test.jpg" width="1350" height="1800" alt="Electronics bench test with a ballast tank, wiring, and an Arduino on a printed mount" loading="lazy"></a><figcaption>Bench-testing the electronics with a ballast tank</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>Testing and next steps</h2>
+      <ul>
+        <li><strong>Watertight hull:</strong> After about 15 end cap iterations, the final design sealed completely in water testing, with no leaks into the hull.</li>
+        <li><strong>Ballast system:</strong> I bench-tested both ballast tanks with an Arduino driving the TMC2209 stepper drivers. The Hall-effect sensors worked reliably as contactless limit switches, stopping each plunger at the ends of its travel.</li>
+        <li><strong>Battery pack:</strong> Built, spot-welded, and wired to its battery management system.</li>
+      </ul>
+      <p>The next step is dynamic testing: running the full vehicle over longer distances once I have access to a suitable test environment. After that, Phase 2 adds autonomous navigation along a preset path. Phase 3 fills the nose bay with environmental sensors (water temperature, dissolved solids, turbidity, and dissolved oxygen) along with data logging and transmission.</p>
+    </section>
+
+    <section>
+      <h2>Tools &amp; skills</h2>
+      <ul class="tags">
+        <li>Onshape</li>
+        <li>3D printing</li>
+        <li>Watertight sealing design</li>
+        <li>Battery pack design &amp; spot welding</li>
+        <li>Stepper motor control</li>
+        <li>Arduino</li>
+        <li>Sensor integration</li>
+        <li>RF communication</li>
+        <li>GPS</li>
+        <li>Soldering</li>
+      </ul>
+    </section>
+
+    <footer>&copy; 2026 Trevor Sherman. Built with HTML and CSS, hosted on GitHub Pages.</footer>
+  </main>
+</body>
+</html>

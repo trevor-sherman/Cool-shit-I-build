@@ -108,3 +108,13 @@ footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--lin
 .project-page section h2 { font-size: 2.1rem; letter-spacing: -0.01em; margin-bottom: 24px; }
 .project-page section h2::before { content: ""; display: block; width: 48px; height: 5px; background: var(--blue); margin-bottom: 14px; }
 .project-page .prose h3 { font-size: 1.35rem; color: var(--blue); margin: 44px 0 12px; }
+
+/* Interactive 3D model */
+.cad-viewer { display: block; width: 100%; height: min(70vh, 560px); border: 1.5px solid var(--ink); background: linear-gradient(#fff, #e6ebf2); --poster-color: transparent; }
+.viewer-hint { font: 500 0.85rem var(--head); color: var(--muted); margin-top: 8px; }
+.photos.wide figure:only-child { max-width: none; }
+.viewer-wrap { position: relative; }
+.viewer-toggle { position: absolute; top: 12px; left: 12px; display: flex; }
+.viewer-toggle button { font: 700 0.9rem var(--head); padding: 8px 14px; border: 1.5px solid var(--ink); background: #fff; color: var(--ink); cursor: pointer; }
+.viewer-toggle button + button { border-left: 0; }
+.viewer-toggle button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
