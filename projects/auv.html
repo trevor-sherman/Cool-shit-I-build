@@ -36,7 +36,7 @@
     <div class="proj-head">
       <div class="kicker">Personal Project &middot; Spring 2026</div>
       <h1>Autonomous Underwater Vehicle</h1>
-      <p class="summary">A low-cost autonomous submarine built to follow a preset path and collect data about the water around it. It dives with stepper-driven ballast tanks, steers with four servo-actuated fins, and runs on a custom 24&nbsp;V battery pack inside a sealed clear PVC hull.</p>
+      <p class="summary">A low-cost autonomous submarine built to follow a preset path and collect data about the water around it. It dives with stepper-driven ballast tanks, steers with four servo-actuated fins, and runs on a custom 24&nbsp;V battery pack inside a sealed clear PVC hull. A tethered surface buoy with GPS and a radio tracks its position and links it to shore.</p>
       <dl class="facts">
         <div><dt>My role</dt><dd>Founder &amp; lead engineer</dd></div>
         <div><dt>Hull</dt><dd>4&Prime; ID clear PVC, 3&nbsp;ft</dd></div>
@@ -84,11 +84,11 @@
 
     <section class="prose">
       <h2>The goal</h2>
-      <p>Build a fully autonomous submarine that can travel along a preset path and gather information about its environment. The platform is meant to carry different payloads for jobs like:</p>
+      <p>Build a fully autonomous submarine that can travel along a preset path and gather information about its environment. It's designed as a flexible platform: the nose is a large, open payload bay, so the same vehicle can carry different sensors and equipment for different missions, including:</p>
       <ul>
-        <li>Sonar imaging and seabed mapping</li>
-        <li>Water quality and pollutant testing</li>
-        <li>Ecosystem and species monitoring</li>
+        <li>Environmental monitoring, such as water quality and pollutant testing</li>
+        <li>Ecosystem and species research</li>
+        <li>Defense applications</li>
       </ul>
       <p>The project runs in three phases: first the vehicle itself, then autonomy, then sensing, data logging, and transmission. Phase 1, the submarine, is the focus of this page.</p>
     </section>
@@ -109,7 +109,7 @@
       <p>I started the project and designed the vehicle in Onshape, then built and tested it.</p>
 
       <h3>Layout</h3>
-      <p>The sub has three main sections. The <strong>nose</strong> is a hollow, 3D-printed, streamlined shell with a large bay for future sensors. The <strong>watertight cylinder</strong> in the middle holds the batteries, ballast tanks, and electronics, and is the only dry part of the vehicle. The <strong>tail</strong> holds the four fin servos and the main thruster. Everything outside the cylinder is designed to flood.</p>
+      <p>The sub has three main sections. The <strong>nose</strong> is a hollow, 3D-printed, streamlined shell with a large bay for future sensors. The <strong>watertight cylinder</strong> in the middle holds the batteries, ballast tanks, and electronics, and is the only dry part of the vehicle. The <strong>tail</strong> holds the four fin servos and the main thruster. Everything outside the cylinder is a wet hull, designed to flood. The 3D-printed parts outside the cylinder are printed with gyroid infill, whose open, connected cells let water fill them completely instead of trapping air.</p>
       <p>A 3D-printed outer shell slides over the cylinder. It protects the clear tube from rocks and debris, keeps sunlight out so the electronics stay cooler, and is the structure that holds the whole vehicle together.</p>
       <div class="photos wide">
         <figure style="flex:2.284"><a href="../images/auv/cad-internals.png"><img src="../images/auv/cad-internals.png" width="1311" height="574" alt="Onshape render of the AUV with the outer shell hidden, showing the battery, ballast tanks, and rails inside the clear hull" loading="lazy"></a><figcaption>Outer shell hidden: nose, watertight cylinder with internals on the rails, and tail</figcaption></figure>
@@ -211,6 +211,7 @@
         <li>Onshape</li>
         <li>3D printing</li>
         <li>Watertight sealing design</li>
+        <li>Design for manufacturing (DFM)</li>
         <li>Battery pack design &amp; spot welding</li>
         <li>Stepper motor control</li>
         <li>Arduino</li>
