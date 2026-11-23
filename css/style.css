@@ -121,5 +121,5 @@ footer { margin-top: 72px; padding: 22px 0 40px; border-top: 1px solid var(--lin
 
 /* Looping CAD animation */
 .anim { display: block; width: 100%; height: auto; border: 1.5px solid var(--ink); background: #fff; }
-.status { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 2px 8px; font: 700 0.75rem var(--head); color: var(--ink); background: #fff3b0; border: 1.5px solid var(--ink); letter-spacing: 0.02em; text-transform: uppercase; }
+.status { display: inline-block; vertical-align: middle; margin-left: 10px; padding: 3px 10px; font: 700 0.72rem var(--head); color: var(--blue); background: transparent; border: 1.5px solid var(--blue); border-radius: 999px; letter-spacing: 0.06em; text-transform: uppercase; }
 .photos.narrow figure:only-child { max-width: 520px; }
