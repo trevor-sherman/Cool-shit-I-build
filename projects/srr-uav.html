@@ -230,7 +230,7 @@
       <p>After dropping the AI HAT+ freed up budget, we went digital: the operator gets a 1080p picture, crisp coordinates, and the option of encryption. The trade-off we accepted is a single-vendor ground ecosystem and an unproven 5&nbsp;km range, which we plan to test early with a directional antenna on the ground.</p>
 
       <h3>Ground receiver: monitor or GroundLink</h3>
-      <p>The base design receives video on Divimath's ground monitor, a self-contained screen. Divimath also makes the GroundLink UVC VRX, a ground receiver with no screen of its own. Its USB-C port appears as a standard webcam on computers, phones, and tablets, with no drivers, and Divimath lists ATAK, Mission Planner, and QGroundControl as compatible software. That makes it an avenue we want to explore for putting the drone's live video directly into the systems soldiers already use. The parts list stays with the monitor for now.</p>
+      <p>The base design receives video on Divimath's ground monitor, a self-contained screen. Divimath also makes the GroundLink UVC VRX, a ground receiver with no screen of its own. Its USB-C port appears as a standard webcam on computers, phones, and tablets, with no drivers, and Divimath states it works with ATAK, as well as Mission Planner and QGroundControl. That makes it an avenue we want to explore for putting the drone's live video directly into the systems soldiers already use. The parts list stays with the monitor for now.</p>
       <table class="data-table">
         <thead><tr><th></th><th><strong>Divimath monitor</strong> (baseline)</th><th>Divimath GroundLink UVC VRX (option)</th></tr></thead>
         <tbody>
@@ -240,10 +240,26 @@
           <tr><td>Antennas</td><td>Shared digital/analog</td><td>Four, for diversity reception</td></tr>
           <tr><td>Encryption</td><td>Divimath NDAA receiver; to confirm</td><td>Listed as supported</td></tr>
           <tr><td>Weight and power</td><td>Separate 4S battery</td><td>190&nbsp;g; 7&ndash;25&nbsp;V input, about 10&nbsp;W</td></tr>
-          <tr><td>Integration</td><td>Stand-alone viewing only</td><td>Could feed MMCS computers and ATAK devices directly (TBD)</td></tr>
+          <tr><td>Integration</td><td>Stand-alone viewing only</td><td>Works with ATAK per Divimath; MMCS to be determined</td></tr>
         </tbody>
       </table>
-      <p>Whether it actually works with Army hardware is still to be determined. Questions include whether MMCS computers and fielded ATAK devices accept a USB video device under their security settings, whether ATAK's UAS Tool can use it as a drone's video source, and whether 720p over USB is enough detail compared with the 1080p link. If it does work, it would be a big step for integration: live, encrypted video on the same screens and maps soldiers already use, without new software. It costs more than the monitor, but the $2,500 budget is a rough target, so cost alone doesn't rule it out. Before it could replace the monitor, we need more research into the existing military systems: what hardware and software MMCS computers and ATAK devices actually run, and what they allow to be plugged in. Availability is a wildcard for both receivers: the monitor and the GroundLink were both sold out when we checked, and we don't know how long that will last.</p>
+      <p>ATAK compatibility is a good sign. MMCS is still to be determined, but because the GroundLink appears as an ordinary webcam with no drivers, any computer that allows USB cameras should at least see it. What we still need to find out:</p>
+      <ul>
+        <li>Whether fielded ATAK devices and MMCS computers allow a USB video device under their security settings, and whether an Android device needs USB-OTG camera support for it.</li>
+        <li>How ATAK displays it: as the drone's video in UAS Tool, or only in a separate video viewer.</li>
+        <li>Whether 720p over USB is enough detail compared with the 1080p link.</li>
+      </ul>
+      <p>The receiver alone isn't the whole ground station. Divimath's page lists the receiver itself but doesn't say what's in the box, so we'd plan for:</p>
+      <table class="data-table">
+        <thead><tr><th>Item</th><th>Why it's needed</th></tr></thead>
+        <tbody>
+          <tr><td>5.8&nbsp;GHz antennas (up to four, SMA)</td><td>Four-antenna diversity; an omni plus a directional patch, as planned for the monitor, would cover 5&nbsp;km</td></tr>
+          <tr><td>7&ndash;25&nbsp;V power</td><td>About 10&nbsp;W through a 5.5&nbsp;&times;&nbsp;2.1&nbsp;mm barrel jack: a small LiPo with a barrel lead, or vehicle power</td></tr>
+          <tr><td>USB-C cable</td><td>USB-C to USB-C for an Android device, or USB-C to USB-A for a vehicle computer</td></tr>
+          <tr><td>Tripod or mast</td><td>Built-in 1/4-20 tripod mounts; height helps range</td></tr>
+        </tbody>
+      </table>
+      <p>If it does work, it would be a big step for integration: live, encrypted video on the same screens and maps soldiers already use, without new software. It costs more than the monitor, but the $2,500 budget is a rough target, so cost alone doesn't rule it out. Before it could replace the monitor, we need more research into the existing military systems: what hardware and software MMCS computers and ATAK devices actually run, and what they allow to be plugged in. Availability is a wildcard for both receivers: the monitor and the GroundLink were both sold out when we checked, and we don't know how long that will last.</p>
     </section>
 
     <section id="pipeline" class="prose">
@@ -608,7 +624,7 @@
       <h3>Getting video into ATAK</h3>
       <p>Today, our video goes over Divimath's dedicated radio to a dedicated monitor. It isn't a network stream, so ATAK can't show it by default, and the RFD900x is far too slow to carry video. Military drones that do stream to ATAK typically send video over an IP radio as an RTSP stream, tagged with MISB ST&nbsp;0601 metadata (the standard for embedding the drone's position and camera pointing in each frame), so the map can project exactly where the camera is looking. Three possible paths for us:</p>
       <ul>
-        <li><strong>GroundLink UVC receiver (avenue to explore, TBD):</strong> swap or supplement the monitor with Divimath's GroundLink receiver, which shows up as a webcam over USB on an ATAK device or vehicle computer (see <a href="#video">Video link</a>). This is the simplest path and needs no aircraft changes, if fielded devices accept it.</li>
+        <li><strong>GroundLink UVC receiver (avenue to explore, TBD):</strong> swap or supplement the monitor with Divimath's GroundLink receiver, which shows up as a webcam over USB and is listed by Divimath as working with ATAK (see <a href="#video">Video link</a>). This is the simplest path and needs no aircraft changes; MMCS compatibility and fielded-device settings are still to be confirmed.</li>
         <li><strong>Ground-side encoding:</strong> capture the Divimath receiver's HDMI output on the vehicle computer, encode it as a network stream, and add MISB metadata from the MAVLink telemetry already arriving over the RFD900x. This needs no aircraft changes.</li>
         <li><strong>IP radio upgrade:</strong> replace the video and telemetry links with a single compliant IP data link (Microhard or Doodle Labs class) carrying video, MAVLink, and metadata together, the way commercial Army drones do. The Pi already handles the video, so it would encode the stream directly. This is the most capable option, but it's well over our current budget.</li>
       </ul>
