@@ -4,11 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>U.S. Army SRR UAV | Trevor Sherman</title>
-  <meta name="description" content="Capstone project: a short-range reconnaissance drone for a U.S. Army customer, built from NDAA and Blue UAS compliant parts.">
+  <meta name="description" content="Capstone project: a short-range reconnaissance quadcopter for a U.S. Army customer, built from NDAA-compliant parts on a $2,500 budget, with a low-light zoom camera, pan/tilt mount, and telemetry into the Army's MMCS software.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <script type="module">
+    import '../js/model-viewer.min.js';
+    customElements.get('model-viewer').meshoptDecoderLocation = '../js/meshopt_decoder.js';
+  </script>
 </head>
 <body class="project-page">
 
@@ -33,71 +37,160 @@
     <div class="proj-head">
       <div class="kicker">Mechanical Engineering Capstone &middot; Fall 2026 &ndash; present</div>
       <h1>U.S. Army SRR UAV <span class="status">In progress</span></h1>
-      <p class="summary">As project manager of my capstone team, I'm leading the development of a short-range reconnaissance (SRR) drone for a U.S. Army end customer. It has to be small, light, and built entirely from NDAA- and Blue UAS-compliant parts, while still delivering low-light video, onboard AI detection, and accurate position data to a soldier on the ground. So far the work has been defining requirements with the customer, researching compliance, and choosing components that balance capability against a tight budget.</p>
+      <p class="summary">As project manager of my capstone team, I'm leading the development of a short-range reconnaissance (SRR) quadcopter for a U.S. Army customer. It has to fit in a pack, weigh under 5&nbsp;lb, fly for 25&ndash;30 minutes at up to 5&nbsp;km, and be built entirely from NDAA-compliant parts, all on a $2,500 budget. This page covers our first full design, the one we took to our Critical Design Review: the parts we chose, the analysis behind them, and how the design changed along the way.</p>
       <dl class="facts">
         <div><dt>My role</dt><dd>Project manager</dd></div>
-        <div><dt>Weight target</dt><dd>Under 5&nbsp;lb</dd></div>
-        <div><dt>Endurance</dt><dd>25&ndash;30 min</dd></div>
+        <div><dt>Est. weight</dt><dd>~4.65&nbsp;lb</dd></div>
+        <div><dt>Hover time</dt><dd>~35&nbsp;min</dd></div>
         <div><dt>Range</dt><dd>5&nbsp;km</dd></div>
+        <div><dt>Budget</dt><dd>$2,493 of $2,500</dd></div>
       </dl>
     </div>
 
+    <section>
+      <h2>Explore the model</h2>
+      <div class="viewer-wrap">
+        <model-viewer id="srr-model" class="cad-viewer" src="../images/srr-uav/assembly.glb" alt="Interactive 3D model of the SRR UAV assembly"
+          camera-controls touch-action="pan-y" camera-orbit="35deg 65deg 70%" min-camera-orbit="auto auto 5%"
+          auto-rotate auto-rotate-delay="3000" rotation-per-second="10deg" shadow-intensity="0.4" exposure="1.05" interaction-prompt="auto">
+        </model-viewer>
+      </div>
+      <p class="viewer-hint">Drag to rotate, scroll or pinch to zoom, right-click and drag to pan. First-pass CAD for the CDR.</p>
+    </section>
+
     <section class="prose">
       <h2>The mission</h2>
-      <p>Small units need a drone they can carry in a pack, launch in minutes, and use to see what's over the next hill or around the next building. Working directly with our Army point of contact, we turned that need into concrete requirements:</p>
+      <p>Small units need a drone they can carry in a pack, launch in minutes, and use to see what's over the next hill or around the next building. Working with our Army point of contact, we turned that need into concrete requirements:</p>
       <div class="spec-grid">
-        <div><span>Weight</span><strong>Under 5&nbsp;lb, ready to fly</strong></div>
+        <div><span>Weight</span><strong>Under 5&nbsp;lb (2,268&nbsp;g), ready to fly</strong></div>
         <div><span>Endurance</span><strong>25&ndash;30 minutes of flight</strong></div>
         <div><span>Range</span><strong>5&nbsp;km</strong></div>
-        <div><span>Compliance</span><strong>Every part NDAA / Blue UAS compliant</strong></div>
+        <div><span>Compliance</span><strong>Every part NDAA compliant; companion computer from the DCMA Blue UAS list</strong></div>
         <div><span>Sensors</span><strong>Low-light EO camera, thermal as an option</strong></div>
-        <div><span>Autonomy</span><strong>Waypoints, position hold, return-to-home</strong></div>
-        <div><span>Onboard AI</span><strong>Person and vehicle detection</strong></div>
+        <div><span>Autonomy</span><strong>Waypoints, position hold, return-to-home, telemetry</strong></div>
         <div><span>Operator display</span><strong>Live video, position in MGRS and lat/long, heading in degrees and mils</strong></div>
-        <div><span>Budget</span><strong>$1,700 for the aircraft, $800 for controller and display</strong></div>
+        <div><span>Integration</span><strong>Telemetry into MMCS, the Army's field-computer software</strong></div>
+        <div><span>Budget</span><strong>$1,700 aircraft + $800 controller and display, pooled</strong></div>
       </div>
     </section>
 
     <section class="prose">
-      <h2>What I'm doing</h2>
-      <p>As project manager, I'm the team's link to the customer: I clarify requirements with our Army point of contact, turn their feedback into design decisions, and set the team's schedule. I'm also leading the system architecture and component selection.</p>
+      <h2>The CDR design</h2>
+      <p>The aircraft is a 10&Prime; folding carbon fiber quadcopter. A Raspberry Pi 5 sits between the camera and the video transmitter, so it can zoom the image and burn the drone's position and heading into the feed before it reaches the operator.</p>
+      <div class="spec-grid">
+        <div><span>Frame</span><strong>DarwinFPV X10 folding carbon fiber, 410&nbsp;mm wheelbase</strong></div>
+        <div><span>Motors</span><strong>Atlas Motion 3115, 760&nbsp;KV (NDAA)</strong></div>
+        <div><span>Props</span><strong>Master Airscrew 10&times;4.5 two-blade</strong></div>
+        <div><span>Flight stack</span><strong>Aslan H7 Pro FC + 80&nbsp;A PRO 4-in-1 ESC, made in Virginia</strong></div>
+        <div><span>Navigation</span><strong>Aslan SAM-M10 GPS + compass, onboard DPS368 barometer</strong></div>
+        <div><span>Battery</span><strong>Lumenier NAV 6S2P Li-ion, 10,000&nbsp;mAh, 216&nbsp;Wh</strong></div>
+        <div><span>Camera</span><strong>Divimath SeekerHD, Sony IMX462 STARVIS, 1080p60, ~3&times; digital zoom</strong></div>
+        <div><span>Camera mount</span><strong>Custom 3D-printed pan/tilt mount on two micro metal-gear servos, vibration-damped</strong></div>
+        <div><span>Companion computer</span><strong>Raspberry Pi 5 on its own 5.2&nbsp;V regulator</strong></div>
+        <div><span>Video link</span><strong>Divimath HDMI digital VTX to a Divimath ground monitor</strong></div>
+        <div><span>Control link</span><strong>TBS Crossfire 915&nbsp;MHz (NDAA receiver), Triumph Tango 2 PRO radio</strong></div>
+        <div><span>Telemetry link</span><strong>RFD900x-US modem pair (Blue UAS) to the MMCS field computer</strong></div>
+      </div>
+    </section>
 
-      <h3>Working within NDAA and Blue UAS rules</h3>
-      <p>The hardest constraint isn't weight or range; it's sourcing. Because the drone is for the Army, every component has to comply with the NDAA's restrictions on parts from certain foreign manufacturers, and key components like the flight controller and companion computer have to come from the Defense Contract Management Agency's Blue UAS lists. That rules out most of the hobby and commercial drone market, where the cheapest and best-documented parts are made.</p>
-      <p>Early on, we thought structural parts like the motors and frame might be exempt. After digging into the requirements, it became clear that motors and propellers have to be compliant too. Compliant parts typically cost several times more than their commercial equivalents and have fewer options, so every subsystem became a trade-off between capability, cost, and availability.</p>
+    <section class="prose">
+      <h2>How the design got here</h2>
+      <p>The hardest constraint isn't weight or range; it's sourcing. Because the drone is for the Army, every component has to comply with the NDAA's restrictions on parts from certain foreign manufacturers. That rules out most of the hobby drone market, where the cheapest and best-documented parts are made. Compliant parts often cost several times more and have far fewer options, so nearly every subsystem became a trade between capability, cost, and what we could actually buy.</p>
+      <p>Early on, we thought structural parts like the motors and frame might be exempt. Digging into the requirements showed that motors and propellers have to be compliant too, which reshaped the propulsion budget.</p>
 
-      <h3>Flight system</h3>
+      <h3>Flight stack: ARK to Aslan</h3>
+      <p>We started with an ARK flight controller, ESC, and GPS, which together cost $488. Switching to Aslan's Pro stack and M10 GPS brought that to about $260, saving roughly $229 while keeping an H7 processor, dual IMUs, a barometer, and onboard 12&nbsp;V, 5&nbsp;V, and 3.3&nbsp;V regulators. The trade-off was maturity: the Aslan flight controller had only just started shipping, so confirming ArduPilot support became an action item before ordering.</p>
+
+      <h3>Onboard AI detection: dropped</h3>
+      <p>The original plan ran person and vehicle detection on a Raspberry Pi 5 with Raspberry Pi's 13&nbsp;TOPS AI HAT+. Checking each part against Raspberry Pi's own compliance table showed that the Pi 5 passes, but the AI HAT+ and the Pi's active cooler both fail NDAA sections 817 and 848. We removed both, which also saved $70 and about 50&nbsp;g. The Pi stayed on board for zoom and the position overlay, which need little computing power.</p>
+
+      <h3>Thermal: an upgrade, not a compromise</h3>
+      <p>Thermal is valuable for cueing: even a low-detail heat image shows the operator where to look before switching to the daylight camera for detail. But a thermal camera worth buying would take a large share of the budget and weight margin. Instead of squeezing in a low-resolution sensor, we're proposing a good-resolution thermal camera to the customer as a separate add-on. The Pi and flight controller both have spare video inputs for it.</p>
+
+      <h3>Video: digital, analog, then digital again</h3>
+      <p>Video went back and forth more than any other subsystem. Digital video looks far better but compliant digital systems are expensive, and for a while we couldn't find any NDAA-compliant low-light (STARVIS) digital camera at all. That pushed us to an analog plan built around a Fat Shark Aura camera and transmitter. Then we found the Divimath SeekerHD: NDAA compliant, a Sony IMX462 STARVIS sensor, 1080p60, and software digital zoom, for $115. It connects to the Raspberry Pi rather than straight to a transmitter, which turned out to be an advantage. The Pi handles the zoom and draws MGRS position, lat/long, and heading onto the image itself, then sends it out over HDMI to Divimath's digital transmitter. Dropping the AI HAT freed enough budget to keep the link digital.</p>
+
+      <h3>Camera pointing: pan and tilt</h3>
+      <p>We chose two small servos for pan and tilt instead of a brushless gimbal. Tilt matters most: the operator needs to move between looking ahead to fly and scan, and looking straight down to watch a target while holding position. Pan lets the camera watch something off to the side while the drone keeps its heading. Roll does almost nothing on a slow-flying multirotor, and hobby servos are too slow to cancel it anyway. The design ranges are about +15&deg; to &minus;90&deg; of tilt and &plusmn;90&deg; of pan. When the customer's heading readout should show where the camera is looking, the camera heading is the vehicle heading plus the pan angle, wrapped to 0&ndash;360&deg;, and multiplied by 6400/360 to get NATO mils.</p>
+
+      <h3>Getting telemetry into MMCS</h3>
+      <p>The customer runs MMCS on Army field computers, so the drone's telemetry has to reach it through a radio plugged into the computer over USB. We added a pair of RFD900x-US 900&nbsp;MHz modems (Blue UAS listed) for that link and kept Crossfire for flight control, so a busy telemetry link can never interfere with the pilot's sticks. The bundle we chose cost $287 and was in stock, where a cheaper source was backordered past our build date.</p>
+    </section>
+
+    <section class="prose">
+      <h2>Analysis</h2>
+
+      <h3>Hover power and flight time</h3>
+      <p>I estimated hover power with momentum theory, then checked it against typical thrust and power coefficients for a 10&times;4.5 prop. At a conservative all-up weight of 5&nbsp;lb (2.27&nbsp;kg), each motor has to lift about 5.56&nbsp;N, or 567&nbsp;g.</p>
+      <div class="spec-grid">
+        <div><span>Thrust per motor</span><strong>5.56&nbsp;N (567&nbsp;g)</strong></div>
+        <div><span>Prop speed at hover</span><strong>~6,000&nbsp;rpm</strong></div>
+        <div><span>Figure of merit</span><strong>~0.65</strong></div>
+        <div><span>Electrical power</span><strong>~320&nbsp;W, about 15&nbsp;A from the pack</strong></div>
+        <div><span>Hover time</span><strong>~35&nbsp;min, using 85% of 216&nbsp;Wh</strong></div>
+        <div><span>Planned mission time</span><strong>25&ndash;28&nbsp;min, leaving margin for wind and maneuvering</strong></div>
+      </div>
+      <p>That assumes about 78% motor and ESC efficiency at partial throttle and 22&nbsp;W for the avionics, camera, and radios. At the parts list's actual weight of about 4.5&nbsp;lb, hover time rises to roughly 40 minutes, so the 5&nbsp;lb case is the conservative one.</p>
+
+      <h3>Prop size</h3>
+      <p>We wanted props smaller than 10&Prime; to keep the drone compact, so I checked what that would cost. At a fixed weight, ideal hover power scales with thrust to the 3/2 power divided by prop diameter, so smaller props need more power to hold the same weight up:</p>
+      <table class="data-table">
+        <thead><tr><th>Prop</th><th>Extra hover power</th><th>Est. flight time</th></tr></thead>
+        <tbody>
+          <tr><td>10&Prime;</td><td>Baseline</td><td>~30&nbsp;min</td></tr>
+          <tr><td>9&Prime;</td><td>~+11%</td><td>~27&nbsp;min</td></tr>
+          <tr><td>8&Prime;</td><td>~+25%</td><td>~24&nbsp;min</td></tr>
+          <tr><td>7&Prime;</td><td>~+43%</td><td>~21&nbsp;min</td></tr>
+        </tbody>
+      </table>
+      <p>This comparison used our early 30-minute estimate as the baseline, before the more detailed hover analysis above. Below 9&Prime; the drone can't meet the 25-minute requirement. Because the X10's arms fold, a 10&Prime; frame packs nearly as small as a fixed 9&Prime; one, so we kept 10&Prime; props for the endurance margin.</p>
+
+      <h3>Weight</h3>
+      <p>The parts list adds up to about 2,020&nbsp;g. Wiring, connectors, printed mounts, and hardware bring the estimated all-up weight to about 2,110&nbsp;g (4.65&nbsp;lb), roughly 160&nbsp;g under the 2,268&nbsp;g limit. That margin is the main reason thermal is an add-on: a good thermal camera and its interface board would use most of it.</p>
+
+      <h3>Power distribution</h3>
       <ul>
-        <li><strong>Flight controller and ESC:</strong> we started with one compliant flight stack and switched to the NDAA-compliant Aslan Pro stack, with an H7 flight controller and an 80&nbsp;A ESC, plus Aslan's M10 GPS. It met our needs for less money, freeing budget for sensors.</li>
-        <li><strong>Propulsion:</strong> NDAA-compliant 3115-size motors on a collapsible carbon fiber frame, with propellers kept under 10&Prime; so the drone folds small enough to carry.</li>
-        <li><strong>Control link:</strong> a 915&nbsp;MHz receiver, chosen for range and reliability over the 5&nbsp;km requirement.</li>
+        <li><strong>Raspberry Pi 5:</strong> its own 5&nbsp;A regulator set to 5.2&nbsp;V. The flight controller's 5&nbsp;V output can't supply enough current, and a regulator that outputs exactly 5.0&nbsp;V often trips the Pi's undervoltage throttling after wire losses.</li>
+        <li><strong>Video transmitter:</strong> the flight controller's 12&nbsp;V, 3&nbsp;A output.</li>
+        <li><strong>Pan/tilt servos:</strong> the flight controller's 5&nbsp;V rail. They only make small, slow camera adjustments, so their current draw is low and a second regulator wasn't worth the weight.</li>
       </ul>
+    </section>
 
-      <h3>Seeing at night: EO, thermal, and AI</h3>
-      <p>The customer wants to find people and vehicles in poor light. The sensor plan reflects what each technology is actually good at:</p>
+    <section class="prose">
+      <h2>Communications</h2>
+      <p>Three separate radio links connect the aircraft to the ground, each with one job. The flight controller is the hub on the aircraft: the GPS feeds it, it drives the motors and the camera servos, and it shares its position and heading with the Pi for the video overlay.</p>
+      <table class="data-table">
+        <thead><tr><th>Link</th><th>Path</th><th>What it carries</th></tr></thead>
+        <tbody>
+          <tr><td>Control</td><td>Tango 2 PRO &harr; Crossfire receiver &harr; FC (915&nbsp;MHz)</td><td>Sticks, arm, flight modes, return-to-home, camera pan/tilt and zoom; link quality, battery, and GPS back to the radio's screen</td></tr>
+          <tr><td>Telemetry</td><td>FC &harr; RFD900x &harr; RFD900x &rarr; USB &rarr; MMCS field computer (900&nbsp;MHz)</td><td>Position, attitude, battery, and mode down; missions, waypoints, and commands up</td></tr>
+          <tr><td>Video</td><td>SeekerHD &rarr; Pi 5 &rarr; Divimath HDMI VTX &rarr; ground monitor (5.8&nbsp;GHz)</td><td>1080p video with MGRS, lat/long, and heading in degrees and mils drawn on the image</td></tr>
+        </tbody>
+      </table>
+      <p>If any one link drops, the others keep working, and the flight controller's failsafe settings decide what the aircraft does, such as returning home if the control link is lost.</p>
+    </section>
+
+    <section class="prose">
+      <h2>Budget</h2>
+      <p>The customer gave us $1,700 for the aircraft and $800 for the controller and ground display, and let us pool the two. The CDR parts list comes to <strong>$2,492.70</strong>, about $7 under the combined $2,500.</p>
       <ul>
-        <li><strong>Low-light EO camera</strong> as the primary sensor, giving the operator a detailed image even at dusk and dawn. It sits on a micro brushless servo for tilt, on a vibration-damped mount, which saves weight and cost over a full two-axis gimbal.</li>
-        <li><strong>Thermal</strong> for cueing: even a low-resolution thermal image shows hot spots and tells the operator where to look, before switching to the EO camera for detail. A thermal camera worth buying takes a large share of the budget, so we're proposing it to the customer as a separate, higher-cost add-on instead of shrinking it to fit the base build.</li>
-        <li><strong>Onboard AI detection</strong> on a companion computer, running a lightweight model to draw boxes around people and vehicles. The operator sees full-frame-rate video with boxes overlaid at whatever rate detection runs, and can switch between camera feeds and turn detection on or off.</li>
+        <li><strong>Biggest savings:</strong> switching flight stacks (about $229) and dropping the AI HAT+ ($70).</li>
+        <li><strong>Biggest late addition:</strong> the RFD900x telemetry pair for MMCS ($287), which we paid for by dropping a spare drone antenna and one spare set of props.</li>
+        <li><strong>Ground side:</strong> the Tango 2 PRO radio ($312) and Divimath monitor ($350) take most of the accessory budget; a cheap 4S battery runs the monitor, and one charger handles both the drone's Li-ion pack and the monitor's LiPo.</li>
+        <li><strong>Long-lead risks:</strong> the radio was on pre-order and the monitor sold out when we checked, so both are flagged on the parts list, with a USB video receiver and laptop as the display fallback.</li>
       </ul>
-
-      <h3>Getting video to the operator</h3>
-      <p>Digital video links give the best picture, but compliant digital systems are expensive and tie the operator to one brand of receiver and goggles. Since encrypting the video isn't a requirement, we're leaning toward a compliant analog system: a low-light analog camera, analog transmitter, and receiver. That cuts cost substantially and frees money from the accessories budget for the aircraft itself.</p>
-
-      <h3>Balancing the budget</h3>
-      <p>With about $1,700 for the aircraft, we're targeting a parts total under $1,600 to leave room for wiring and hardware. Nearly every decision traded one capability against another: a cheaper flight stack to afford a better camera, thermal as an option instead of a compromise, analog video instead of digital. Keeping all of it within the weight and endurance targets is an ongoing balancing act.</p>
     </section>
 
     <section class="prose">
       <h2>Next steps</h2>
       <ul>
-        <li>Finalize the remaining components and confirm compliance for each one</li>
-        <li>Build and integrate the airframe, flight system, cameras, and companion computer</li>
-        <li>Develop the operator display with MGRS position and heading</li>
+        <li>Confirm ArduPilot firmware support for the Aslan flight controller</li>
+        <li>Confirm with the MMCS team that it accepts MAVLink over a USB serial port</li>
+        <li>Order parts, then build and integrate the airframe, flight system, camera, and Pi</li>
+        <li>Write the Pi software for zoom and the MGRS, lat/long, and heading overlay</li>
         <li>Flight-test against the weight, endurance, and range requirements</li>
-        <li>Deliver to the Army customer for evaluation</li>
+        <li>Pitch the thermal add-on and deliver to the Army customer for evaluation</li>
       </ul>
-      <p class="viewer-hint">Photos, CAD, and test results will be added as the build progresses.</p>
     </section>
 
     <section>
@@ -105,12 +198,16 @@
       <ul class="tags">
         <li>Project management</li>
         <li>Customer requirements</li>
-        <li>NDAA / Blue UAS compliance</li>
+        <li>NDAA compliance</li>
         <li>System architecture</li>
         <li>Component selection</li>
-        <li>UAV design</li>
-        <li>Computer vision</li>
-        <li>Budgeting</li>
+        <li>CAD</li>
+        <li>Thrust &amp; power analysis</li>
+        <li>Weight &amp; cost budgeting</li>
+        <li>RF link design</li>
+        <li>Wiring &amp; power distribution</li>
+        <li>ArduPilot / MAVLink</li>
+        <li>Raspberry Pi</li>
       </ul>
     </section>
 

@@ -239,3 +239,10 @@ a.more-link:hover h4 { color: var(--blue); }
 .card-wide:not(.card-flip) .card-media.media-render { border-left: 0; border-right: 1.5px solid var(--ink); }
 .card-wide .card-media.media-cad, .card-wide.card-flip .card-media.media-cad { background: #fff; }
 .card-wide .card-media.media-cad img { padding: 6px; }
+
+/* Data tables on project pages */
+.data-table { width: 100%; max-width: 860px; border-collapse: collapse; margin: 8px 0 20px; font: 500 0.95rem/1.45 var(--head); }
+.data-table th, .data-table td { text-align: left; vertical-align: top; padding: 10px 14px; border: 1.5px solid var(--ink); }
+.data-table th { font-weight: 700; background: var(--ink); color: var(--paper); }
+.data-table td:first-child { font-weight: 700; white-space: nowrap; }
+@media (max-width: 760px) { .data-table { font-size: 0.85rem; } .data-table th, .data-table td { padding: 8px 10px; } .data-table td:first-child { white-space: normal; } }
