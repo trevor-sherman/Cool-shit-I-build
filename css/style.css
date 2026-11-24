@@ -254,3 +254,4 @@ a.more-link:hover h4 { color: var(--blue); }
 .toc ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0; padding: 0; }
 .toc a { display: block; padding: 4px 10px; border: 1.5px solid var(--line); font: 700 0.85rem var(--head); color: var(--ink); text-decoration: none; }
 .toc a:hover { border-color: var(--blue); color: var(--blue); }
+.data-table code { font: 600 0.85em ui-monospace, SFMono-Regular, Menlo, monospace; }

@@ -69,6 +69,7 @@
         <li><a href="#control">Control link</a></li>
         <li><a href="#telemetry">Telemetry &amp; MMCS</a></li>
         <li><a href="#integration">MMCS &amp; ATAK</a></li>
+        <li><a href="#deployment">Deployment concepts</a></li>
         <li><a href="#budget">Budget</a></li>
         <li><a href="#next">Next steps</a></li>
       </ol>
@@ -553,6 +554,20 @@
         <li>Run the RFD900x at around 100&ndash;250&nbsp;mW. Telemetry needs much less margin than control.</li>
         <li>Range-test the control link with the telemetry radio transmitting before any long flight.</li>
       </ul>
+      <p>Other pilots report flying Crossfire and RFD900x radios on the same aircraft without problems, but making both coexist reliably takes a few configuration changes on each side:</p>
+      <table class="data-table">
+        <thead><tr><th>Where</th><th>Adjustment</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>RFD900x</td><td>Lower transmit power (<code>TXPOWER</code>) from the 1&nbsp;W maximum to roughly 20&ndash;24&nbsp;dBm (100&ndash;250&nbsp;mW)</td><td>Less energy into the Crossfire receiver a few centimeters away</td></tr>
+          <tr><td>RFD900x</td><td>Narrow the hopping range (<code>MIN_FREQ</code>, <code>MAX_FREQ</code>, <code>NUM_CHANNELS</code>) to part of the 902&ndash;928&nbsp;MHz band</td><td>Reduces how often the two radios land on the same frequency; Crossfire still hops the full band, so this helps rather than solves</td></tr>
+          <tr><td>RFD900x</td><td>Matching <code>NET_ID</code> and settings on both modems, with a unique net ID</td><td>Keeps our pair from linking with other RFD radios nearby</td></tr>
+          <tr><td>RFD900x</td><td>Air data rate (<code>AIR_SPEED</code>) and MAVLink stream rates sized to what MMCS needs</td><td>A lower air rate gains range; sending only needed messages keeps the link from saturating</td></tr>
+          <tr><td>ArduPilot</td><td>Crossfire UART set to RC input (<code>SERIALx_PROTOCOL = 23</code>); RFD900x UART set to MAVLink 2 (<code>SERIALy_PROTOCOL = 2</code>) at the modem's baud rate</td><td>Each radio gets its own serial port and protocol on the flight controller</td></tr>
+          <tr><td>ArduPilot</td><td>Separate failsafes for loss of RC (Crossfire) and loss of ground station (RFD900x)</td><td>Losing telemetry alone shouldn't force a return-to-home while the pilot still has control</td></tr>
+          <tr><td>Crossfire</td><td>Dynamic power on; receiver antennas mounted away from the RFD900x antennas</td><td>Crossfire raises power only when the link needs it</td></tr>
+          <tr><td>Airframe</td><td>Antennas 20&nbsp;cm or more apart, one vertical and one horizontal, clear of the carbon plates</td><td>Physical and polarization isolation, the cheapest fix</td></tr>
+        </tbody>
+      </table>
       <p>One open item: this assumes MMCS accepts MAVLink over a USB serial port. If it expects a different format, such as Cursor-on-Target, a small translator program on the field computer would sit between the radio and MMCS.</p>
 
       <h3>All three links</h3>
@@ -630,6 +645,57 @@
       </ul>
     </section>
 
+    <section id="deployment" class="prose">
+      <h2>Deployment concepts: who carries what</h2>
+      <p>How the system is split between the vehicle and the soldier on foot changes what the ground equipment should be. We don't yet know how the unit plans to use the drone, so this section lays out the concepts we're weighing. Choosing between them needs more research into the Army's existing systems and a conversation with our U.S. Army point of contact.</p>
+
+      <h3>Concept 1: dismounted operator with ATAK only</h3>
+      <p>If the operator is away from any vehicle and carries only the radio and an ATAK phone, everything has to be portable and battery powered.</p>
+      <ul>
+        <li><strong>Video:</strong> the best option is likely the GroundLink receiver plugged into the ATAK device, so video, the map, and the drone's track share one screen. The cost is weight and complexity: a 190&nbsp;g receiver, its antennas, a battery for its roughly 10&nbsp;W draw, and a cable to the phone, all in the operator's kit. The simpler alternative is the Divimath monitor clipped onto the Tango with a custom 3D-printed bracket: lighter and self-contained, but the video never reaches ATAK.</li>
+        <li><strong>Telemetry and missions:</strong> the pilot always gets basic telemetry on the Tango's screen over Crossfire, plus position and heading burned into the video. Planning or changing missions from ATAK needs MAVLink, which means the operator would also carry the RFD900x ground modem plugged into the phone.</li>
+        <li><strong>Trade-off:</strong> the most capable dismounted kit is a lot of gear for one soldier: radio, monitor or receiver, phone, telemetry modem, antennas, and batteries.</li>
+      </ul>
+
+      <h3>Concept 2: vehicle ground station with a free-roaming pilot</h3>
+      <p>Here the ground station lives permanently on the vehicle, and the pilot can fly from inside it or from another position.</p>
+      <ul>
+        <li><strong>On the vehicle:</strong> the GroundLink receiver and the RFD900x ground modem mounted inside, with their antennas on a mast or along the roof for height and a clear view. Both connect over USB to the vehicle's MMCS computer, which would get the live video, full MAVLink 2 telemetry, and mission planning: the drone's complete capability.</li>
+        <li><strong>The pilot:</strong> carries the Tango with a Divimath monitor on a 3D-printed mount. Control comes over Crossfire directly between the radio and the drone, so it doesn't depend on the vehicle at all. The pilot sees the video and the burned-in MGRS and heading overlay on the monitor, and basic telemetry on the Tango's screen.</li>
+        <li><strong>Split roles:</strong> the vehicle crew plans missions and watches the full picture; the pilot flies, launches, and recovers from wherever is best. Since Divimath's video is a broadcast, a second receiver with the right password should be able to watch at the same time as the vehicle's, which we still need to confirm.</li>
+      </ul>
+      <p>Integration details to work out for this concept:</p>
+      <ul>
+        <li><strong>Vehicle power:</strong> Army vehicles run on a 28&nbsp;V DC electrical system, which can be higher than the GroundLink's 25&nbsp;V input limit, so it would need a DC-DC converter.</li>
+        <li><strong>Mounting:</strong> whether we're allowed to mount antennas and equipment on the vehicle, and where, so they clear the vehicle's own radio antennas.</li>
+        <li><strong>Interference:</strong> vehicles carry their own radios and sometimes electronic warfare equipment, which could affect our 900&nbsp;MHz and 5.8&nbsp;GHz links.</li>
+        <li><strong>Range:</strong> the 5&nbsp;km range would be measured from the vehicle's antennas for video and telemetry, but from the pilot for control.</li>
+      </ul>
+
+      <h3>Concept 3: both</h3>
+      <p>The vehicle station from Concept 2, with ATAK added for dismounted soldiers. The catch is telemetry: the RFD900x pair is point-to-point by default, so if the vehicle holds the only ground modem, a dismounted ATAK user gets no MAVLink. Options include:</p>
+      <ul>
+        <li><strong>A second ground modem:</strong> RFDesign offers separate multipoint firmware for more than two modems, so one aircraft could talk to both the vehicle and a dismounted operator. Users report it can be finicky to configure, and it disables some features, so it needs testing.</li>
+        <li><strong>Relaying through the vehicle:</strong> forward MAVLink from the vehicle computer to ATAK devices over the unit's network, which only works while they're within range of that network and only if the link is secured.</li>
+        <li><strong>Video on ATAK:</strong> a second GroundLink with the dismounted operator, or video shared from the vehicle over the network, with the same range and security limits.</li>
+      </ul>
+
+      <h3>Comparing the concepts</h3>
+      <table class="data-table">
+        <thead><tr><th></th><th>1: Dismounted, ATAK only</th><th>2: Vehicle station + roaming pilot</th><th>3: Both</th></tr></thead>
+        <tbody>
+          <tr><td>Video for the pilot</td><td>GroundLink to ATAK, or monitor on the radio</td><td>Monitor on the radio</td><td>Monitor on the radio</td></tr>
+          <tr><td>Video in MMCS</td><td>None</td><td>GroundLink on the vehicle (TBD)</td><td>GroundLink on the vehicle (TBD)</td></tr>
+          <tr><td>Video in ATAK</td><td>GroundLink (per Divimath)</td><td>None</td><td>Second GroundLink or network relay</td></tr>
+          <tr><td>Full telemetry and mission planning</td><td>ATAK, if the operator carries the RFD900x modem</td><td>MMCS on the vehicle</td><td>MMCS, plus ATAK through multipoint or relay</td></tr>
+          <tr><td>Pilot's telemetry</td><td>Tango screen + video overlay</td><td>Tango screen + video overlay</td><td>Tango screen + video overlay</td></tr>
+          <tr><td>Extra hardware</td><td>Least, but all carried</td><td>Vehicle mounts, antenna mast, power converter</td><td>Most: extra receiver and/or modem</td></tr>
+          <tr><td>Biggest unknown</td><td>Whether fielded phones accept the USB devices</td><td>Vehicle mounting, power, and MMCS compatibility</td><td>Multipoint reliability and network security</td></tr>
+        </tbody>
+      </table>
+      <p>Concept 2 looks like the cleanest split: control from anywhere, and full capability where the vehicle's computer and power already are. But which concept is right depends on how the unit actually operates, what its vehicles and devices allow, and how often operators will be away from the vehicle, and those are questions for our Army point of contact. Until then, the baseline parts list (monitor on the radio, one RFD900x pair) works for every concept and can grow into any of them.</p>
+    </section>
+
     <section id="budget" class="prose">
       <h2>Budget</h2>
       <p>The customer gave us $1,700 for the aircraft and $800 for the controller and ground display, and let us pool the two. The CDR parts list comes to <strong>$2,492.70</strong>, about $7 under the combined $2,500.</p>
@@ -654,6 +720,7 @@
         <li>Thrust-stand test one motor and prop to pin down the flight-time estimate</li>
         <li>Range-test all three links, including control with telemetry transmitting</li>
         <li>Research the hardware and software on fielded MMCS computers and ATAK devices, including whether they would accept the GroundLink receiver's USB video</li>
+        <li>Discuss deployment concepts with our Army point of contact: who carries what, vehicle mounting and power, and how often operators work away from the vehicle</li>
         <li>Pitch the thermal add-on and deliver to the Army customer for evaluation</li>
       </ul>
     </section>
