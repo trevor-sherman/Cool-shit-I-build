@@ -58,10 +58,12 @@
         <li><a href="#video">Video link</a></li>
         <li><a href="#pipeline">Video pipeline &amp; Pi</a></li>
         <li><a href="#thermal">Thermal</a></li>
+        <li><a href="#avionics">Flight stack &amp; compute</a></li>
         <li><a href="#propulsion">Propulsion</a></li>
         <li><a href="#power">Battery &amp; power</a></li>
         <li><a href="#control">Control link</a></li>
         <li><a href="#telemetry">Telemetry &amp; MMCS</a></li>
+        <li><a href="#integration">MMCS &amp; ATAK</a></li>
         <li><a href="#budget">Budget</a></li>
         <li><a href="#next">Next steps</a></li>
       </ol>
@@ -89,7 +91,7 @@
         <div><span>Sensors</span><strong>Low-light EO camera, thermal as an option</strong></div>
         <div><span>Autonomy</span><strong>Waypoints, position hold, return-to-home, telemetry</strong></div>
         <div><span>Operator display</span><strong>Live video, position in MGRS and lat/long, heading in degrees and mils</strong></div>
-        <div><span>Integration</span><strong>Telemetry into MMCS, the Army's field-computer software</strong></div>
+        <div><span>Integration</span><strong>Telemetry into MMCS, the Army's vehicle mission-command software</strong></div>
         <div><span>Budget</span><strong>$1,700 aircraft + $800 controller and display, pooled</strong></div>
       </div>
     </section>
@@ -182,12 +184,18 @@
       </table>
 
       <h3>Why Divimath was the only realistic digital option</h3>
-      <ul>
-        <li><strong>DJI, Walksnail, HDZero:</strong> the usual digital FPV systems, all out because of their Chinese supply chains.</li>
-        <li><strong>ModalAI MVX:</strong> a U.S.-built, Blue UAS-listed, encrypted digital link, but the ground receiver alone is $1,500 and the air side requires ModalAI's VOXL flight computer, a complete re-architecture.</li>
-        <li><strong>IP mesh radios (Doodle Labs, Microhard, Silvus):</strong> compliant and long range, but they need a separate video encoder, and the air-side hardware alone ran around $650, which broke the budget.</li>
-        <li><strong>Divimath HDMI VTX:</strong> NDAA compliant, made in Thailand, $300, 25&ndash;900&nbsp;mW output on 5.8&nbsp;GHz. It accepts HDMI from any source, including a Raspberry Pi, which is exactly what our pipeline needed. Divimath's other VTXs only take video straight from Divimath's own cameras.</li>
-      </ul>
+      <p>DJI, Walksnail, and HDZero, the usual digital FPV systems, were out immediately because of their Chinese supply chains. These are the compliant video links I compared:</p>
+      <table class="data-table">
+        <thead><tr><th>Video link</th><th>Type</th><th>Cost</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Fat Shark Aura</td><td>Analog, 1&nbsp;W, Blue UAS</td><td>~$70</td><td>Baseline for a while; cheap but standard definition</td></tr>
+          <tr><td>Divimath Long Range VTX</td><td>Digital, up to 1&nbsp;W</td><td>~$200</td><td>Only accepts Divimath's own MIPI cameras, so it can't take video from the Pi</td></tr>
+          <tr><td><strong>Divimath HDMI VTX</strong></td><td>Digital, 25&ndash;900&nbsp;mW</td><td>$300</td><td><strong>Chosen:</strong> takes HDMI from any source, including the Pi</td></tr>
+          <tr><td>Microhard pMDDL2450</td><td>IP data link</td><td>~$650 air side</td><td>Needs a separate encoder; broke the budget</td></tr>
+          <tr><td>ModalAI MVX</td><td>Digital, encrypted, Blue UAS</td><td>$1,500 ground receiver</td><td>Requires ModalAI's VOXL flight computer: a full re-architecture</td></tr>
+        </tbody>
+      </table>
+      <p>The Divimath HDMI VTX is NDAA compliant, made in Thailand, and transmits on 5.8&nbsp;GHz with about 1&nbsp;ms of added latency at 720p60 or 1080p30. Being able to accept video from the Pi is what made it work: everything else in our pipeline depends on the Pi sitting between camera and transmitter.</p>
 
       <h3>Encryption as a bonus</h3>
       <p>Encrypted video wasn't a customer requirement, but it's a real operational security benefit: an unencrypted feed shows anyone with a cheap receiver exactly what the drone is looking at, and where. Divimath's NDAA product line encrypts its digital link with AES-256 at the physical layer, with no added latency, and only a Divimath receiver with the right password can decode it. It's exclusive to the NDAA line, so a hobby HDZero receiver can't watch it either. One caveat we flagged for the customer: U.S. amateur radio rules, which high-power 5.8&nbsp;GHz video often operates under, prohibit encryption. Using encryption depends on the spectrum authorization the Army operates under.</p>
@@ -246,11 +254,59 @@
       <p>Teledyne FLIR now states that its whole OEM thermal line (Lepton, Boson, Hadron, Neutrino) is NDAA compliant and assembled in California, which made it the default vendor. One paperwork note for the customer: the 60&nbsp;Hz Boson is export controlled at a higher level than the 9&nbsp;Hz version, so any non-U.S.-person team members need to be cleared before it's purchased.</p>
     </section>
 
+    <section id="avionics" class="prose">
+      <h2>Flight stack and compute</h2>
+
+      <h3>Flight controller and ESC</h3>
+      <p>The flight controller runs ArduPilot, which handles waypoints, position hold, return-to-home, and MAVLink telemetry on its own, independent of the companion computer. I compared three compliant stacks:</p>
+      <table class="data-table">
+        <thead><tr><th></th><th>ARK FPV + ARK 4-in-1</th><th>Lumenier LUX F765 + ESC</th><th><strong>Aslan H7 Pro + 80&nbsp;A PRO</strong></th></tr></thead>
+        <tbody>
+          <tr><td>Price</td><td>$413.49</td><td>~$224 less than ARK</td><td><strong>$189.84 bundle</strong></td></tr>
+          <tr><td>Made in</td><td>USA</td><td>Thailand</td><td>Virginia, USA</td></tr>
+          <tr><td>Processor</td><td>H7</td><td>F7</td><td>STM32H743, dual IMUs, barometer</td></tr>
+          <tr><td>ESC rating</td><td>50&nbsp;A continuous per motor</td><td>&mdash;</td><td>80&nbsp;A per motor</td></tr>
+          <tr><td>12&nbsp;V output for the VTX</td><td>Yes</td><td>No</td><td>Yes, 3&nbsp;A (plus 5&nbsp;V and 3.3&nbsp;V)</td></tr>
+          <tr><td>Track record</td><td>Documented in ArduPilot and PX4</td><td>Established</td><td>Brand new; ArduPilot target to confirm</td></tr>
+        </tbody>
+      </table>
+      <p>Aslan saved about $229 against ARK once the GPS was included and kept the 12&nbsp;V regulator the Lumenier option lacked. The risk is maturity: the board had only just started shipping, so confirming an ArduPilot build is our first action item. Aslan is also registered as a government contractor, which helps for an Army program.</p>
+
+      <h3>Companion computer</h3>
+      <p>The companion computer had to come from the DCMA Blue UAS list. When onboard detection was still a requirement, I compared the Pi 5 against NVIDIA's Jetson boards:</p>
+      <table class="data-table">
+        <thead><tr><th></th><th><strong>Raspberry Pi 5</strong></th><th>Jetson Orin Nano</th><th>Jetson Xavier NX</th></tr></thead>
+        <tbody>
+          <tr><td>AI performance</td><td>CPU only (AI HAT+ dropped)</td><td>Up to 40 TOPS GPU</td><td>21 TOPS GPU</td></tr>
+          <tr><td>Small-model detection</td><td>~11&nbsp;fps at 640&nbsp;px</td><td>~40&ndash;60&nbsp;fps</td><td>Between the two</td></tr>
+          <tr><td>Power</td><td>~5&ndash;12&nbsp;W</td><td>~7&ndash;25&nbsp;W</td><td>~10&ndash;20&nbsp;W</td></tr>
+          <tr><td>Compliant cost</td><td><strong>~$70&ndash;110</strong></td><td>From ~$1,232 (NDAA bundle incl. FC)</td><td>Likely $600+ with carrier</td></tr>
+          <tr><td>Video out</td><td>Micro-HDMI, straight to the VTX</td><td>Mini DisplayPort, needs an adapter</td><td>Depends on carrier</td></tr>
+        </tbody>
+      </table>
+      <p>A Jetson would make detection far better, especially on small targets at altitude, but it costs most of the budget, adds weight and 10&ndash;15&nbsp;W, and would duplicate the flight controller. The Pi 5 meets the requirements; a Jetson is the identified upgrade if the customer funds onboard AI separately. We also chose the 4&nbsp;GB Pi over the 8&nbsp;GB, since the extra memory adds cost without changing performance for this workload.</p>
+    </section>
+
     <section id="propulsion" class="prose">
       <h2>Propulsion sizing</h2>
 
       <h3>Thrust required</h3>
       <p>I sized the propulsion for a conservative all-up weight of 5&nbsp;lb (2.27&nbsp;kg, or 22.2&nbsp;N). Each of the four motors has to lift about 5.56&nbsp;N, or 567&nbsp;g, to hover. Using momentum theory, the ideal power to hover is T<sup>3/2</sup>&nbsp;/&nbsp;&radic;(2&rho;A), about 37&nbsp;W per motor for a 10&Prime; disk. With typical thrust and power coefficients for a 10&times;4.5 prop (C<sub>T</sub>&nbsp;&asymp;&nbsp;0.11, C<sub>P</sub>&nbsp;&asymp;&nbsp;0.045), the prop actually needs about 6,000&nbsp;rpm and 58&nbsp;W of shaft power, a figure of merit of about 0.65.</p>
+
+      <h3>Motor options</h3>
+      <p>Requiring NDAA-compliant motors cut the field to a handful of U.S. suppliers. These are the motors I worked through:</p>
+      <table class="data-table">
+        <thead><tr><th>Motor</th><th>Compliance</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Unusual Machines UM2807 1300&nbsp;KV</td><td>NDAA</td><td>Early pick at about $200 for four; sized for a lighter build with smaller props</td></tr>
+          <tr><td>Vertiq 40-06 G2, 370&nbsp;KV</td><td>U.S.-made; letter needed</td><td>Best for endurance on ~13&Prime; props, but integrated ESCs would replace the whole ESC plan; quote only</td></tr>
+          <tr><td>KDE Direct</td><td>Mixed U.S./overseas production</td><td>Good endurance motors, but compliance varies by part number</td></tr>
+          <tr><td>Unusual Machines 3115 900&nbsp;KV</td><td>NDAA</td><td>Proven on compliant 10&Prime; builds and ordered by the Army; no public price</td></tr>
+          <tr><td>GEPRC / iFlight 3115 900&nbsp;KV</td><td>Not compliant</td><td>The standard hobby pairing for 10&Prime; on 6S; useful as a performance reference only</td></tr>
+          <tr><td>Atlas Motion 3115, 850 or 950&nbsp;KV</td><td>NDAA</td><td>Found and selected at 850&nbsp;KV first</td></tr>
+          <tr><td><strong>Atlas Motion 3115, 760&nbsp;KV</strong></td><td><strong>NDAA</strong></td><td><strong>Final:</strong> lower KV for a more efficient hover (below)</td></tr>
+        </tbody>
+      </table>
 
       <h3>Prop size</h3>
       <p>We wanted props smaller than 10&Prime; to keep the drone compact. At a fixed weight, ideal hover power scales with thrust to the 3/2 power divided by prop diameter, so smaller props need more power to hold the same weight up. Using our early 30-minute estimate as the baseline:</p>
@@ -263,7 +319,27 @@
           <tr><td>7&Prime;</td><td>~+43%</td><td>~21&nbsp;min</td></tr>
         </tbody>
       </table>
-      <p>Below 9&Prime; the drone can't meet the 25-minute requirement. Because the X10's arms fold, a 10&Prime; frame packs nearly as small as a fixed 9&Prime; one, so we kept 10&Prime; props. We chose Master Airscrew 10&times;4.5 props over similar alternatives because their NDAA documentation was clearer.</p>
+      <p>Below 9&Prime; the drone can't meet the 25-minute requirement. Because the X10's arms fold, a 10&Prime; frame packs nearly as small as a fixed 9&Prime; one, so we kept 10&Prime; props.</p>
+      <table class="data-table">
+        <thead><tr><th>Prop</th><th>Price</th><th>NDAA documentation</th><th>Trade-off</th></tr></thead>
+        <tbody>
+          <tr><td>APC 10&times;4.5MR, 2-blade</td><td>~$3 each</td><td>U.S.-made, but listed as not compliant by the reseller</td><td>Cheapest and efficient; needs shaft adapter rings</td></tr>
+          <tr><td>Master Airscrew 3MR 10&times;5, 3-blade</td><td>$16 each</td><td>Listed NDAA compliant</td><td>Third blade costs about 1.5&ndash;2 minutes of flight</td></tr>
+          <tr><td><strong>Master Airscrew 10&times;4.5, 2-blade</strong></td><td>&mdash;</td><td><strong>Listed NDAA compliant</strong></td><td><strong>Chosen:</strong> clear documentation and two-blade efficiency</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Frame</h3>
+      <table class="data-table">
+        <thead><tr><th></th><th><strong>DarwinFPV X10</strong></th><th>UMT LX10 V2</th></tr></thead>
+        <tbody>
+          <tr><td>Folding</td><td>Yes, 410&nbsp;mm wheelbase</td><td>Yes, folds to 93&nbsp;mm wide</td></tr>
+          <tr><td>Arm thickness</td><td>7&nbsp;mm</td><td>Thinner</td></tr>
+          <tr><td>Real cost</td><td>Baseline</td><td>$0&ndash;15 cheaper after UK shipping and duties</td></tr>
+          <tr><td>Payload room</td><td>Extended top plate for a large battery</td><td>Narrow body for the Pi, cameras, and pack</td></tr>
+        </tbody>
+      </table>
+      <p>Thin arms flex under a 2&nbsp;kg load on 10&Prime; props, which causes oscillation in the flight tune and vibration that shows up as jello in the camera feed. The X10's 7&nbsp;mm arms were worth a few dollars. DarwinFPV doesn't publish CAD for the frame, so the frame in our model is built from its published plate thicknesses, hole patterns, and overall dimensions.</p>
 
       <h3>Choosing the KV</h3>
       <p>A motor's KV rating is its unloaded speed per volt. On a 6S pack (about 21.6&nbsp;V nominal), it sets how fast the prop can spin and therefore where hover falls in the throttle range. Brushless motors are most efficient when loaded reasonably hard, so a motor that hovers at very low throttle wastes energy. Our first choice, a higher-KV 3115 motor, would have hovered at only about 30&ndash;35% throttle. Stepping down to the 760&nbsp;KV version of the same NDAA-compliant Atlas Motion 3115 moves hover to:</p>
@@ -284,8 +360,27 @@
       <h3>Li-ion over LiPo</h3>
       <p>FPV drones usually fly LiPo packs, which deliver huge currents for racing and acrobatics. A reconnaissance quad hovers at a gentle, steady load, which is what lithium-ion cells are good at. The Lumenier NAV 6S2P pack uses 21700 cells and stores about 227&nbsp;Wh/kg, roughly 1.5&times; the energy per gram of LiPo. The current LiPo could deliver would mostly go unused.</p>
 
+      <table class="data-table">
+        <thead><tr><th></th><th>LiPo</th><th><strong>Li-ion (21700)</strong></th></tr></thead>
+        <tbody>
+          <tr><td>Energy per gram</td><td>Baseline</td><td>~1.5&times;</td></tr>
+          <tr><td>Peak current</td><td>Very high</td><td>Moderate (this pack: 60&nbsp;A continuous)</td></tr>
+          <tr><td>Best for</td><td>Racing and acrobatics</td><td>Steady hover and cruise</td></tr>
+          <tr><td>Weakness</td><td>Short endurance</td><td>More voltage sag; loses capacity in the cold</td></tr>
+        </tbody>
+      </table>
+
       <h3>Pack size</h3>
-      <p>The 6S2P pack (10,000&nbsp;mAh, 216&nbsp;Wh) makes up about 43% of the drone's weight, near the usual 40&ndash;55% range for endurance multirotors. Bigger packs give diminishing returns: going to 3P would add about 1&nbsp;lb for roughly 5 more minutes, and 4P about 2&nbsp;lb for 8 minutes, breaking the weight limit and making the drone harder to carry.</p>
+      <p>The 6S2P pack (10,000&nbsp;mAh, 216&nbsp;Wh) makes up about 43% of the drone's weight, near the usual 40&ndash;55% range for endurance multirotors. Bigger packs give diminishing returns:</p>
+      <table class="data-table">
+        <thead><tr><th>Pack</th><th>Added weight</th><th>Added flight time</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td><strong>6S2P, 10&nbsp;Ah</strong></td><td>Baseline</td><td>Baseline (~35&nbsp;min hover)</td><td><strong>Chosen</strong></td></tr>
+          <tr><td>6S3P, 15&nbsp;Ah</td><td>~+1&nbsp;lb</td><td>~+5&nbsp;min</td><td>Breaks the 5&nbsp;lb limit</td></tr>
+          <tr><td>6S4P, 20&nbsp;Ah</td><td>~+2&nbsp;lb</td><td>~+8&nbsp;min</td><td>Far over the limit and hard to carry</td></tr>
+        </tbody>
+      </table>
+      <p>We also looked at a Molicel P50B 6S2P pack with a higher discharge rating, but the only ready-made source was in New Zealand, which meant slow, complicated battery shipping. The Lumenier pack is sold domestically, with an NDAA-listed version available.</p>
 
       <h3>Hover power and flight time</h3>
       <div class="spec-grid">
@@ -301,10 +396,20 @@
       <h3>Power distribution</h3>
       <ul>
         <li><strong>Motors:</strong> straight from the pack through the 4-in-1 ESC.</li>
-        <li><strong>Raspberry Pi 5:</strong> its own 5&nbsp;A regulator set to 5.2&nbsp;V. The flight controller's 5&nbsp;V output can't supply enough current, and a regulator that outputs exactly 5.0&nbsp;V often trips the Pi's undervoltage throttling after wire losses.</li>
+        <li><strong>Raspberry Pi 5:</strong> its own 5&nbsp;A regulator set to 5.2&nbsp;V. The flight controller's 5&nbsp;V output can't supply enough current, and a regulator that outputs exactly 5.0&nbsp;V often trips the Pi's undervoltage throttling after wire losses (see the comparison below).</li>
         <li><strong>Video transmitter:</strong> the flight controller's 12&nbsp;V, 3&nbsp;A output.</li>
         <li><strong>Pan/tilt servos:</strong> the flight controller's 5&nbsp;V rail. They only make small, slow camera adjustments, so their current draw is low and a second regulator wasn't worth the weight.</li>
       </ul>
+
+      <table class="data-table">
+        <thead><tr><th>Pi regulator</th><th>Price</th><th>Output</th><th>Weight</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>HobbyWing UBEC 3A</td><td>~$9</td><td>5&nbsp;V, 3&nbsp;A</td><td>11&nbsp;g</td><td>Too little current for a Pi 5</td></tr>
+          <tr><td>HobbyWing UBEC 5A Air</td><td>~$14</td><td>5.0&nbsp;V, 5&nbsp;A</td><td>21&nbsp;g</td><td>Works, but 5.0&nbsp;V risks undervoltage warnings</td></tr>
+          <tr><td>Pololu D36V50F5</td><td>~$35</td><td>5&nbsp;V, 5.5&nbsp;A</td><td>7&nbsp;g</td><td>Good, but the most expensive</td></tr>
+          <tr><td><strong>Matek BEC12S-PRO</strong></td><td><strong>~$19&ndash;23</strong></td><td><strong>5.2&nbsp;V, 5&nbsp;A</strong></td><td><strong>5&nbsp;g</strong></td><td><strong>Chosen:</strong> right voltage and lightest</td></tr>
+        </tbody>
+      </table>
 
       <h3>Weight</h3>
       <p>The parts list adds up to about 2,020&nbsp;g. Wiring, connectors, printed mounts, and hardware bring the estimated all-up weight to about 2,110&nbsp;g (4.65&nbsp;lb), roughly 160&nbsp;g under the 2,268&nbsp;g limit. A good thermal camera and its interface board would use most of that margin, which is another reason thermal is an add-on.</p>
@@ -313,6 +418,16 @@
     <section id="control" class="prose">
       <h2>Control link: Crossfire on 915&nbsp;MHz</h2>
       <p>The pilot flies with a Triumph Tango 2 PRO, an NDAA handheld radio with a built-in Crossfire transmitter, talking to an NDAA Crossfire diversity receiver on the drone. Crossfire is a long-range two-way control system: it updates at up to 150&nbsp;Hz, adjusts its transmit power automatically based on link quality, and sends telemetry back to the radio's screen.</p>
+
+      <table class="data-table">
+        <thead><tr><th>Receiver</th><th>Price</th><th>Trade-off</th></tr></thead>
+        <tbody>
+          <tr><td>Crossfire Nano RX Pro (NDAA)</td><td>$49.99</td><td>Cheaper, single antenna</td></tr>
+          <tr><td><strong>Crossfire Diversity Nano (NDAA)</strong></td><td><strong>$69.99</strong></td><td><strong>Chosen:</strong> two antennas, so the link survives when the frame blocks one at 5&nbsp;km</td></tr>
+          <tr><td>Orqa Ghost Atto 2.4&nbsp;GHz (NDAA)</td><td>$39.99</td><td>Separate band from telemetry, but needs a different handset and gives up 915&nbsp;MHz range</td></tr>
+          <tr><td>ModalAI Gemini ELRS</td><td>~$90&ndash;160</td><td>Blue UAS, but no MAVLink mode and no Tango support (below)</td></tr>
+        </tbody>
+      </table>
 
       <h3>915&nbsp;MHz vs. 2.4&nbsp;GHz</h3>
       <p>Both bands can cover 5&nbsp;km in clear line of sight. The differences come from physics:</p>
@@ -345,7 +460,7 @@
 
     <section id="telemetry" class="prose">
       <h2>Telemetry to MMCS</h2>
-      <p>The customer runs MMCS on Army field computers, so the drone's telemetry has to reach it through a radio plugged into the computer over USB. Before buying anything, I compared the ways to get telemetry to the ground:</p>
+      <p>The customer runs MMCS on Army vehicle computers, so the drone's telemetry has to reach it through a radio plugged into the computer over USB. Before buying anything, I compared the ways to get telemetry to the ground:</p>
       <table class="data-table">
         <thead><tr><th>Option</th><th>Cost</th><th>Verdict</th></tr></thead>
         <tbody>
@@ -358,6 +473,18 @@
         </tbody>
       </table>
       <p>The RFD900x is a long-range 900&nbsp;MHz telemetry modem. The air modem connects to a spare serial port on the flight controller; the ground modem plugs into the field computer over USB and appears as a normal serial port, so MMCS or any MAVLink ground station can connect to it. It supports full two-way MAVLink 2: live position, attitude, battery, and mode down; missions, waypoints, and commands up, so the operator can retask the drone in flight. The bundle we chose includes both modems, diversity antennas for each, and the USB cable, and was in stock when a cheaper source was backordered past our build date.</p>
+
+      <table class="data-table">
+        <thead><tr><th>Telemetry radio</th><th>Cost (pair)</th><th>Problem</th></tr></thead>
+        <tbody>
+          <tr><td>Holybro SiK</td><td>~$60&ndash;100</td><td>Made in China: not compliant</td></tr>
+          <tr><td>3DR SiK Air</td><td>~$76&ndash;86</td><td>Evaluation-only, not FCC approved, 100&nbsp;mW is marginal at 5&nbsp;km</td></tr>
+          <tr><td>3DR SiK Long Range</td><td>~$340</td><td>No NDAA claim and requires an amateur license</td></tr>
+          <tr><td>Two bare RFD900x-US modems</td><td>~$240&ndash;250</td><td>Same radio; antennas and cables sourced separately</td></tr>
+          <tr><td>RFD900x-US bundle (RMRC)</td><td>$279</td><td>Backordered past our build date</td></tr>
+          <tr><td><strong>RFD900x-US bundle (IRLock)</strong></td><td><strong>$287</strong></td><td><strong>Chosen:</strong> in stock, complete kit</td></tr>
+        </tbody>
+      </table>
 
       <h3>Two links in one band</h3>
       <p>Keeping Crossfire for control and the RFD900x for telemetry gives redundancy: if either link drops, the other still works, and ArduPilot's failsafes handle both. But both run in the 902&ndash;928&nbsp;MHz band, and a 1&nbsp;W telemetry transmitter a few centimeters from the control receiver could drown it out. The plan for that:</p>
@@ -379,6 +506,65 @@
       </table>
     </section>
 
+    <section id="integration" class="prose">
+      <h2>Integrating with Army systems: MMCS and ATAK</h2>
+      <p>A reconnaissance drone is only useful if what it sees shows up where soldiers already look. For this customer that means two systems: the mission-command software in their vehicles, and the map app on the phones dismounted soldiers carry. The drone doesn't need custom software for either; the key is speaking the protocols they already understand.</p>
+      <table class="data-table">
+        <thead><tr><th></th><th>MMCS (MMC-S)</th><th>ATAK</th></tr></thead>
+        <tbody>
+          <tr><td>Full name</td><td>Mounted Mission Command &ndash; Software</td><td>Android Team Awareness Kit</td></tr>
+          <tr><td>Who uses it</td><td>Crews in vehicles and command posts</td><td>Dismounted soldiers on Android end-user devices</td></tr>
+          <tr><td>Runs on</td><td>Mounted Family of Computer Systems (MFoCS) vehicle computers</td><td>Rugged Android phones and tablets</td></tr>
+          <tr><td>Role</td><td>Replaces JBC-P for friendly-force tracking and situational awareness</td><td>Shared map, chat, and tracks; drones through the UAS Tool plugin</td></tr>
+          <tr><td>How our drone connects</td><td>RFD900x ground modem over USB</td><td>UAS Tool over MAVLink (serial or network)</td></tr>
+          <tr><td>Open question</td><td>Native MAVLink, or needs a Cursor-on-Target bridge</td><td>USB-OTG serial with the RFD900x, to be bench-tested</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Why MAVLink 2 matters</h3>
+      <p>MAVLink is the open drone messaging protocol that ArduPilot and PX4 use. The U.S. military has standardized on it for small drones: the joint-services RAS-A MAVLink Control Link Interoperability Profile is built directly on top of MAVLink, using newer message definitions. That made protocol choice a requirement in practice. Our ArduPilot flight controller and RFD900x link carry full two-way MAVLink 2, which lines up with both systems. It was also one more reason Crossfire couldn't serve as the telemetry link, since it supports only MAVLink 1.</p>
+
+      <h3>MMCS on vehicle computers</h3>
+      <p>MMCS is the main software of the Army's Mounted Computing Environment and is replacing the older Joint Battle Command&ndash;Platform (JBC-P) software on the same vehicle computers. The plan is simple on our side: the RFD900x ground modem plugs into the vehicle computer's USB port and appears as a serial port carrying MAVLink. What happens next depends on MMCS's interface, which we're confirming with the customer:</p>
+      <ul>
+        <li><strong>If MMCS reads MAVLink directly,</strong> it connects to the serial port like any ground station, and the drone shows up live with no extra software.</li>
+        <li><strong>If it expects Cursor-on-Target (CoT),</strong> the XML position format used across Army situational-awareness tools, a small bridge program on the computer translates the drone's MAVLink position into CoT tracks.</li>
+        <li><strong>Either way,</strong> a MAVLink router on the vehicle computer can share the single radio link with other applications, such as a mission planner or networked ATAK devices, instead of locking it to one program.</li>
+      </ul>
+
+      <h3>ATAK and the UAS Tool plugin</h3>
+      <p>ATAK is the map application soldiers carry on Android devices, and its free UAS Tool plugin lets an operator fly common drones from ATAK and share the drone's live position and camera stream with other users. It connects to ArduPilot and PX4 platforms over MAVLink through a serial port, UDP, or TCP, and its features cover what our customer asked for:</p>
+      <ul>
+        <li><strong>Telemetry:</strong> live position, altitude, battery, and flight mode, with the drone on the same map as friendly forces.</li>
+        <li><strong>Control:</strong> arm/disarm, MAVLink flight modes, and camera gimbal controls.</li>
+        <li><strong>Mission planning:</strong> creating and editing routes, executing them, and receiving tasks from other users.</li>
+        <li><strong>Sharing:</strong> broadcasting the camera's field of view, its four ground corners, telemetry, and video to other ATAK and WinTAK devices on the network.</li>
+      </ul>
+      <p>For our drone, there are two ways to get MAVLink into ATAK. The simplest is to plug the RFD900x ground modem directly into the Android device with a USB-OTG cable, which UAS Tool should see as a serial connection; that needs a bench test. The other is to use the vehicle computer as a hub, with a MAVLink router forwarding the link over the vehicle's network to every ATAK device nearby. ATAK works natively in MGRS, the same grid our video overlay uses, so the coordinates the operator reads off the video match the map.</p>
+
+      <h3>Mission planning workflow</h3>
+      <table class="data-table">
+        <thead><tr><th>Step</th><th>How it works</th><th>Link used</th></tr></thead>
+        <tbody>
+          <tr><td>Plan</td><td>Draw a route in ATAK (UAS Tool) or a mission planner on the vehicle computer</td><td>&mdash;</td></tr>
+          <tr><td>Upload</td><td>Waypoints are sent to ArduPilot and stored on the flight controller</td><td>RFD900x (MAVLink 2)</td></tr>
+          <tr><td>Execute</td><td>Pilot flips AUTO on the Tango, or the operator starts it from UAS Tool</td><td>Crossfire or RFD900x</td></tr>
+          <tr><td>Monitor</td><td>Drone track and camera footprint on ATAK and MMCS maps; video on the Divimath monitor</td><td>RFD900x + video link</td></tr>
+          <tr><td>Retask</td><td>Tap a point on the map to send the drone there (Guided mode) or edit the route mid-flight</td><td>RFD900x</td></tr>
+          <tr><td>Recover</td><td>Return-to-home from a Tango switch, UAS Tool, or automatically on link loss</td><td>Either link, or onboard failsafe</td></tr>
+          <tr><td>Fallback</td><td>Without the telemetry link, routes are pre-loaded over USB before launch</td><td>None in flight</td></tr>
+        </tbody>
+      </table>
+      <p>Because the flight controller stores the mission, the drone keeps flying its route even if telemetry drops, and return-to-home doesn't depend on any ground software working.</p>
+
+      <h3>Getting video into ATAK</h3>
+      <p>Today, our video goes over Divimath's dedicated radio to a dedicated monitor. It isn't a network stream, so ATAK can't show it by default, and the RFD900x is far too slow to carry video. Military drones that do stream to ATAK typically send video over an IP radio as an RTSP stream, tagged with MISB ST&nbsp;0601 metadata (the standard for embedding the drone's position and camera pointing in each frame), so the map can project exactly where the camera is looking. Two paths for us:</p>
+      <ul>
+        <li><strong>Ground-side encoding:</strong> capture the Divimath receiver's HDMI output on the vehicle computer, encode it as a network stream, and add MISB metadata from the MAVLink telemetry already arriving over the RFD900x. This needs no aircraft changes.</li>
+        <li><strong>IP radio upgrade:</strong> replace the video and telemetry links with a single compliant IP data link (Microhard or Doodle Labs class) carrying video, MAVLink, and metadata together, the way commercial Army drones do. The Pi already handles the video, so it would encode the stream directly. This is the most capable option, but it's well over our current budget.</li>
+      </ul>
+    </section>
+
     <section id="budget" class="prose">
       <h2>Budget</h2>
       <p>The customer gave us $1,700 for the aircraft and $800 for the controller and ground display, and let us pool the two. The CDR parts list comes to <strong>$2,492.70</strong>, about $7 under the combined $2,500.</p>
@@ -394,7 +580,8 @@
       <h2>Next steps</h2>
       <ul>
         <li>Confirm ArduPilot firmware support for the Aslan flight controller</li>
-        <li>Confirm with the MMCS team that it accepts MAVLink over a USB serial port</li>
+        <li>Confirm with the MMCS team whether it accepts MAVLink directly or needs a Cursor-on-Target bridge</li>
+        <li>Bench-test ATAK's UAS Tool with ArduPilot over the RFD900x, including route upload and Guided retasking</li>
         <li>Confirm the spectrum authorization for 5.8&nbsp;GHz video, which decides transmit power and whether encryption can be used</li>
         <li>Order parts, then build and integrate the airframe, flight system, camera, and Pi</li>
         <li>Write the Pi software for zoom and the MGRS, lat/long, and heading overlay</li>
