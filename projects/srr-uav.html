@@ -9,10 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
-  <script type="module">
-    import '../js/model-viewer.min.js';
-    customElements.get('model-viewer').meshoptDecoderLocation = '../js/meshopt_decoder.js';
-  </script>
 </head>
 <body class="project-page">
 
@@ -55,7 +51,6 @@
     <nav class="toc" aria-label="On this page">
       <span>On this page</span>
       <ol>
-        <li><a href="#model">3D model</a></li>
         <li><a href="#mission">Mission</a></li>
         <li><a href="#design">CDR design</a></li>
         <li><a href="#ndaa">Buying under the NDAA</a></li>
@@ -75,6 +70,7 @@
       </ol>
     </nav>
 
+<!-- 3D viewer: re-enable once the optimized GLB (images/srr-uav/assembly.glb) is ready
     <section id="model">
       <h2>Explore the model</h2>
       <div class="viewer-wrap">
@@ -85,6 +81,7 @@
       </div>
       <p class="viewer-hint">Drag to rotate, scroll or pinch to zoom, right-click and drag to pan. First-pass CAD for the CDR.</p>
     </section>
+    -->
 
     <section id="mission" class="prose">
       <h2>The mission</h2>
