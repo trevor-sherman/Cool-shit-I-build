@@ -517,7 +517,7 @@
           <tr><td>Runs on</td><td>Mounted Family of Computer Systems (MFoCS) vehicle computers</td><td>Rugged Android phones and tablets</td></tr>
           <tr><td>Role</td><td>Replaces JBC-P for friendly-force tracking and situational awareness</td><td>Shared map, chat, and tracks; drones through the UAS Tool plugin</td></tr>
           <tr><td>How our drone connects</td><td>RFD900x ground modem over USB</td><td>UAS Tool over MAVLink (serial or network)</td></tr>
-          <tr><td>Open question</td><td>Native MAVLink, or needs a Cursor-on-Target bridge</td><td>USB-OTG serial with the RFD900x, to be bench-tested</td></tr>
+          <tr><td>Open question</td><td>Which data format MMCS accepts (unknown; asking the customer)</td><td>Connecting the RFD900x directly over USB-OTG needs more exploration</td></tr>
         </tbody>
       </table>
 
@@ -525,11 +525,10 @@
       <p>MAVLink is the open drone messaging protocol that ArduPilot and PX4 use. The U.S. military has standardized on it for small drones: the joint-services RAS-A MAVLink Control Link Interoperability Profile is built directly on top of MAVLink, using newer message definitions. That made protocol choice a requirement in practice. Our ArduPilot flight controller and RFD900x link carry full two-way MAVLink 2, which lines up with both systems. It was also one more reason Crossfire couldn't serve as the telemetry link, since it supports only MAVLink 1.</p>
 
       <h3>MMCS on vehicle computers</h3>
-      <p>MMCS is the main software of the Army's Mounted Computing Environment and is replacing the older Joint Battle Command&ndash;Platform (JBC-P) software on the same vehicle computers. The plan is simple on our side: the RFD900x ground modem plugs into the vehicle computer's USB port and appears as a serial port carrying MAVLink. What happens next depends on MMCS's interface, which we're confirming with the customer:</p>
+      <p>MMCS is the main software of the Army's Mounted Computing Environment and is replacing the older Joint Battle Command&ndash;Platform (JBC-P) software on the same vehicle computers. The plan is simple on our side: the RFD900x ground modem plugs into the vehicle computer's USB port and appears as a serial port carrying MAVLink. What happens next depends on which data format MMCS accepts. We don't know that yet, so it's an open question for the customer. The two likely cases:</p>
       <ul>
         <li><strong>If MMCS reads MAVLink directly,</strong> it connects to the serial port like any ground station, and the drone shows up live with no extra software.</li>
         <li><strong>If it expects Cursor-on-Target (CoT),</strong> the XML position format used across Army situational-awareness tools, a small bridge program on the computer translates the drone's MAVLink position into CoT tracks.</li>
-        <li><strong>Either way,</strong> a MAVLink router on the vehicle computer can share the single radio link with other applications, such as a mission planner or networked ATAK devices, instead of locking it to one program.</li>
       </ul>
 
       <h3>ATAK and the UAS Tool plugin</h3>
@@ -540,7 +539,12 @@
         <li><strong>Mission planning:</strong> creating and editing routes, executing them, and receiving tasks from other users.</li>
         <li><strong>Sharing:</strong> broadcasting the camera's field of view, its four ground corners, telemetry, and video to other ATAK and WinTAK devices on the network.</li>
       </ul>
-      <p>For our drone, there are two ways to get MAVLink into ATAK. The simplest is to plug the RFD900x ground modem directly into the Android device with a USB-OTG cable, which UAS Tool should see as a serial connection; that needs a bench test. The other is to use the vehicle computer as a hub, with a MAVLink router forwarding the link over the vehicle's network to every ATAK device nearby. ATAK works natively in MGRS, the same grid our video overlay uses, so the coordinates the operator reads off the video match the map.</p>
+      <p>Getting MAVLink into ATAK is the part that needs the most exploration. Two possible options:</p>
+      <ul>
+        <li><strong>Direct connection:</strong> plug the RFD900x ground modem straight into the soldier's Android device with a USB-OTG cable, so UAS Tool sees it as a serial connection. The soldier carries the ground radio, so it works wherever they are. Whether the device powers the modem reliably and UAS Tool accepts it this way still needs to be explored and bench-tested.</li>
+        <li><strong>Vehicle computer as a hub:</strong> the RFD900x stays plugged into the vehicle computer, and a MAVLink router shares the one radio link with MMCS, a mission planner, and ATAK devices over the unit's network, so several soldiers could see the drone at once. This only works while the soldiers are within range of that network, and a dismounted soldier won't always be near the vehicle when the drone is up. Any wireless hop to the devices would also have to be secured to Army standards, not left on an open WiFi network.</li>
+      </ul>
+      <p>The two options could also be combined: a direct connection for the soldier flying the drone, and the vehicle hub for everyone else. Either way, ATAK works natively in MGRS, the same grid our video overlay uses, so the coordinates the operator reads off the video match the map.</p>
 
       <h3>Mission planning workflow</h3>
       <table class="data-table">
@@ -580,8 +584,8 @@
       <h2>Next steps</h2>
       <ul>
         <li>Confirm ArduPilot firmware support for the Aslan flight controller</li>
-        <li>Confirm with the MMCS team whether it accepts MAVLink directly or needs a Cursor-on-Target bridge</li>
-        <li>Bench-test ATAK's UAS Tool with ArduPilot over the RFD900x, including route upload and Guided retasking</li>
+        <li>Find out from the customer which data format MMCS accepts (MAVLink, Cursor-on-Target, or something else)</li>
+        <li>Explore connecting ATAK's UAS Tool to the RFD900x over USB-OTG, then bench-test route upload and Guided retasking</li>
         <li>Confirm the spectrum authorization for 5.8&nbsp;GHz video, which decides transmit power and whether encryption can be used</li>
         <li>Order parts, then build and integrate the airframe, flight system, camera, and Pi</li>
         <li>Write the Pi software for zoom and the MGRS, lat/long, and heading overlay</li>
