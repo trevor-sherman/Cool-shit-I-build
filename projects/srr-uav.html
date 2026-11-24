@@ -111,7 +111,8 @@
         <div><span>Battery</span><strong>Lumenier NAV 6S2P Li-ion, 10,000&nbsp;mAh, 216&nbsp;Wh</strong></div>
         <div><span>Camera</span><strong>Divimath SeekerHD, Sony IMX462 STARVIS, 1080p60, ~3&times; digital zoom</strong></div>
         <div><span>Camera mount</span><strong>Custom 3D-printed pan/tilt mount on two micro metal-gear servos, vibration-damped</strong></div>
-        <div><span>Companion computer</span><strong>Raspberry Pi 5 on its own 5.2&nbsp;V regulator</strong></div>
+        <div><span>Companion computer</span><strong>Raspberry Pi 5 on its own 5.2&nbsp;V regulator: video overlay, computer vision and lightweight AI, onboard recording</strong></div>
+        <div><span>Onboard recording</span><strong>microSD card on the Pi: video with matching GPS and flight data</strong></div>
         <div><span>Video link</span><strong>Divimath HDMI digital VTX (AES-256 capable) to a Divimath ground monitor</strong></div>
         <div><span>Control link</span><strong>Crossfire 915&nbsp;MHz (NDAA receiver), Triumph Tango 2 PRO radio</strong></div>
         <div><span>Telemetry link</span><strong>RFD900x-US modem pair (Blue UAS) to the MMCS field computer</strong></div>
@@ -121,7 +122,16 @@
       <div class="photos wide">
         <figure style="flex:1.728"><a href="../images/srr-uav/cad-labeled.jpg"><img src="../images/srr-uav/cad-labeled.jpg" width="2400" height="1389" alt="Labeled isometric render of the SRR UAV identifying each component, with the custom gimbal parts in green" loading="lazy"></a><figcaption>Every major component, with the three custom 3D-printed gimbal parts in green</figcaption></figure>
       </div>
-      <p>The battery hangs under the frame to keep the center of mass low. The flight stack sits between the plates, and the Pi, video transmitter, and telemetry modem ride on the top plate where their antennas are clear of the carbon. The pan/tilt camera mounts at the very front, so the props stay out of its view when it looks down, with the GPS on top of the pan servo mount, away from the noisy electronics.</p>
+      <p>This is the V1 layout, modeled from the 3D models and documentation available online. It will be refined many times, especially once parts are ordered and arrive, and the frame most of all. The layout is driven by three things: keeping antennas clear of the carbon fiber, separating the two 900&nbsp;MHz radios, and getting cooling air to the hottest electronics.</p>
+      <ul>
+        <li><strong>Upper plate:</strong> the Raspberry Pi and the RFD900x telemetry modem sit on top. The modem's antennas point off the back, and it's oriented with its finned heat sink facing up so it sits in the airflow.</li>
+        <li><strong>Between the plates:</strong> the middle layer holds the FC/ESC stack, the video transmitter at the back of the main (lower) plate with its antennas pointing off the back, and a specialized front mount.</li>
+        <li><strong>Front mount:</strong> carries the pan/tilt servo and camera assembly, with the GPS and the Crossfire receiver on top of it. Up front, the GPS has a clear view of the sky with no carbon fiber over it, and the Crossfire receiver is as far as possible from the telemetry modem at the back.</li>
+        <li><strong>Cooling:</strong> a hole in the plate, easiest to see in the top view below, lets air through during forward flight to cool the FC/ESC stack and the video transmitter.</li>
+        <li><strong>Battery:</strong> hangs under the frame to keep the center of mass low.</li>
+      </ul>
+      <p>The camera sits at the very front so the props stay out of its view when it looks down. The current gimbal is designed so the camera rotates exactly about its own central axes, especially in pan (yaw), so each servo move turns the view without shifting it sideways. That gives the operator the most precise, predictable control of where the camera points. Gimbal mounts will be tested and evaluated for stability and precision once the hardware is in hand.</p>
+      <p>The layout we'd like to move toward puts the Pi on top of the lower plate, between the plates. That frees the top of the upper plate for the GPS, centered along the drone's length, and the Crossfire receiver at the front, both well clear of the carbon.</p>
 
       <h3>Views and drawings</h3>
       <div class="photos">
@@ -151,7 +161,17 @@
         <li><strong>Small accessories can fail.</strong> Checking Raspberry Pi's own compliance table showed that the Pi 5 passes, but its AI HAT+ accelerator and active cooler both fail sections 817 and 848. Both came off the parts list.</li>
         <li><strong>Digital video nearly disappeared.</strong> DJI, Walksnail, and HDZero, the mainstream digital FPV systems, all have Chinese supply chains. The compliant alternatives are defense radios priced for much larger programs. Divimath, the U.S. company behind HDZero, turned out to be the only digital video option that fit our budget (see <a href="#video">Video link</a>).</li>
       </ul>
-      <p>A recurring distinction was NDAA compliance versus the Blue UAS Framework. Blue UAS listing means the Defense Innovation Unit has reviewed the part; NDAA compliance means only that it avoids covered sources. Several of our parts, including the Aslan flight stack and the SeekerHD camera, are NDAA compliant but not Blue UAS listed, so confirming that NDAA alone was acceptable was one of our first questions for the customer.</p>
+      <h3>Blue UAS: compliance you can check immediately</h3>
+      <p>No federal agency certifies NDAA compliance. Manufacturers declare it themselves, and the buyer is left to verify the claim. The Blue UAS program is the shortcut. The Department of Defense vets drones and drone components against the NDAA sourcing rules and for cybersecurity, then publishes them in two lists: the <strong>Blue UAS Cleared List</strong> for complete aircraft and the <strong>Blue UAS Framework</strong> for individual components and software, such as flight controllers, radios, cameras, gimbals, and companion computers. The program started at the Defense Innovation Unit, and the Defense Contract Management Agency took over the lists in December 2025.</p>
+      <p>For U.S. defense UAV procurement and manufacturing, that makes Blue UAS the quickest way to confirm a part: if it's on the list, its NDAA compliance has already been verified, with no vendor letters or sourcing paperwork to chase. Listing applies only to the exact models and configurations named, not a manufacturer's whole product line. It's also not the only path. The government can still buy compliant parts that aren't listed; they just need their own compliance verification.</p>
+      <table class="data-table">
+        <thead><tr><th>Level</th><th>Who verifies it</th><th>How we checked it</th><th>Our parts</th></tr></thead>
+        <tbody>
+          <tr><td>Blue UAS listed</td><td>DoD, through DCMA</td><td>Look it up on the Blue UAS list</td><td>RFD900x-US modems, Raspberry Pi 5</td></tr>
+          <tr><td>NDAA compliant only</td><td>The manufacturer, self-declared</td><td>Written statement or reseller listing kept on file</td><td>Aslan flight stack, SeekerHD camera, Atlas Motion motors, Divimath VTX</td></tr>
+        </tbody>
+      </table>
+      <p>Several of our parts, including the Aslan flight stack and the SeekerHD camera, are NDAA compliant but not Blue UAS listed, so confirming that NDAA alone was acceptable was one of our first questions for the customer.</p>
     </section>
 
     <section id="camera" class="prose">
@@ -164,7 +184,7 @@
       <h3>Rolling vs. global shutter</h3>
       <p>A global shutter captures the whole frame at once. A rolling shutter reads the sensor one row at a time, so fast motion or vibration during readout skews vertical lines (during quick pans) or makes the image wobble (&ldquo;jello&rdquo;). Global shutter sounds strictly better, but there's a catch: Sony's low-light STARVIS sensors are all rolling shutter, and its global-shutter Pregius sensors are noticeably worse in low light. We had to pick one.</p>
       <table class="data-table">
-        <thead><tr><th></th><th>Rolling shutter (STARVIS)</th><th>Global shutter (Pregius)</th></tr></thead>
+        <thead><tr><th>Shutter</th><th>Rolling shutter (STARVIS)</th><th>Global shutter (Pregius)</th></tr></thead>
         <tbody>
           <tr><td>Low light</td><td>Excellent</td><td>Noticeably worse</td></tr>
           <tr><td>Fast motion</td><td>Skew during quick pans</td><td>No distortion</td></tr>
@@ -197,7 +217,7 @@
       <h2>Video link: analog vs. digital</h2>
       <p>The video transmitter (VTX) is a radio, so it falls squarely under the NDAA's covered components. That narrowed the field fast.</p>
       <table class="data-table">
-        <thead><tr><th></th><th>Analog VTX</th><th>Digital VTX</th></tr></thead>
+        <thead><tr><th>Video link</th><th>Analog VTX</th><th>Digital VTX</th></tr></thead>
         <tbody>
           <tr><td>Picture</td><td>Standard definition, about 480 lines</td><td>720p60 or 1080p30</td></tr>
           <tr><td>Latency</td><td>Lowest</td><td>About 1&nbsp;ms added by the Divimath link</td></tr>
@@ -230,7 +250,7 @@
       <h3>Ground receiver: monitor or GroundLink</h3>
       <p>The base design receives video on Divimath's ground monitor, a self-contained screen. Divimath also makes the GroundLink UVC VRX, a ground receiver with no screen of its own. Its USB-C port appears as a standard webcam on computers, phones, and tablets, with no drivers, and Divimath states it works with ATAK, as well as Mission Planner and QGroundControl. That makes it an avenue we want to explore for putting the drone's live video directly into the systems soldiers already use. The parts list stays with the monitor for now.</p>
       <table class="data-table">
-        <thead><tr><th></th><th><strong>Divimath monitor</strong> (baseline)</th><th>Divimath GroundLink UVC VRX (option)</th></tr></thead>
+        <thead><tr><th>Ground receiver</th><th><strong>Divimath monitor</strong> (baseline)</th><th>Divimath GroundLink UVC VRX (option)</th></tr></thead>
         <tbody>
           <tr><td>Price</td><td>~$350</td><td>$599</td></tr>
           <tr><td>Display</td><td>Built-in screen</td><td>None; feeds another device</td></tr>
@@ -266,13 +286,17 @@
         <li><strong>Capture:</strong> the SeekerHD streams 1080p video over a 22-pin ribbon cable into the Pi 5's camera port.</li>
         <li><strong>Process:</strong> the Pi crops and scales the frame for digital zoom, set by a slider on the pilot's radio.</li>
         <li><strong>Overlay:</strong> the Pi reads position, altitude, and heading from the flight controller over a MAVLink serial connection, converts position to MGRS, and draws MGRS, lat/long, and heading in degrees and mils onto each frame.</li>
+        <li><strong>Record:</strong> the Pi saves the video to its microSD card, along with the matching GPS and flight data from the flight controller.</li>
         <li><strong>Transmit:</strong> the Pi outputs HDMI from its micro-HDMI port to the Divimath VTX, which sends it on 5.8&nbsp;GHz.</li>
         <li><strong>Display:</strong> a Divimath monitor at the ground station receives and decrypts the feed.</li>
       </ol>
       <p>Putting the Pi in the chain costs about 50&ndash;150&nbsp;ms of latency and 20&ndash;30 seconds of boot time before video appears. Both are fine for reconnaissance and waypoint flying, where nobody is hand-flying fast on the feed. In exchange, the overlay is entirely our own software, independent of the flight controller's on-screen display, and the Pi can do things the transmitter alone can't.</p>
 
-      <h3>Image processing without the AI HAT</h3>
-      <p>The original plan ran person and vehicle detection on the Pi with Raspberry Pi's 13&nbsp;TOPS AI HAT+ accelerator, and let the operator toggle detection boxes on and off over full-frame-rate video. When the AI HAT+ failed NDAA 817 and 848, we removed it, saving $70 and about 50&nbsp;g. The base build now does no onboard detection. The Pi 5's own processor can still run lighter image processing, such as contrast enhancement, motion highlighting, or a small detection model at a low frame rate. That leaves a software-only path back to onboard computer vision if a compliant accelerator appears or the customer wants it.</p>
+      <h3>Computer vision and lightweight AI on the Pi</h3>
+      <p>The original plan ran person and vehicle detection on the Pi with Raspberry Pi's 13&nbsp;TOPS AI HAT+ accelerator, and let the operator toggle detection boxes on and off over full-frame-rate video. When the AI HAT+ failed NDAA 817 and 848, we removed it, saving $70 and about 50&nbsp;g. Dedicated AI acceleration is gone, but because every frame already passes through the Pi, the Pi 5's own processor can still run computer vision and lightweight AI on the video: contrast enhancement for haze and low light, motion highlighting, and small detection models at a reduced frame rate. That keeps onboard processing as a software capability rather than a hardware one, with a clear upgrade path if a compliant accelerator appears or the customer funds one.</p>
+
+      <h3>Recording every flight</h3>
+      <p>The Pi also records to its microSD card: the camera video along with the matching GPS position and flight data (altitude, attitude, heading, speed, and flight mode) read from the flight controller over MAVLink. Lining these up in time means a flight can be fully rebuilt afterward, showing what the camera saw at each moment and exactly where the drone was and where it was pointing. That matters most when the drone is flying a mission autonomously without an operator watching or in control, or when the video link drops out at long range: the onboard record captures everything the live feed missed.</p>
 
       <h3>Built for a second camera</h3>
       <p>Because every image goes through the Pi, adding a second sensor is mostly a software change. A USB thermal camera plugs into one of the Pi's USB ports, and the operator switches between feeds from a switch on the radio. Since the link is 1080p, the Pi can also show thermal as a picture-in-picture inset or blend heat outlines onto the daylight image, which standard-definition analog would make too small to use. That design choice is what makes thermal a clean add-on instead of a redesign.</p>
@@ -318,7 +342,7 @@
       <h3>Flight controller and ESC</h3>
       <p>The flight controller runs ArduPilot, which handles waypoints, position hold, return-to-home, and MAVLink telemetry on its own, independent of the companion computer. I compared three compliant stacks:</p>
       <table class="data-table">
-        <thead><tr><th></th><th>ARK FPV + ARK 4-in-1</th><th>Lumenier LUX F765 + ESC</th><th><strong>Aslan H7 Pro + 80&nbsp;A PRO</strong></th></tr></thead>
+        <thead><tr><th>Flight stack</th><th>ARK FPV + ARK 4-in-1</th><th>Lumenier LUX F765 + ESC</th><th><strong>Aslan H7 Pro + 80&nbsp;A PRO</strong></th></tr></thead>
         <tbody>
           <tr><td>Price</td><td>$413.49</td><td>~$224 less than ARK</td><td><strong>$189.84 bundle</strong></td></tr>
           <tr><td>Made in</td><td>USA</td><td>Thailand</td><td>Virginia, USA</td></tr>
@@ -333,7 +357,7 @@
       <h3>Companion computer</h3>
       <p>The companion computer had to come from the DCMA Blue UAS list. When onboard detection was still a requirement, I compared the Pi 5 against NVIDIA's Jetson boards:</p>
       <table class="data-table">
-        <thead><tr><th></th><th><strong>Raspberry Pi 5</strong></th><th>Jetson Orin Nano</th><th>Jetson Xavier NX</th></tr></thead>
+        <thead><tr><th>Companion computer</th><th><strong>Raspberry Pi 5</strong></th><th>Jetson Orin Nano</th><th>Jetson Xavier NX</th></tr></thead>
         <tbody>
           <tr><td>AI performance</td><td>CPU only (AI HAT+ dropped)</td><td>Up to 40 TOPS GPU</td><td>21 TOPS GPU</td></tr>
           <tr><td>Small-model detection</td><td>~11&nbsp;fps at 640&nbsp;px</td><td>~40&ndash;60&nbsp;fps</td><td>Between the two</td></tr>
@@ -389,7 +413,7 @@
 
       <h3>Frame</h3>
       <table class="data-table">
-        <thead><tr><th></th><th><strong>DarwinFPV X10</strong></th><th>UMT LX10 V2</th></tr></thead>
+        <thead><tr><th>Frame</th><th><strong>DarwinFPV X10</strong></th><th>UMT LX10 V2</th></tr></thead>
         <tbody>
           <tr><td>Folding</td><td>Yes, 410&nbsp;mm wheelbase</td><td>Yes, folds to 93&nbsp;mm wide</td></tr>
           <tr><td>Arm thickness</td><td>7&nbsp;mm</td><td>Thinner</td></tr>
@@ -419,7 +443,7 @@
       <p>FPV drones usually fly LiPo packs, which deliver huge currents for racing and acrobatics. A reconnaissance quad hovers at a gentle, steady load, which is what lithium-ion cells are good at. The Lumenier NAV 6S2P pack uses 21700 cells and stores about 227&nbsp;Wh/kg, roughly 1.5&times; the energy per gram of LiPo. The current LiPo could deliver would mostly go unused.</p>
 
       <table class="data-table">
-        <thead><tr><th></th><th>LiPo</th><th><strong>Li-ion (21700)</strong></th></tr></thead>
+        <thead><tr><th>Battery</th><th>LiPo</th><th><strong>Li-ion (21700)</strong></th></tr></thead>
         <tbody>
           <tr><td>Energy per gram</td><td>Baseline</td><td>~1.5&times;</td></tr>
           <tr><td>Peak current</td><td>Very high</td><td>Moderate (this pack: 60&nbsp;A continuous)</td></tr>
@@ -547,7 +571,7 @@
       <h3>Two links in one band</h3>
       <p>Keeping Crossfire for control and the RFD900x for telemetry gives redundancy: if either link drops, the other still works, and ArduPilot's failsafes handle both. But both run in the 902&ndash;928&nbsp;MHz band, and a 1&nbsp;W telemetry transmitter a few centimeters from the control receiver could drown it out. The plan for that:</p>
       <ul>
-        <li>Mount the two antennas at least about 20&nbsp;cm apart, one vertical and one horizontal, for polarization isolation.</li>
+        <li>Mount the two antennas at least about 20&nbsp;cm apart, one vertical and one horizontal, for polarization isolation. The V1 layout puts the Crossfire receiver at the front and the RFD900x antennas off the back for exactly this reason.</li>
         <li>Run the RFD900x at around 100&ndash;250&nbsp;mW. Telemetry needs much less margin than control.</li>
         <li>Range-test the control link with the telemetry radio transmitting before any long flight.</li>
       </ul>
@@ -582,7 +606,7 @@
       <h2>Integrating with Army systems: MMCS and ATAK</h2>
       <p>A reconnaissance drone is only useful if what it sees shows up where soldiers already look. For this customer that means two systems: the mission-command software in their vehicles, and the map app on the phones dismounted soldiers carry. The drone doesn't need custom software for either; the key is speaking the protocols they already understand.</p>
       <table class="data-table">
-        <thead><tr><th></th><th>MMCS (MMC-S)</th><th>ATAK</th></tr></thead>
+        <thead><tr><th>System</th><th>MMCS (MMC-S)</th><th>ATAK</th></tr></thead>
         <tbody>
           <tr><td>Full name</td><td>Mounted Mission Command &ndash; Software</td><td>Android Team Awareness Kit</td></tr>
           <tr><td>Who uses it</td><td>Crews in vehicles and command posts</td><td>Dismounted soldiers on Android end-user devices</td></tr>
@@ -679,7 +703,7 @@
 
       <h3>Comparing the concepts</h3>
       <table class="data-table">
-        <thead><tr><th></th><th>1: Dismounted, ATAK only</th><th>2: Vehicle station + roaming pilot</th><th>3: Both</th></tr></thead>
+        <thead><tr><th>Concept</th><th>1: Dismounted, ATAK only</th><th>2: Vehicle station + roaming pilot</th><th>3: Both</th></tr></thead>
         <tbody>
           <tr><td>Video for the pilot</td><td>GroundLink to ATAK, or monitor on the radio</td><td>Monitor on the radio</td><td>Monitor on the radio</td></tr>
           <tr><td>Video in MMCS</td><td>None</td><td>GroundLink on the vehicle (TBD)</td><td>GroundLink on the vehicle (TBD)</td></tr>
@@ -713,7 +737,9 @@
         <li>Explore connecting ATAK's UAS Tool to the RFD900x over USB-OTG, then bench-test route upload and Guided retasking</li>
         <li>Confirm the spectrum authorization for 5.8&nbsp;GHz video, which decides transmit power and whether encryption can be used</li>
         <li>Order parts, then build and integrate the airframe, flight system, camera, and Pi</li>
-        <li>Write the Pi software for zoom and the MGRS, lat/long, and heading overlay</li>
+        <li>Write the Pi software for zoom, the MGRS, lat/long, and heading overlay, onboard recording of video with flight data, and lightweight computer vision</li>
+        <li>Refine the V1 CAD as parts arrive, especially the frame, and work toward moving the Pi between the plates with the GPS and receiver on top</li>
+        <li>Test and evaluate gimbal mounts for stability and pointing precision</li>
         <li>Thrust-stand test one motor and prop to pin down the flight-time estimate</li>
         <li>Range-test all three links, including control with telemetry transmitting</li>
         <li>Research the hardware and software on fielded MMCS computers and ATAK devices, including whether they would accept the GroundLink receiver's USB video</li>
