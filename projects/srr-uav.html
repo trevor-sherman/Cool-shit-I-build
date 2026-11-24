@@ -61,6 +61,7 @@
         <li><a href="#avionics">Flight stack &amp; compute</a></li>
         <li><a href="#propulsion">Propulsion</a></li>
         <li><a href="#power">Battery &amp; power</a></li>
+        <li><a href="#weather">Weatherproofing</a></li>
         <li><a href="#control">Control link</a></li>
         <li><a href="#telemetry">Telemetry &amp; MMCS</a></li>
         <li><a href="#integration">MMCS &amp; ATAK</a></li>
@@ -500,6 +501,44 @@
       <p>The parts list adds up to about 2,020&nbsp;g. Wiring, connectors, printed mounts, and hardware bring the estimated all-up weight to about 2,110&nbsp;g (4.65&nbsp;lb), roughly 160&nbsp;g under the 2,268&nbsp;g limit. A good thermal camera and its interface board would use most of that margin, which is another reason thermal is an add-on.</p>
     </section>
 
+    <section id="weather" class="prose">
+      <h2>Weatherproofing for damp and light rain</h2>
+      <p>Reconnaissance doesn't wait for good weather, and the V1 design is an open-frame FPV-style quad with bare electronics. Full waterproofing would mean a sealed body, which adds weight and traps heat. The realistic goal is weather resistance: flying through fog, mist, drizzle, and light rain, then drying out without damage. None of this is in the CDR build yet; these are the options we've identified, roughly in order of payoff for the cost and weight.</p>
+
+      <h3>Protecting the electronics</h3>
+      <ul>
+        <li><strong>Conformal coating:</strong> a thin silicone or acrylic coating brushed or sprayed onto the circuit boards (flight controller, ESC, receiver, GPS, VTX, Pi, and the servo boards) keeps water and condensation from bridging pins. It adds only a few grams. Connectors, USB ports, buttons, the microSD slot, and heat-sink contact areas have to be masked off first, and the barometer must stay uncoated so it can still read pressure.</li>
+        <li><strong>Barometer cover:</strong> a small piece of open-cell foam over the barometer blocks drips and prop wash while still letting air through, which also steadies altitude hold.</li>
+        <li><strong>Sealed connections:</strong> dielectric grease on the plugs and heat shrink over solder joints and antenna connectors keep water out of the joints where corrosion usually starts.</li>
+        <li><strong>Carbon fiber:</strong> carbon conducts electricity, so wet plates can short anything touching them. Edges get sealed, and boards stay on nylon standoffs and grommets, never resting directly on the carbon.</li>
+      </ul>
+
+      <h3>Shielding without cooking the electronics</h3>
+      <p>A 3D-printed canopy over the upper plate would keep direct rain off the Pi, the RFD900x, and the stack below. The catch is the cooling design: the airflow hole and the modem's upward-facing heat sink depend on air moving over them in forward flight. A canopy would need forward-facing inlets with drip lips and rear exits, so air flows through but falling rain doesn't. That has to be checked against temperatures on the bench and in flight before it replaces open airflow.</p>
+
+      <h3>Other components</h3>
+      <table class="data-table">
+        <thead><tr><th>Component</th><th>Risk in rain</th><th>Possible fix</th></tr></thead>
+        <tbody>
+          <tr><td>Motors</td><td>Brushless motors tolerate water well, but bearings and the steel stator can rust</td><td>Coat the windings, use corrosion inhibitor on the bearings, and dry the motors after wet flights</td></tr>
+          <tr><td>Battery</td><td>Water on the balance and main leads; corroded contacts</td><td>Sealed pack wrap, a cover or boot over the connectors, dielectric grease</td></tr>
+          <tr><td>Camera</td><td>Droplets on the lens blur the picture</td><td>Hydrophobic lens coating and a small hood above the lens; check the housing seal</td></tr>
+          <tr><td>Pan/tilt servos</td><td>Hobby servos aren't sealed and water gets in around the output shaft</td><td>Conformal-coat the servo boards, or swap in water-resistant servos (NDAA status to check)</td></tr>
+          <tr><td>GPS and receiver</td><td>Exposed on top of the front mount</td><td>Conformal coating plus a thin RF-transparent plastic cap</td></tr>
+          <tr><td>Antennas</td><td>Water inside the connectors detunes them</td><td>Heat shrink or sealant over the SMA connectors</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Limits and operating practice</h3>
+      <ul>
+        <li><strong>It's weather resistant, not waterproof.</strong> The target is damp air and light rain. Heavy rain, standing water, and landing in wet grass would still be off-limits.</li>
+        <li><strong>Range and visibility:</strong> rain slightly weakens the 5.8&nbsp;GHz video link and cuts what the camera can see, so expect less usable range in bad weather.</li>
+        <li><strong>Cold and condensation:</strong> wet weather is often cold weather, which already costs Li-ion capacity. Bringing a cold drone into a warm vehicle also fogs it with condensation, so it should be dried before charging or flying again.</li>
+        <li><strong>After wet flights:</strong> remove the battery, dry the airframe, and inspect connectors and motors for corrosion.</li>
+        <li><strong>Testing:</strong> the coated and covered build would be checked with a controlled spray test on the bench, powered on, before any flight in real rain.</li>
+      </ul>
+    </section>
+
     <section id="control" class="prose">
       <h2>Control link: Crossfire on 915&nbsp;MHz</h2>
       <p>The pilot flies with a Triumph Tango 2 PRO, an NDAA handheld radio with a built-in Crossfire transmitter, talking to an NDAA Crossfire diversity receiver on the drone. Crossfire is a long-range two-way control system: it updates at up to 150&nbsp;Hz, adjusts its transmit power automatically based on link quality, and sends telemetry back to the radio's screen.</p>
@@ -745,6 +784,7 @@
         <li>Test and evaluate gimbal mounts for stability and pointing precision</li>
         <li>Thrust-stand test one motor and prop to pin down the flight-time estimate</li>
         <li>Range-test all three links, including control with telemetry transmitting</li>
+        <li>Evaluate weatherproofing: conformal coating, a ventilated rain canopy, and a bench spray test</li>
         <li>Research the hardware and software on fielded MMCS computers and ATAK devices, including whether they would accept the GroundLink receiver's USB video</li>
         <li>Discuss deployment concepts with our Army point of contact: who carries what, vehicle mounting and power, and how often operators work away from the vehicle</li>
         <li>Pitch the thermal add-on and deliver to the Army customer for evaluation</li>
