@@ -246,3 +246,11 @@ a.more-link:hover h4 { color: var(--blue); }
 .data-table th { font-weight: 700; background: var(--ink); color: var(--paper); }
 .data-table td:first-child { font-weight: 700; white-space: nowrap; }
 @media (max-width: 760px) { .data-table { font-size: 0.85rem; } .data-table th, .data-table td { padding: 8px 10px; } .data-table td:first-child { white-space: normal; } }
+@media (max-width: 760px) { .data-table { display: block; overflow-x: auto; } }
+
+/* On-page contents */
+.toc { margin: 32px 0 0; padding: 16px 20px; border: 1.5px solid var(--ink); }
+.toc span { display: block; font: 700 0.85rem var(--head); color: var(--blue); margin-bottom: 8px; }
+.toc ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0; padding: 0; }
+.toc a { display: block; padding: 4px 10px; border: 1.5px solid var(--line); font: 700 0.85rem var(--head); color: var(--ink); text-decoration: none; }
+.toc a:hover { border-color: var(--blue); color: var(--blue); }

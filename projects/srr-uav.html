@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>U.S. Army SRR UAV | Trevor Sherman</title>
-  <meta name="description" content="Capstone project: a short-range reconnaissance quadcopter for a U.S. Army customer, built from NDAA-compliant parts on a $2,500 budget, with a low-light zoom camera, pan/tilt mount, and telemetry into the Army's MMCS software.">
+  <meta name="description" content="Capstone project: a short-range reconnaissance quadcopter for a U.S. Army customer, built from NDAA-compliant parts on a $2,500 budget. Covers camera, video link, thermal, propulsion, battery, control, and telemetry trade studies.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
@@ -37,7 +37,7 @@
     <div class="proj-head">
       <div class="kicker">Mechanical Engineering Capstone &middot; Fall 2026 &ndash; present</div>
       <h1>U.S. Army SRR UAV <span class="status">In progress</span></h1>
-      <p class="summary">As project manager of my capstone team, I'm leading the development of a short-range reconnaissance (SRR) quadcopter for a U.S. Army customer. It has to fit in a pack, weigh under 5&nbsp;lb, fly for 25&ndash;30 minutes at up to 5&nbsp;km, and be built entirely from NDAA-compliant parts, all on a $2,500 budget. This page covers our first full design, the one we took to our Critical Design Review: the parts we chose, the analysis behind them, and how the design changed along the way.</p>
+      <p class="summary">As project manager of my capstone team, I'm leading the development of a short-range reconnaissance (SRR) quadcopter for a U.S. Army customer. It has to fit in a pack, weigh under 5&nbsp;lb, fly for 25&ndash;30 minutes at up to 5&nbsp;km, and be built entirely from NDAA-compliant parts, all on a $2,500 budget. This page walks through our first full design, the one we took to our Critical Design Review (CDR), and the trade studies behind every major subsystem: cameras, video links, thermal imaging, propulsion, power, control, and telemetry.</p>
       <dl class="facts">
         <div><dt>My role</dt><dd>Project manager</dd></div>
         <div><dt>Est. weight</dt><dd>~4.65&nbsp;lb</dd></div>
@@ -47,7 +47,27 @@
       </dl>
     </div>
 
-    <section>
+    <nav class="toc" aria-label="On this page">
+      <span>On this page</span>
+      <ol>
+        <li><a href="#model">3D model</a></li>
+        <li><a href="#mission">Mission</a></li>
+        <li><a href="#design">CDR design</a></li>
+        <li><a href="#ndaa">Buying under the NDAA</a></li>
+        <li><a href="#camera">Camera</a></li>
+        <li><a href="#video">Video link</a></li>
+        <li><a href="#pipeline">Video pipeline &amp; Pi</a></li>
+        <li><a href="#thermal">Thermal</a></li>
+        <li><a href="#propulsion">Propulsion</a></li>
+        <li><a href="#power">Battery &amp; power</a></li>
+        <li><a href="#control">Control link</a></li>
+        <li><a href="#telemetry">Telemetry &amp; MMCS</a></li>
+        <li><a href="#budget">Budget</a></li>
+        <li><a href="#next">Next steps</a></li>
+      </ol>
+    </nav>
+
+    <section id="model">
       <h2>Explore the model</h2>
       <div class="viewer-wrap">
         <model-viewer id="srr-model" class="cad-viewer" src="../images/srr-uav/assembly.glb" alt="Interactive 3D model of the SRR UAV assembly"
@@ -58,7 +78,7 @@
       <p class="viewer-hint">Drag to rotate, scroll or pinch to zoom, right-click and drag to pan. First-pass CAD for the CDR.</p>
     </section>
 
-    <section class="prose">
+    <section id="mission" class="prose">
       <h2>The mission</h2>
       <p>Small units need a drone they can carry in a pack, launch in minutes, and use to see what's over the next hill or around the next building. Working with our Army point of contact, we turned that need into concrete requirements:</p>
       <div class="spec-grid">
@@ -74,9 +94,9 @@
       </div>
     </section>
 
-    <section class="prose">
+    <section id="design" class="prose">
       <h2>The CDR design</h2>
-      <p>The aircraft is a 10&Prime; folding carbon fiber quadcopter. A Raspberry Pi 5 sits between the camera and the video transmitter, so it can zoom the image and burn the drone's position and heading into the feed before it reaches the operator.</p>
+      <p>The aircraft is a 10&Prime; folding carbon fiber quadcopter with three independent radio links: one for the pilot's controls, one for telemetry to the Army's ground software, and one for video. A Raspberry Pi 5 sits between the camera and the video transmitter, so it can zoom the image and burn the drone's position and heading into the feed before it reaches the operator.</p>
       <div class="spec-grid">
         <div><span>Frame</span><strong>DarwinFPV X10 folding carbon fiber, 410&nbsp;mm wheelbase</strong></div>
         <div><span>Motors</span><strong>Atlas Motion 3115, 760&nbsp;KV (NDAA)</strong></div>
@@ -87,53 +107,153 @@
         <div><span>Camera</span><strong>Divimath SeekerHD, Sony IMX462 STARVIS, 1080p60, ~3&times; digital zoom</strong></div>
         <div><span>Camera mount</span><strong>Custom 3D-printed pan/tilt mount on two micro metal-gear servos, vibration-damped</strong></div>
         <div><span>Companion computer</span><strong>Raspberry Pi 5 on its own 5.2&nbsp;V regulator</strong></div>
-        <div><span>Video link</span><strong>Divimath HDMI digital VTX to a Divimath ground monitor</strong></div>
-        <div><span>Control link</span><strong>TBS Crossfire 915&nbsp;MHz (NDAA receiver), Triumph Tango 2 PRO radio</strong></div>
+        <div><span>Video link</span><strong>Divimath HDMI digital VTX (AES-256 capable) to a Divimath ground monitor</strong></div>
+        <div><span>Control link</span><strong>Crossfire 915&nbsp;MHz (NDAA receiver), Triumph Tango 2 PRO radio</strong></div>
         <div><span>Telemetry link</span><strong>RFD900x-US modem pair (Blue UAS) to the MMCS field computer</strong></div>
       </div>
     </section>
 
-    <section class="prose">
-      <h2>How the design got here</h2>
-      <p>The hardest constraint isn't weight or range; it's sourcing. Because the drone is for the Army, every component has to comply with the NDAA's restrictions on parts from certain foreign manufacturers. That rules out most of the hobby drone market, where the cheapest and best-documented parts are made. Compliant parts often cost several times more and have far fewer options, so nearly every subsystem became a trade between capability, cost, and what we could actually buy.</p>
-      <p>Early on, we thought structural parts like the motors and frame might be exempt. Digging into the requirements showed that motors and propellers have to be compliant too, which reshaped the propulsion budget.</p>
-
-      <h3>Flight stack: ARK to Aslan</h3>
-      <p>We started with an ARK flight controller, ESC, and GPS, which together cost $488. Switching to Aslan's Pro stack and M10 GPS brought that to about $260, saving roughly $229 while keeping an H7 processor, dual IMUs, a barometer, and onboard 12&nbsp;V, 5&nbsp;V, and 3.3&nbsp;V regulators. The trade-off was maturity: the Aslan flight controller had only just started shipping, so confirming ArduPilot support became an action item before ordering.</p>
-
-      <h3>Onboard AI detection: dropped</h3>
-      <p>The original plan ran person and vehicle detection on a Raspberry Pi 5 with Raspberry Pi's 13&nbsp;TOPS AI HAT+. Checking each part against Raspberry Pi's own compliance table showed that the Pi 5 passes, but the AI HAT+ and the Pi's active cooler both fail NDAA sections 817 and 848. We removed both, which also saved $70 and about 50&nbsp;g. The Pi stayed on board for zoom and the position overlay, which need little computing power.</p>
-
-      <h3>Thermal: an upgrade, not a compromise</h3>
-      <p>Thermal is valuable for cueing: even a low-detail heat image shows the operator where to look before switching to the daylight camera for detail. But a thermal camera worth buying would take a large share of the budget and weight margin. Instead of squeezing in a low-resolution sensor, we're proposing a good-resolution thermal camera to the customer as a separate add-on. The Pi and flight controller both have spare video inputs for it.</p>
-
-      <h3>Video: digital, analog, then digital again</h3>
-      <p>Video went back and forth more than any other subsystem. Digital video looks far better but compliant digital systems are expensive, and for a while we couldn't find any NDAA-compliant low-light (STARVIS) digital camera at all. That pushed us to an analog plan built around a Fat Shark Aura camera and transmitter. Then we found the Divimath SeekerHD: NDAA compliant, a Sony IMX462 STARVIS sensor, 1080p60, and software digital zoom, for $115. It connects to the Raspberry Pi rather than straight to a transmitter, which turned out to be an advantage. The Pi handles the zoom and draws MGRS position, lat/long, and heading onto the image itself, then sends it out over HDMI to Divimath's digital transmitter. Dropping the AI HAT freed enough budget to keep the link digital.</p>
-
-      <h3>Camera pointing: pan and tilt</h3>
-      <p>We chose two small servos for pan and tilt instead of a brushless gimbal. Tilt matters most: the operator needs to move between looking ahead to fly and scan, and looking straight down to watch a target while holding position. Pan lets the camera watch something off to the side while the drone keeps its heading. Roll does almost nothing on a slow-flying multirotor, and hobby servos are too slow to cancel it anyway. The design ranges are about +15&deg; to &minus;90&deg; of tilt and &plusmn;90&deg; of pan. When the customer's heading readout should show where the camera is looking, the camera heading is the vehicle heading plus the pan angle, wrapped to 0&ndash;360&deg;, and multiplied by 6400/360 to get NATO mils.</p>
-
-      <h3>Getting telemetry into MMCS</h3>
-      <p>The customer runs MMCS on Army field computers, so the drone's telemetry has to reach it through a radio plugged into the computer over USB. We added a pair of RFD900x-US 900&nbsp;MHz modems (Blue UAS listed) for that link and kept Crossfire for flight control, so a busy telemetry link can never interfere with the pilot's sticks. The bundle we chose cost $287 and was in stock, where a cheaper source was backordered past our build date.</p>
+    <section id="ndaa" class="prose">
+      <h2>Buying under the NDAA</h2>
+      <p>The hardest constraint on this project isn't weight or range; it's who we're allowed to buy from. Because the drone is for the Army, every component has to comply with the National Defense Authorization Act's restrictions on parts from covered foreign manufacturers, mainly China. Recent NDAA sections (817 and 848) extend this to drone components specifically: flight controllers, radios, data links, cameras, gimbals, and the like. Key components such as the companion computer also have to come from the Defense Contract Management Agency's Blue UAS list.</p>
+      <p>That rules out most of the hobby drone market, which is where the cheapest, best-documented parts come from. The effects showed up everywhere:</p>
+      <ul>
+        <li><strong>Prices go up, choices go down.</strong> A compliant part often costs several times its commercial equivalent, and many categories have only one or two compliant products. Compliance is usually self-declared by the manufacturer, so for each part we kept a written statement or a reseller listing as evidence.</li>
+        <li><strong>Nothing is exempt.</strong> Early on, we thought structural parts like the motors and frame might be. Digging into the requirements showed that motors and propellers have to be compliant too, which reshaped the propulsion budget.</li>
+        <li><strong>Small accessories can fail.</strong> Checking Raspberry Pi's own compliance table showed that the Pi 5 passes, but its AI HAT+ accelerator and active cooler both fail sections 817 and 848. Both came off the parts list.</li>
+        <li><strong>Digital video nearly disappeared.</strong> DJI, Walksnail, and HDZero, the mainstream digital FPV systems, all have Chinese supply chains. The compliant alternatives are defense radios priced for much larger programs. Divimath, the U.S. company behind HDZero, turned out to be the only digital video option that fit our budget (see <a href="#video">Video link</a>).</li>
+      </ul>
+      <p>A recurring distinction was NDAA compliance versus the Blue UAS Framework. Blue UAS listing means the Defense Innovation Unit has reviewed the part; NDAA compliance means only that it avoids covered sources. Several of our parts, including the Aslan flight stack and the SeekerHD camera, are NDAA compliant but not Blue UAS listed, so confirming that NDAA alone was acceptable was one of our first questions for the customer.</p>
     </section>
 
-    <section class="prose">
-      <h2>Analysis</h2>
+    <section id="camera" class="prose">
+      <h2>Choosing the camera</h2>
+      <p>The camera is the reason the drone exists, so it got the most study. Three questions shaped it: how sensitive the sensor needs to be, which shutter type it uses, and whether the camera outputs analog or digital video.</p>
 
-      <h3>Hover power and flight time</h3>
-      <p>I estimated hover power with momentum theory, then checked it against typical thrust and power coefficients for a 10&times;4.5 prop. At a conservative all-up weight of 5&nbsp;lb (2.27&nbsp;kg), each motor has to lift about 5.56&nbsp;N, or 567&nbsp;g.</p>
-      <div class="spec-grid">
-        <div><span>Thrust per motor</span><strong>5.56&nbsp;N (567&nbsp;g)</strong></div>
-        <div><span>Prop speed at hover</span><strong>~6,000&nbsp;rpm</strong></div>
-        <div><span>Figure of merit</span><strong>~0.65</strong></div>
-        <div><span>Electrical power</span><strong>~320&nbsp;W, about 15&nbsp;A from the pack</strong></div>
-        <div><span>Hover time</span><strong>~35&nbsp;min, using 85% of 216&nbsp;Wh</strong></div>
-        <div><span>Planned mission time</span><strong>25&ndash;28&nbsp;min, leaving margin for wind and maneuvering</strong></div>
-      </div>
-      <p>That assumes about 78% motor and ESC efficiency at partial throttle and 22&nbsp;W for the avionics, camera, and radios. At the parts list's actual weight of about 4.5&nbsp;lb, hover time rises to roughly 40 minutes, so the 5&nbsp;lb case is the conservative one.</p>
+      <h3>Low-light sensitivity</h3>
+      <p>Reconnaissance happens at dawn, dusk, and in bad weather, not just midday. Sony's STARVIS sensors (IMX462, IMX662, and others) use back-illuminated pixels that collect far more light than a typical camera sensor, giving usable color video at dusk, at dawn, and under moonlight. They still need some light; in true darkness only a thermal camera works. Low light was the property we couldn't fix later in software, so it became the first filter: every serious candidate used a STARVIS sensor.</p>
+
+      <h3>Rolling vs. global shutter</h3>
+      <p>A global shutter captures the whole frame at once. A rolling shutter reads the sensor one row at a time, so fast motion or vibration during readout skews vertical lines (during quick pans) or makes the image wobble (&ldquo;jello&rdquo;). Global shutter sounds strictly better, but there's a catch: Sony's low-light STARVIS sensors are all rolling shutter, and its global-shutter Pregius sensors are noticeably worse in low light. We had to pick one.</p>
+      <table class="data-table">
+        <thead><tr><th></th><th>Rolling shutter (STARVIS)</th><th>Global shutter (Pregius)</th></tr></thead>
+        <tbody>
+          <tr><td>Low light</td><td>Excellent</td><td>Noticeably worse</td></tr>
+          <tr><td>Fast motion</td><td>Skew during quick pans</td><td>No distortion</td></tr>
+          <tr><td>Vibration</td><td>Jello if poorly isolated</td><td>Immune</td></tr>
+          <tr><td>Fix for its weakness</td><td>Soft mounting, balanced props, short exposure</td><td>None: you can't add light</td></tr>
+        </tbody>
+      </table>
+      <p>We chose rolling shutter. Jello comes mainly from motor and prop vibration, which balanced props and soft camera mounting largely remove, and SRR flying is slow and smooth, so skew rarely matters. Global shutter would have been the better call for fast daytime flying or for visual navigation and mapping from the camera feed, neither of which applies here.</p>
+
+      <h3>Analog vs. digital camera</h3>
+      <p>Analog FPV cameras output standard-definition composite video straight into an analog transmitter. They're cheap, simple, and there are compliant options, such as the Blue UAS-listed Fat Shark Aura V2 with a STARVIS 2 sensor. Digital cameras capture 1080p, which preserves fine detail and allows digital zoom, but they need a digital link or a computer between camera and transmitter. Finding a camera that was digital, low-light, <em>and</em> NDAA compliant was the hard part:</p>
+      <table class="data-table">
+        <thead><tr><th>Camera</th><th>Sensor</th><th>Why it lost or won</th></tr></thead>
+        <tbody>
+          <tr><td>Pi Camera Module 2</td><td>Standard</td><td>Cheap, but poor in low light; kept only as a software dev camera</td></tr>
+          <tr><td>FRAMOS IMX662</td><td>STARVIS 2, rolling</td><td>Strong low light, but about $240 with the Pi adapter</td></tr>
+          <tr><td>FRAMOS IMX900</td><td>Pregius S, global</td><td>No jello, but weaker in low light</td></tr>
+          <tr><td>e-con See3CAM_CU27</td><td>IMX462, USB</td><td>Couldn't confirm NDAA compliance for the model; removed</td></tr>
+          <tr><td>Fat Shark Aura V2</td><td>STARVIS 2, analog</td><td>Blue UAS and cheap, but limited to standard definition</td></tr>
+          <tr><td><strong>Divimath SeekerHD</strong></td><td>IMX462 STARVIS, 1080p60</td><td><strong>Chosen:</strong> NDAA, low light, digital zoom, $115</td></tr>
+        </tbody>
+      </table>
+      <p>For a while we had settled on the analog Aura V2 because no compliant digital STARVIS camera seemed to exist. Then we found the SeekerHD: an NDAA-compliant IMX462 camera built to plug into a Raspberry Pi, with software digital zoom of about 3&times;. Its 148&deg; lens on a standard M12 mount gives a wide view for orientation, and zooming gives the detail to identify a target. It's NDAA compliant but not Blue UAS listed.</p>
+
+      <h3>Pointing the camera</h3>
+      <p>We chose two small metal-gear servos for pan and tilt instead of a brushless gimbal, on a custom 3D-printed mount with rubber vibration dampers. Tilt matters most: the operator needs to move between looking ahead to fly and scan, and looking straight down to watch a target while holding position. Pan lets the camera watch something off to the side while the drone keeps its heading. Roll does almost nothing on a slow-flying multirotor, and hobby servos are too slow to cancel it anyway. The design ranges are about +15&deg; to &minus;90&deg; of tilt and &plusmn;90&deg; of pan. When the heading readout should show where the camera is looking, the camera heading is the vehicle heading plus the pan angle, wrapped to 0&ndash;360&deg;, and multiplied by 6400/360 for NATO mils.</p>
+    </section>
+
+    <section id="video" class="prose">
+      <h2>Video link: analog vs. digital</h2>
+      <p>The video transmitter (VTX) is a radio, so it falls squarely under the NDAA's covered components. That narrowed the field fast.</p>
+      <table class="data-table">
+        <thead><tr><th></th><th>Analog VTX</th><th>Digital VTX</th></tr></thead>
+        <tbody>
+          <tr><td>Picture</td><td>Standard definition, about 480 lines</td><td>720p60 or 1080p30</td></tr>
+          <tr><td>Latency</td><td>Lowest</td><td>About 1&nbsp;ms added by the Divimath link</td></tr>
+          <tr><td>At edge of range</td><td>Gets snowy but stays usable</td><td>Can freeze or drop out</td></tr>
+          <tr><td>On-screen text</td><td>Blurry</td><td>Crisp MGRS and heading</td></tr>
+          <tr><td>Security</td><td>Anyone with a receiver can watch</td><td>Can be encrypted</td></tr>
+          <tr><td>Receivers</td><td>Any analog goggle or monitor</td><td>Tied to one maker's ecosystem</td></tr>
+          <tr><td>Compliant cost</td><td>About $70 (Fat Shark Aura)</td><td>$300 (Divimath) to thousands</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Why Divimath was the only realistic digital option</h3>
+      <ul>
+        <li><strong>DJI, Walksnail, HDZero:</strong> the usual digital FPV systems, all out because of their Chinese supply chains.</li>
+        <li><strong>ModalAI MVX:</strong> a U.S.-built, Blue UAS-listed, encrypted digital link, but the ground receiver alone is $1,500 and the air side requires ModalAI's VOXL flight computer, a complete re-architecture.</li>
+        <li><strong>IP mesh radios (Doodle Labs, Microhard, Silvus):</strong> compliant and long range, but they need a separate video encoder, and the air-side hardware alone ran around $650, which broke the budget.</li>
+        <li><strong>Divimath HDMI VTX:</strong> NDAA compliant, made in Thailand, $300, 25&ndash;900&nbsp;mW output on 5.8&nbsp;GHz. It accepts HDMI from any source, including a Raspberry Pi, which is exactly what our pipeline needed. Divimath's other VTXs only take video straight from Divimath's own cameras.</li>
+      </ul>
+
+      <h3>Encryption as a bonus</h3>
+      <p>Encrypted video wasn't a customer requirement, but it's a real operational security benefit: an unencrypted feed shows anyone with a cheap receiver exactly what the drone is looking at, and where. Divimath's NDAA product line encrypts its digital link with AES-256 at the physical layer, with no added latency, and only a Divimath receiver with the right password can decode it. It's exclusive to the NDAA line, so a hobby HDZero receiver can't watch it either. One caveat we flagged for the customer: U.S. amateur radio rules, which high-power 5.8&nbsp;GHz video often operates under, prohibit encryption. Using encryption depends on the spectrum authorization the Army operates under.</p>
+      <p>After dropping the AI HAT+ freed up budget, we went digital: the operator gets a 1080p picture, crisp coordinates, and the option of encryption. The trade-off we accepted is a single-vendor ground ecosystem and an unproven 5&nbsp;km range, which we plan to test early with a directional antenna on the ground.</p>
+    </section>
+
+    <section id="pipeline" class="prose">
+      <h2>How the video feed works</h2>
+      <ol>
+        <li><strong>Capture:</strong> the SeekerHD streams 1080p video over a 22-pin ribbon cable into the Pi 5's camera port.</li>
+        <li><strong>Process:</strong> the Pi crops and scales the frame for digital zoom, set by a slider on the pilot's radio.</li>
+        <li><strong>Overlay:</strong> the Pi reads position, altitude, and heading from the flight controller over a MAVLink serial connection, converts position to MGRS, and draws MGRS, lat/long, and heading in degrees and mils onto each frame.</li>
+        <li><strong>Transmit:</strong> the Pi outputs HDMI from its micro-HDMI port to the Divimath VTX, which sends it on 5.8&nbsp;GHz.</li>
+        <li><strong>Display:</strong> a Divimath monitor at the ground station receives and decrypts the feed.</li>
+      </ol>
+      <p>Putting the Pi in the chain costs about 50&ndash;150&nbsp;ms of latency and 20&ndash;30 seconds of boot time before video appears. Both are fine for reconnaissance and waypoint flying, where nobody is hand-flying fast on the feed. In exchange, the overlay is entirely our own software, independent of the flight controller's on-screen display, and the Pi can do things the transmitter alone can't.</p>
+
+      <h3>Image processing without the AI HAT</h3>
+      <p>The original plan ran person and vehicle detection on the Pi with Raspberry Pi's 13&nbsp;TOPS AI HAT+ accelerator, and let the operator toggle detection boxes on and off over full-frame-rate video. When the AI HAT+ failed NDAA 817 and 848, we removed it, saving $70 and about 50&nbsp;g. The base build now does no onboard detection. The Pi 5's own processor can still run lighter image processing, such as contrast enhancement, motion highlighting, or a small detection model at a low frame rate. That leaves a software-only path back to onboard computer vision if a compliant accelerator appears or the customer wants it.</p>
+
+      <h3>Built for a second camera</h3>
+      <p>Because every image goes through the Pi, adding a second sensor is mostly a software change. A USB thermal camera plugs into one of the Pi's USB ports, and the operator switches between feeds from a switch on the radio. Since the link is 1080p, the Pi can also show thermal as a picture-in-picture inset or blend heat outlines onto the daylight image, which standard-definition analog would make too small to use. That design choice is what makes thermal a clean add-on instead of a redesign.</p>
+    </section>
+
+    <section id="thermal" class="prose">
+      <h2>Thermal imaging</h2>
+      <p>Thermal and low-light EO cameras solve different problems. Thermal is the best tool for <em>finding</em> things: a warm person or engine stands out against a cool background in total darkness, through light smoke, and through foliage that hides them from a normal camera. Low-light EO is the best tool for <em>identifying</em> them, with color and detail that thermal lacks. For an SRR drone, the ideal workflow is thermal cueing: thermal shows the operator where to look, then they switch to the EO camera and zoom in.</p>
+
+      <h3>The infrared bands</h3>
+      <table class="data-table">
+        <thead><tr><th>Band</th><th>Wavelength</th><th>What it sees</th><th>Fit for this drone</th></tr></thead>
+        <tbody>
+          <tr><td>SWIR</td><td>~0.9&ndash;1.7&nbsp;&micro;m</td><td>Reflected light, like a visible camera; cuts through haze and distinguishes materials; still needs some illumination</td><td>Expensive InGaAs sensors; doesn't detect body heat</td></tr>
+          <tr><td>MWIR</td><td>~3&ndash;5&nbsp;&micro;m</td><td>Emitted heat; best for very long range and hot targets</td><td>Needs a cryogenically cooled detector: too heavy, power-hungry, and costly</td></tr>
+          <tr><td>LWIR</td><td>~8&ndash;14&nbsp;&micro;m</td><td>Emitted heat near room temperature, which is where people and vehicles glow brightest</td><td><strong>Best fit:</strong> small, light, uncooled microbolometers</td></tr>
+        </tbody>
+      </table>
+      <p>For a 5&nbsp;lb drone looking for people and vehicles at short range, uncooled LWIR is the clear choice. It's what every small-drone thermal camera we considered uses.</p>
+
+      <h3>Why thermal became an add-on</h3>
+      <p>Resolution decides whether thermal is useful. At 100&nbsp;m altitude, a 160&times;120 FLIR Lepton with its 57&deg; lens covers about 0.62&nbsp;m per pixel, so a person is a single warm dot. A 320&times;256 FLIR Boson with a 34&deg; lens covers about 0.19&nbsp;m per pixel, so a person is roughly 3&times;9 pixels: enough to tell a person from a deer or a sun-warmed rock.</p>
+      <p>We could squeeze a Lepton into the base budget, but only by giving up money the EO camera needed, for a sensor that only says &ldquo;something warm is there.&rdquo; A thermal camera worth having costs more than the rest of the aircraft. So rather than compromise both sensors, we spent the budget on a good EO camera and are proposing good-resolution thermal to the customer as a separately funded add-on. The platform is already built for it: a USB slot on the Pi, room on the mount, and spare weight margin.</p>
+
+      <h3>Candidate thermal add-ons</h3>
+      <table class="data-table">
+        <thead><tr><th>Sensor</th><th>Resolution</th><th>Approx. price</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>FLIR Lepton 3.5</td><td>160&times;120</td><td>~$230 + USB board</td><td>NDAA; cheapest day-one thermal, but detection only</td></tr>
+          <tr><td>Seek 320&times;240 cores</td><td>320&times;240</td><td>~$500</td><td>USB; NDAA status unconfirmed, needs a vendor answer</td></tr>
+          <tr><td><strong>FLIR Boson 320</strong></td><td>320&times;256</td><td>~$1,780 with USB kit</td><td><strong>Recommended:</strong> NDAA, plugs into the Pi like a webcam</td></tr>
+          <tr><td>FLIR Boson 640</td><td>640&times;512</td><td>From ~$3,450</td><td>NDAA; full-resolution option that benefits most from the digital link</td></tr>
+          <tr><td>FLIR Hadron 640R</td><td>640&times;512 + 64&nbsp;MP EO</td><td>~$4,000</td><td>NDAA, 56&nbsp;g dual thermal/visible module; MIPI interface, so it would need driver work on the Pi</td></tr>
+          <tr><td>RPX EmbIR-3</td><td>&mdash;</td><td>Quote pending</td><td>Blue UAS listed</td></tr>
+        </tbody>
+      </table>
+      <p>Teledyne FLIR now states that its whole OEM thermal line (Lepton, Boson, Hadron, Neutrino) is NDAA compliant and assembled in California, which made it the default vendor. One paperwork note for the customer: the 60&nbsp;Hz Boson is export controlled at a higher level than the 9&nbsp;Hz version, so any non-U.S.-person team members need to be cleared before it's purchased.</p>
+    </section>
+
+    <section id="propulsion" class="prose">
+      <h2>Propulsion sizing</h2>
+
+      <h3>Thrust required</h3>
+      <p>I sized the propulsion for a conservative all-up weight of 5&nbsp;lb (2.27&nbsp;kg, or 22.2&nbsp;N). Each of the four motors has to lift about 5.56&nbsp;N, or 567&nbsp;g, to hover. Using momentum theory, the ideal power to hover is T<sup>3/2</sup>&nbsp;/&nbsp;&radic;(2&rho;A), about 37&nbsp;W per motor for a 10&Prime; disk. With typical thrust and power coefficients for a 10&times;4.5 prop (C<sub>T</sub>&nbsp;&asymp;&nbsp;0.11, C<sub>P</sub>&nbsp;&asymp;&nbsp;0.045), the prop actually needs about 6,000&nbsp;rpm and 58&nbsp;W of shaft power, a figure of merit of about 0.65.</p>
 
       <h3>Prop size</h3>
-      <p>We wanted props smaller than 10&Prime; to keep the drone compact, so I checked what that would cost. At a fixed weight, ideal hover power scales with thrust to the 3/2 power divided by prop diameter, so smaller props need more power to hold the same weight up:</p>
+      <p>We wanted props smaller than 10&Prime; to keep the drone compact. At a fixed weight, ideal hover power scales with thrust to the 3/2 power divided by prop diameter, so smaller props need more power to hold the same weight up. Using our early 30-minute estimate as the baseline:</p>
       <table class="data-table">
         <thead><tr><th>Prop</th><th>Extra hover power</th><th>Est. flight time</th></tr></thead>
         <tbody>
@@ -143,52 +263,143 @@
           <tr><td>7&Prime;</td><td>~+43%</td><td>~21&nbsp;min</td></tr>
         </tbody>
       </table>
-      <p>This comparison used our early 30-minute estimate as the baseline, before the more detailed hover analysis above. Below 9&Prime; the drone can't meet the 25-minute requirement. Because the X10's arms fold, a 10&Prime; frame packs nearly as small as a fixed 9&Prime; one, so we kept 10&Prime; props for the endurance margin.</p>
+      <p>Below 9&Prime; the drone can't meet the 25-minute requirement. Because the X10's arms fold, a 10&Prime; frame packs nearly as small as a fixed 9&Prime; one, so we kept 10&Prime; props. We chose Master Airscrew 10&times;4.5 props over similar alternatives because their NDAA documentation was clearer.</p>
 
-      <h3>Weight</h3>
-      <p>The parts list adds up to about 2,020&nbsp;g. Wiring, connectors, printed mounts, and hardware bring the estimated all-up weight to about 2,110&nbsp;g (4.65&nbsp;lb), roughly 160&nbsp;g under the 2,268&nbsp;g limit. That margin is the main reason thermal is an add-on: a good thermal camera and its interface board would use most of it.</p>
+      <h3>Choosing the KV</h3>
+      <p>A motor's KV rating is its unloaded speed per volt. On a 6S pack (about 21.6&nbsp;V nominal), it sets how fast the prop can spin and therefore where hover falls in the throttle range. Brushless motors are most efficient when loaded reasonably hard, so a motor that hovers at very low throttle wastes energy. Our first choice, a higher-KV 3115 motor, would have hovered at only about 30&ndash;35% throttle. Stepping down to the 760&nbsp;KV version of the same NDAA-compliant Atlas Motion 3115 moves hover to:</p>
+      <div class="spec-grid">
+        <div><span>Hover throttle, full pack (25.2&nbsp;V)</span><strong>~34%</strong></div>
+        <div><span>Hover throttle, nominal (21.6&nbsp;V)</span><strong>~40%</strong></div>
+        <div><span>Hover throttle, near cutoff (19.8&nbsp;V)</span><strong>~43%</strong></div>
+        <div><span>Full-throttle speed (loaded)</span><strong>~13,000&nbsp;rpm</strong></div>
+        <div><span>Full-throttle thrust</span><strong>~2.7&nbsp;kg per motor, about 4.8:1 thrust-to-weight</strong></div>
+        <div><span>Full-throttle current</span><strong>~34&nbsp;A per motor, ~136&nbsp;A total</strong></div>
+      </div>
+      <p>That puts the motors in a more efficient part of their range, worth an estimated 2&ndash;4 extra minutes, while still leaving plenty of thrust. The full-throttle current is far more than the battery can supply continuously, so the flight controller's current limit caps the pack at 60&nbsp;A. That still gives a sustained thrust-to-weight ratio of about 2.6:1, plenty for a reconnaissance drone. The 80&nbsp;A-per-channel ESC has large margin either way.</p>
+    </section>
+
+    <section id="power" class="prose">
+      <h2>Battery and power system</h2>
+
+      <h3>Li-ion over LiPo</h3>
+      <p>FPV drones usually fly LiPo packs, which deliver huge currents for racing and acrobatics. A reconnaissance quad hovers at a gentle, steady load, which is what lithium-ion cells are good at. The Lumenier NAV 6S2P pack uses 21700 cells and stores about 227&nbsp;Wh/kg, roughly 1.5&times; the energy per gram of LiPo. The current LiPo could deliver would mostly go unused.</p>
+
+      <h3>Pack size</h3>
+      <p>The 6S2P pack (10,000&nbsp;mAh, 216&nbsp;Wh) makes up about 43% of the drone's weight, near the usual 40&ndash;55% range for endurance multirotors. Bigger packs give diminishing returns: going to 3P would add about 1&nbsp;lb for roughly 5 more minutes, and 4P about 2&nbsp;lb for 8 minutes, breaking the weight limit and making the drone harder to carry.</p>
+
+      <h3>Hover power and flight time</h3>
+      <div class="spec-grid">
+        <div><span>Total electrical power</span><strong>~305&ndash;320&nbsp;W</strong></div>
+        <div><span>Pack current at hover</span><strong>~15&nbsp;A (about 1.5C, 7&ndash;8&nbsp;A per cell)</strong></div>
+        <div><span>Pack continuous rating</span><strong>60&nbsp;A, so hover uses about a quarter</strong></div>
+        <div><span>Avionics load</span><strong>~16&nbsp;W: VTX, Pi, camera, radios, FC, servos</strong></div>
+        <div><span>Hover time</span><strong>~35&nbsp;min using 85% of the pack</strong></div>
+        <div><span>Planned mission time</span><strong>25&ndash;30&nbsp;min with a landing reserve</strong></div>
+      </div>
+      <p>These assume about 78&ndash;84% motor and ESC efficiency at partial throttle. Running the pack well below its rating helps too: voltage sags less and the cells stay cooler, so energy (watt-hours), not current, is what limits endurance. The least certain input is the prop's figure of merit; a thrust-stand test of one motor and prop at 567&nbsp;g would narrow the estimate to about &plusmn;2 minutes. The real caveat for Army use is cold weather, since Li-ion loses noticeable capacity below about 5&nbsp;&deg;C, so packs should be kept warm before flight.</p>
 
       <h3>Power distribution</h3>
       <ul>
+        <li><strong>Motors:</strong> straight from the pack through the 4-in-1 ESC.</li>
         <li><strong>Raspberry Pi 5:</strong> its own 5&nbsp;A regulator set to 5.2&nbsp;V. The flight controller's 5&nbsp;V output can't supply enough current, and a regulator that outputs exactly 5.0&nbsp;V often trips the Pi's undervoltage throttling after wire losses.</li>
         <li><strong>Video transmitter:</strong> the flight controller's 12&nbsp;V, 3&nbsp;A output.</li>
         <li><strong>Pan/tilt servos:</strong> the flight controller's 5&nbsp;V rail. They only make small, slow camera adjustments, so their current draw is low and a second regulator wasn't worth the weight.</li>
       </ul>
+
+      <h3>Weight</h3>
+      <p>The parts list adds up to about 2,020&nbsp;g. Wiring, connectors, printed mounts, and hardware bring the estimated all-up weight to about 2,110&nbsp;g (4.65&nbsp;lb), roughly 160&nbsp;g under the 2,268&nbsp;g limit. A good thermal camera and its interface board would use most of that margin, which is another reason thermal is an add-on.</p>
     </section>
 
-    <section class="prose">
-      <h2>Communications</h2>
-      <p>Three separate radio links connect the aircraft to the ground, each with one job. The flight controller is the hub on the aircraft: the GPS feeds it, it drives the motors and the camera servos, and it shares its position and heading with the Pi for the video overlay.</p>
+    <section id="control" class="prose">
+      <h2>Control link: Crossfire on 915&nbsp;MHz</h2>
+      <p>The pilot flies with a Triumph Tango 2 PRO, an NDAA handheld radio with a built-in Crossfire transmitter, talking to an NDAA Crossfire diversity receiver on the drone. Crossfire is a long-range two-way control system: it updates at up to 150&nbsp;Hz, adjusts its transmit power automatically based on link quality, and sends telemetry back to the radio's screen.</p>
+
+      <h3>915&nbsp;MHz vs. 2.4&nbsp;GHz</h3>
+      <p>Both bands can cover 5&nbsp;km in clear line of sight. The differences come from physics:</p>
+      <ul>
+        <li><strong>Path loss:</strong> free-space loss at 5&nbsp;km is about 106&nbsp;dB at 915&nbsp;MHz versus about 114&nbsp;dB at 2.4&nbsp;GHz, an 8.4&nbsp;dB (roughly 7&times;) advantage for the lower band.</li>
+        <li><strong>Obstacles:</strong> longer wavelengths diffract around terrain and pass through trees and buildings much better. This is the main reason long-range pilots use 900&nbsp;MHz for control.</li>
+        <li><strong>Congestion:</strong> 2.4&nbsp;GHz is shared with WiFi and Bluetooth, which matters near towns and bases.</li>
+        <li><strong>Antenna size:</strong> the one advantage of 2.4&nbsp;GHz. Its antennas are smaller, and it would have given control a separate band from our 915&nbsp;MHz telemetry radio.</li>
+      </ul>
+      <p>Compliant 2.4&nbsp;GHz gear exists, but losing control is the worst failure a drone can have, so we kept control on 915&nbsp;MHz for its margin in obstructed terrain and handled the shared band on the airframe (see <a href="#telemetry">Telemetry</a>).</p>
+
+      <h3>What Crossfire telemetry can and can't do</h3>
+      <p>Over Crossfire, ArduPilot sends battery voltage and current, GPS position and speed, altitude, attitude, flight mode, and link quality back to the Tango's small screen. That's enough for the pilot. But I wanted to know whether the same link could feed MMCS on a laptop, which would have saved buying a second radio. It can't, for three reasons:</p>
+      <ul>
+        <li><strong>No wireless bridge.</strong> Crossfire normally passes MAVLink to a ground station over the transmitter's WiFi or Bluetooth. The NDAA version of the Tango doesn't support WiFi.</li>
+        <li><strong>No USB data port.</strong> The Tango's USB-C port is for charging, firmware updates, and simulator joystick mode. It doesn't appear as a serial port on a computer.</li>
+        <li><strong>Limited MAVLink.</strong> MAVLink streaming isn't supported on the Crossfire module built into the Tango, and Crossfire supports only MAVLink 1 in any case.</li>
+      </ul>
+      <p>Without a telemetry radio, waypoint missions would have to be uploaded over USB before flight and started from a switch on the Tango, with no in-flight retasking and no live position in MMCS.</p>
+
+      <h3>Looking at ExpressLRS</h3>
+      <p>ExpressLRS (ELRS) is the open-source alternative to Crossfire, and newer versions can carry full two-way MAVLink alongside the control signal, potentially one radio for both jobs. I found compliant ELRS hardware from ModalAI (its Gemini 915&nbsp;MHz receivers are Blue UAS listed), but it didn't solve the problem:</p>
+      <ul>
+        <li>ELRS's MAVLink mode requires ESP32-based hardware, and ModalAI's receiver uses an STM32, so MAVLink mode likely isn't possible.</li>
+        <li>The receiver is locked to ELRS version 3, and the Tango is Crossfire-only, so switching would mean a new handset and ground module too.</li>
+        <li>It runs in the same 915&nbsp;MHz band, so it wouldn't remove the interference question.</li>
+      </ul>
+      <p>We listed ELRS as a future path: once a compliant ESP-based receiver with MAVLink mode exists, control and telemetry could be combined on one link.</p>
+    </section>
+
+    <section id="telemetry" class="prose">
+      <h2>Telemetry to MMCS</h2>
+      <p>The customer runs MMCS on Army field computers, so the drone's telemetry has to reach it through a radio plugged into the computer over USB. Before buying anything, I compared the ways to get telemetry to the ground:</p>
+      <table class="data-table">
+        <thead><tr><th>Option</th><th>Cost</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>Crossfire telemetry</td><td>Free</td><td>Pilot's screen only; can't reach a computer with the NDAA Tango</td></tr>
+          <tr><td>Data channel on the video link</td><td>Possibly free</td><td>The Divimath VTX has a UART harness, but a ground-side data path is unconfirmed</td></tr>
+          <tr><td>Overlay or KLV metadata in video</td><td>Free</td><td>Downlink only, and MMCS can't ingest a burned-in overlay as data</td></tr>
+          <tr><td>Cellular modem on the Pi</td><td>~$50&ndash;100 + plan</td><td>Most modules aren't compliant, and field sites often lack coverage</td></tr>
+          <tr><td>Flight logs after landing</td><td>Free</td><td>Good for analysis, useless for live tracking</td></tr>
+          <tr><td><strong>RFD900x-US modem pair</strong></td><td>$287</td><td><strong>Chosen:</strong> Blue UAS listed, full two-way MAVLink 2, USB on the ground side</td></tr>
+        </tbody>
+      </table>
+      <p>The RFD900x is a long-range 900&nbsp;MHz telemetry modem. The air modem connects to a spare serial port on the flight controller; the ground modem plugs into the field computer over USB and appears as a normal serial port, so MMCS or any MAVLink ground station can connect to it. It supports full two-way MAVLink 2: live position, attitude, battery, and mode down; missions, waypoints, and commands up, so the operator can retask the drone in flight. The bundle we chose includes both modems, diversity antennas for each, and the USB cable, and was in stock when a cheaper source was backordered past our build date.</p>
+
+      <h3>Two links in one band</h3>
+      <p>Keeping Crossfire for control and the RFD900x for telemetry gives redundancy: if either link drops, the other still works, and ArduPilot's failsafes handle both. But both run in the 902&ndash;928&nbsp;MHz band, and a 1&nbsp;W telemetry transmitter a few centimeters from the control receiver could drown it out. The plan for that:</p>
+      <ul>
+        <li>Mount the two antennas at least about 20&nbsp;cm apart, one vertical and one horizontal, for polarization isolation.</li>
+        <li>Run the RFD900x at around 100&ndash;250&nbsp;mW. Telemetry needs much less margin than control.</li>
+        <li>Range-test the control link with the telemetry radio transmitting before any long flight.</li>
+      </ul>
+      <p>One open item: this assumes MMCS accepts MAVLink over a USB serial port. If it expects a different format, such as Cursor-on-Target, a small translator program on the field computer would sit between the radio and MMCS.</p>
+
+      <h3>All three links</h3>
       <table class="data-table">
         <thead><tr><th>Link</th><th>Path</th><th>What it carries</th></tr></thead>
         <tbody>
           <tr><td>Control</td><td>Tango 2 PRO &harr; Crossfire receiver &harr; FC (915&nbsp;MHz)</td><td>Sticks, arm, flight modes, return-to-home, camera pan/tilt and zoom; link quality, battery, and GPS back to the radio's screen</td></tr>
           <tr><td>Telemetry</td><td>FC &harr; RFD900x &harr; RFD900x &rarr; USB &rarr; MMCS field computer (900&nbsp;MHz)</td><td>Position, attitude, battery, and mode down; missions, waypoints, and commands up</td></tr>
-          <tr><td>Video</td><td>SeekerHD &rarr; Pi 5 &rarr; Divimath HDMI VTX &rarr; ground monitor (5.8&nbsp;GHz)</td><td>1080p video with MGRS, lat/long, and heading in degrees and mils drawn on the image</td></tr>
+          <tr><td>Video</td><td>SeekerHD &rarr; Pi 5 &rarr; Divimath HDMI VTX &rarr; ground monitor (5.8&nbsp;GHz)</td><td>1080p video with MGRS, lat/long, and heading in degrees and mils drawn on the image; optionally encrypted</td></tr>
         </tbody>
       </table>
-      <p>If any one link drops, the others keep working, and the flight controller's failsafe settings decide what the aircraft does, such as returning home if the control link is lost.</p>
     </section>
 
-    <section class="prose">
+    <section id="budget" class="prose">
       <h2>Budget</h2>
       <p>The customer gave us $1,700 for the aircraft and $800 for the controller and ground display, and let us pool the two. The CDR parts list comes to <strong>$2,492.70</strong>, about $7 under the combined $2,500.</p>
       <ul>
-        <li><strong>Biggest savings:</strong> switching flight stacks (about $229) and dropping the AI HAT+ ($70).</li>
-        <li><strong>Biggest late addition:</strong> the RFD900x telemetry pair for MMCS ($287), which we paid for by dropping a spare drone antenna and one spare set of props.</li>
-        <li><strong>Ground side:</strong> the Tango 2 PRO radio ($312) and Divimath monitor ($350) take most of the accessory budget; a cheap 4S battery runs the monitor, and one charger handles both the drone's Li-ion pack and the monitor's LiPo.</li>
+        <li><strong>Biggest savings:</strong> switching from an ARK flight stack to Aslan's (about $229) and dropping the AI HAT+ ($70).</li>
+        <li><strong>Biggest late addition:</strong> the RFD900x telemetry pair for MMCS ($287), paid for by dropping a spare drone antenna and one spare set of props.</li>
+        <li><strong>Ground side:</strong> the Tango 2 PRO radio ($312) and Divimath monitor ($350) take most of the accessory budget; one charger handles both the drone's Li-ion pack and the monitor's LiPo.</li>
         <li><strong>Long-lead risks:</strong> the radio was on pre-order and the monitor sold out when we checked, so both are flagged on the parts list, with a USB video receiver and laptop as the display fallback.</li>
       </ul>
     </section>
 
-    <section class="prose">
+    <section id="next" class="prose">
       <h2>Next steps</h2>
       <ul>
         <li>Confirm ArduPilot firmware support for the Aslan flight controller</li>
         <li>Confirm with the MMCS team that it accepts MAVLink over a USB serial port</li>
+        <li>Confirm the spectrum authorization for 5.8&nbsp;GHz video, which decides transmit power and whether encryption can be used</li>
         <li>Order parts, then build and integrate the airframe, flight system, camera, and Pi</li>
         <li>Write the Pi software for zoom and the MGRS, lat/long, and heading overlay</li>
-        <li>Flight-test against the weight, endurance, and range requirements</li>
+        <li>Thrust-stand test one motor and prop to pin down the flight-time estimate</li>
+        <li>Range-test all three links, including control with telemetry transmitting</li>
         <li>Pitch the thermal add-on and deliver to the Army customer for evaluation</li>
       </ul>
     </section>
@@ -200,11 +411,14 @@
         <li>Customer requirements</li>
         <li>NDAA compliance</li>
         <li>System architecture</li>
-        <li>Component selection</li>
+        <li>Trade studies</li>
         <li>CAD</li>
         <li>Thrust &amp; power analysis</li>
+        <li>Motor &amp; prop sizing</li>
+        <li>Battery sizing</li>
         <li>Weight &amp; cost budgeting</li>
         <li>RF link design</li>
+        <li>EO/IR sensors</li>
         <li>Wiring &amp; power distribution</li>
         <li>ArduPilot / MAVLink</li>
         <li>Raspberry Pi</li>
