@@ -1,15 +1,13 @@
 :root {
-  --paper: #f2f5f8;
-  --ink: #172338;
-  --line: #b9c6d6;
-  --blue: #1c5cc4;
-  --on-blue: #ffffff;
-  --muted: #55647a;
+  color-scheme: dark;
+  --paper: #0f1826;
+  --ink: #e6ecf5;
+  --line: #33445c;
+  --blue: #7fb0ff;
+  --on-blue: #0f1826;
+  --muted: #9aabc2;
   --head: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "Source Serif 4", Georgia, "Times New Roman", serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root { --paper: #0f1826; --ink: #e6ecf5; --line: #33445c; --blue: #7fb0ff; --on-blue: #0f1826; --muted: #9aabc2; }
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 90px; }
